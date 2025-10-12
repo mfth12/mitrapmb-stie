@@ -5,7 +5,7 @@
     <div class="container-xl">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <h2 class="page-title">Tambah Pengguna Baru</h2>
+          <h2 class="page-title">Tambah Baru</h2>
           <div class="page-pretitle">Tambah pengguna baru ke {{ konfigs('NAMA_SISTEM') }}</div>
         </div>
         <div class="col-auto">

@@ -6,7 +6,7 @@
       <div class="row g-2 align-items-center">
         <div class="col">
           <h2 class="page-title">Manajemen Pengguna</h2>
-          <div class="page-pretitle">Semua pengguna agen PMB</div>
+          <div class="page-pretitle">Semua pengguna {{ konfigs('NAMA_SISTEM') }}</div>
         </div>
         <div class="col-auto ms-auto d-print-none">
           @can('user_create')
