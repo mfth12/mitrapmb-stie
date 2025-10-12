@@ -31,7 +31,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Nama Lengkap *</label>
+                      <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
                       <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror"
                         value="{{ old('nama', $pengguna->name) }}" required>
                       @error('nama')
@@ -41,7 +41,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Email *</label>
+                      <label class="form-label">Email <span class="text-danger">*</span></label>
                       <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
                         value="{{ old('email', $pengguna->email) }}" required>
                       @error('email')
@@ -54,7 +54,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Username *</label>
+                      <label class="form-label">Username <span class="text-danger">*</span></label>
                       <input type="text" name="username" class="form-control @error('username') is-invalid @enderror"
                         value="{{ old('username', $pengguna->username) }}" required>
                       @error('username')
@@ -64,7 +64,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Nomor HP *</label>
+                      <label class="form-label">Nomor HP <span class="text-danger">*</span></label>
                       <input type="text" name="nomor_hp" class="form-control @error('nomor_hp') is-invalid @enderror"
                         value="{{ old('nomor_hp', $pengguna->nomor_hp) }}" required>
                       @error('nomor_hp')
@@ -77,7 +77,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Role *</label>
+                      <label class="form-label">Role <span class="text-danger">*</span></label>
                       <select name="role" class="form-select @error('role') is-invalid @enderror" required
                         {{ $pengguna->hasRole('superadmin') ? 'disabled' : '' }}>
                         <option value="">Pilih Role</option>
@@ -99,7 +99,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Status *</label>
+                      <label class="form-label">Status <span class="text-danger">*</span></label>
                       <select name="status" class="form-select">
                         <option value="active" {{ old('status', $pengguna->status) == 'active' ? 'selected' : '' }}>Aktif
                         </option>
@@ -149,8 +149,8 @@
 
               @can('user_edit')
                 @if (!$pengguna->hasRole('superadmin'))
-                  <form id="reset-password-form" action="{{ route('pengguna.reset-password', $pengguna) }}" method="POST"
-                    class="d-none">
+                  <form id="reset-password-form" action="{{ route('pengguna.reset-password', $pengguna) }}"
+                    method="POST" class="d-none">
                     @csrf
                   </form>
                 @endif

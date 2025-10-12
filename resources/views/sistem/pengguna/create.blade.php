@@ -30,7 +30,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Nama Lengkap *</label>
+                      <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
                       <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror"
                         value="{{ old('nama') }}" required>
                       @error('nama')
@@ -40,7 +40,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Email *</label>
+                      <label class="form-label">Email <span class="text-danger">*</span></label>
                       <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
                         value="{{ old('email') }}" required>
                       @error('email')
@@ -53,7 +53,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Username *</label>
+                      <label class="form-label">Username <span class="text-danger">*</span></label>
                       <input type="text" name="username" class="form-control @error('username') is-invalid @enderror"
                         value="{{ old('username') }}" required>
                       @error('username')
@@ -63,7 +63,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Nomor HP *</label>
+                      <label class="form-label">Nomor HP <span class="text-danger">*</span></label>
                       <input type="text" name="nomor_hp" class="form-control @error('nomor_hp') is-invalid @enderror"
                         value="{{ old('nomor_hp') }}" required>
                       @error('nomor_hp')
@@ -76,7 +76,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Role *</label>
+                      <label class="form-label">Role <span class="text-danger">*</span></label>
                       <select name="role" class="form-select @error('role') is-invalid @enderror" required>
                         <option value="">Pilih Role</option>
                         @foreach ($roles as $role)
@@ -104,7 +104,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Password *</label>
+                      <label class="form-label">Password <span class="text-danger">*</span></label>
                       <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
                         required>
                       @error('password')
@@ -114,7 +114,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Konfirmasi Password *</label>
+                      <label class="form-label">Konfirmasi Password <span class="text-danger">*</span></label>
                       <input type="password" name="password_confirmation" class="form-control" required>
                     </div>
                   </div>
