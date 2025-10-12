@@ -30,7 +30,15 @@
                     style="background-image: url({{ $pengguna->avatar ? env('URL_ASSET_SIAKAD') . '/' . $pengguna->avatar : asset('img/default.png') }})">
                   </div>
 
-                  <h4>{{ $pengguna->name }}</h4>
+                  <h4>{{ $pengguna->name }}
+                    <span>
+                      @if ($pengguna->siakad_id)
+                        <i class="ti ti-rosette-discount-check-filled fs-3 text-primary" data-bs-toggle="tooltip"
+                          data-bs-placement="top" title="Akun Siakad"></i>
+                      @endif
+                    </span>
+                  </h4>
+
                   <span class="">({{ $pengguna->getRoleNames()->first() }})</span>
                 </div>
                 <div class="col-md-9">
