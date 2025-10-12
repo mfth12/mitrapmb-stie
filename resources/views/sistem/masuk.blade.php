@@ -13,10 +13,10 @@
                 <span class=" d-flex align-items-center">
                   @include('components.back.macros', ['height' => 20, 'withbg' => 'fill: #fff;'])
                 </span>
-                <h1 class="mb-0">{{ konfigs('NAMA_SISTEM_ALIAS') }}</h1>
+                <h1 class="mb-0">{{ konfigs('NAMA_SISTEM') }}</h1>
               </a>
             </div>
-            <h3 class="text-center mb-4">{{ konfigs('NAMA_SISTEM') }} </h3>
+            <h3 class="text-center mb-4">Portal Agen Penerimaan Mahasiswa Baru STIE</h3>
             <div class="card card-md">
               <div class="card-body">
                 {{-- ALERTS --}}

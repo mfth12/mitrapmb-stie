@@ -9,7 +9,7 @@
       <a href="/" class="d-flex align-items-center text-decoration-none text-reset"
         aria-label="{{ konfigs('NAMA_SISTEM') }}">
         <span class="app-brand-logo me-2">@include('components.back.macros', ['height' => 20])</span>
-        <span class="app-brand-text menu-text fw-bold">{{ konfigs('NAMA_SISTEM_ALIAS') }}</span>
+        <span class="app-brand-text menu-text fw-bold">{{ konfigs('NAMA_SISTEM') }}</span>
       </a>
     </div>
 
