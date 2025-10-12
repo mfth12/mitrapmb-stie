@@ -28,7 +28,7 @@ class DasborController extends Controller
         switch ($role) {
             case 'superadmin':
                 return [
-                    'total_users' => \App\Models\User::count(),
+                    'total_users'       => \App\Models\User::count(),
                     'total_pendaftaran' => 0, // Ganti dengan model yang sesuai
                     'pending_approvals' => 0,
                 ];
@@ -37,19 +37,19 @@ class DasborController extends Controller
                 return [
                     'total_pendaftaran' => 0,
                     'pending_approvals' => 0,
-                    'approved_today' => 0,
+                    'approved_today'    => 0,
                 ];
 
             case 'prodi':
                 return [
-                    'total_mahasiswa' => 0,
+                    'total_mahasiswa'   => 0,
                     'pendaftaran_prodi' => 0,
                 ];
 
             case 'keuangan':
                 return [
-                    'total_pembayaran' => 0,
-                    'pending_payments' => 0,
+                    'total_pembayaran'  => 0,
+                    'pending_payments'  => 0,
                 ];
 
             case 'dosen':
@@ -59,8 +59,8 @@ class DasborController extends Controller
 
             case 'mahasiswa':
                 return [
-                    'status_pendaftaran' => 'Belum ada pendaftaran',
-                    'last_activity' => null,
+                    'status_pendaftaran'    => 'Belum ada pendaftaran',
+                    'last_activity'         => null,
                 ];
 
             default:
