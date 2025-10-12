@@ -6,7 +6,7 @@
       <div class="row g-2 align-items-center">
         <div class="col">
           <h2 class="page-title">Dashboard</h2>
-          <div class="page-pretitle">{{ auth()->user()->getRoleNames()->first() }} - Overview</div>
+          <div class="page-pretitle">{{ Auth()->user()->getRoleNames()->first() }} - Overview</div>
         </div>
 
         <div class="col-auto ms-auto d-print-none">
@@ -65,17 +65,17 @@
               <div class="row gy-3">
                 <div class="col-12 col-sm d-flex flex-column">
                   <!-- Content berdasarkan role -->
-                  {{-- @if (auth()->user()->hasRole('superadmin'))
+                  {{-- @if (Auth()->user()->hasRole('superadmin'))
                     @include('sistem.dasbor.superadmin')
-                  @elseif(auth()->user()->hasRole('baak'))
+                  @elseif(Auth()->user()->hasRole('baak'))
                     @include('sistem.dasbor.baak')
-                  @elseif(auth()->user()->hasRole('prodi'))
+                  @elseif(Auth()->user()->hasRole('prodi'))
                     @include('sistem.dasbor.prodi')
-                  @elseif(auth()->user()->hasRole('keuangan'))
+                  @elseif(Auth()->user()->hasRole('keuangan'))
                     @include('sistem.dasbor.keuangan')
-                  @elseif(auth()->user()->hasRole('dosen'))
+                  @elseif(Auth()->user()->hasRole('dosen'))
                     @include('sistem.dasbor.dosen')
-                  @elseif(auth()->user()->hasRole('mahasiswa'))
+                  @elseif(Auth()->user()->hasRole('mahasiswa'))
                     @include('sistem.dasbor.mahasiswa')
                   @endif --}}
                   <h3 class="h2">Selamat datang, {{ Auth()->user()->name }}</h3>

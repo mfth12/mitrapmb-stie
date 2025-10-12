@@ -10,11 +10,11 @@ class CheckPermission
 {
     public function handle(Request $request, Closure $next, $permission): Response
     {
-        if (!auth()->check()) {
+        if (!Auth()->check()) {
             return redirect()->route('login');
         }
 
-        if (!auth()->user()->can($permission)) {
+        if (!Auth()->user()->can($permission)) {
             abort(403, 'Unauthorized action.');
         }
 

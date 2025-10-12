@@ -159,10 +159,10 @@
       <div class="nav-item dropdown">
         <a href="#" class="nav-link d-flex lh-1 pb-2 px-2" data-bs-toggle="dropdown"
           aria-label="Open user menu">
-          <span class="avatar avatar-sm" style="background-image: url({{ auth()->user()->avatar ? env('URL_ASSET_SIAKAD') . '/' . auth()->user()->avatar : asset('img/default.png') }})"> </span>
+          <span class="avatar avatar-sm" style="background-image: url({{ Auth()->user()->avatar ? env('URL_ASSET_SIAKAD') . '/' . Auth()->user()->avatar : asset('img/default.png') }})"> </span>
           <div class="d-none d-xl-block ps-2">
             <div>{{ Auth()->user()->name }}</div>
-            <div class="mt-1 small text-secondary">{{ auth()->user()->getRoleNames()->first() }}</div>
+            <div class="mt-1 small text-secondary">{{ Auth()->user()->getRoleNames()->first() }}</div>
           </div>
         </a>
         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
