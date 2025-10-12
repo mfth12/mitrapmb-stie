@@ -63,15 +63,6 @@ class RolePermissionSeeder extends Seeder
             'user_view',
         ]);
 
-        $prodi = Role::create(['name' => 'prodi']);
-        $prodi->givePermissionTo([
-            'dashboard_view',
-            'pengajuan_view',
-            'approval_view',
-            'approval_verify',
-            'akademik_view',
-        ]);
-
         $keuangan = Role::create(['name' => 'keuangan']);
         $keuangan->givePermissionTo([
             'dashboard_view',
@@ -80,10 +71,10 @@ class RolePermissionSeeder extends Seeder
             'pengajuan_view',
         ]);
 
-        $dosen = Role::create(['name' => 'dosen']);
-        $dosen->givePermissionTo([
+        $mahasiswa = Role::create(['name' => 'mahasiswabaru']);
+        $mahasiswa->givePermissionTo([
             'dashboard_view',
-            'akademik_view',
+            'pengajuan_create',
         ]);
 
         $mahasiswa = Role::create(['name' => 'mahasiswa']);
