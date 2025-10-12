@@ -2,12 +2,11 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\DasborController;
-use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\Auth\MasukController;
+use App\Http\Controllers\PendaftaranController;
 
 // Rute "/" universal, tidak pakai middleware
 Route::get('/', fn() => redirect()->route(Auth::check() ? 'dashboard.index' : 'login'));
