@@ -10,7 +10,7 @@ class DasborController extends Controller
 {
     public function index(): View|RedirectResponse
     {
-        $user = auth()->user();
+        $user = Auth()->user();
         $role = $user->getRoleNames()->first();
 
         // Data berdasarkan role
@@ -29,13 +29,13 @@ class DasborController extends Controller
             case 'superadmin':
                 return [
                     'total_users' => \App\Models\User::count(),
-                    'total_pengajuan' => 0, // Ganti dengan model yang sesuai
+                    'total_pendaftaran' => 0, // Ganti dengan model yang sesuai
                     'pending_approvals' => 0,
                 ];
 
             case 'baak':
                 return [
-                    'total_pengajuan' => 0,
+                    'total_pendaftaran' => 0,
                     'pending_approvals' => 0,
                     'approved_today' => 0,
                 ];
@@ -43,7 +43,7 @@ class DasborController extends Controller
             case 'prodi':
                 return [
                     'total_mahasiswa' => 0,
-                    'pengajuan_prodi' => 0,
+                    'pendaftaran_prodi' => 0,
                 ];
 
             case 'keuangan':
@@ -59,7 +59,7 @@ class DasborController extends Controller
 
             case 'mahasiswa':
                 return [
-                    'status_pengajuan' => 'Belum ada pengajuan',
+                    'status_pendaftaran' => 'Belum ada pendaftaran',
                     'last_activity' => null,
                 ];
 

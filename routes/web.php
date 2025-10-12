@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DasborController;
+use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\PenggunaController;
-use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\Auth\MasukController;
 
 // Rute "/" universal, tidak pakai middleware
@@ -47,38 +47,38 @@ Route::middleware(['auth'])->group(function () {
             ->middleware('permission:user_edit');
     });
 
-    // Pengajuan Routes - bisa diakses oleh multiple roles
-    Route::prefix('pengajuan')->middleware(['permission:pengajuan_view'])->group(function () {
-        Route::get('/', [PengajuanController::class, 'index'])->name('pengajuan.index');
-        Route::get('/create', [PengajuanController::class, 'create'])->name('pengajuan.create')
-            ->middleware('permission:pengajuan_create');
-        Route::post('/', [PengajuanController::class, 'store'])->name('pengajuan.store')
-            ->middleware('permission:pengajuan_create');
-        Route::get('/{pengajuan}', [PengajuanController::class, 'show'])->name('pengajuan.show');
-        Route::get('/{pengajuan}/edit', [PengajuanController::class, 'edit'])->name('pengajuan.edit')
-            ->middleware('permission:pengajuan_edit');
-        Route::put('/{pengajuan}', [PengajuanController::class, 'update'])->name('pengajuan.update')
-            ->middleware('permission:pengajuan_edit');
-        Route::delete('/{pengajuan}', [PengajuanController::class, 'destroy'])->name('pengajuan.destroy')
-            ->middleware('permission:pengajuan_delete');
+    // Pendaftaran Routes - bisa diakses oleh multiple roles
+    Route::prefix('pendaftaran')->middleware(['permission:pendaftaran_view'])->group(function () {
+        Route::get('/', [PendaftaranController::class, 'index'])->name('pendaftaran.index');
+        Route::get('/create', [PendaftaranController::class, 'create'])->name('pendaftaran.create')
+            ->middleware('permission:pendaftaran_create');
+        Route::post('/', [PendaftaranController::class, 'store'])->name('pendaftaran.store')
+            ->middleware('permission:pendaftaran_create');
+        Route::get('/{pendaftaran}', [PendaftaranController::class, 'show'])->name('pendaftaran.show');
+        Route::get('/{pendaftaran}/edit', [PendaftaranController::class, 'edit'])->name('pendaftaran.edit')
+            ->middleware('permission:pendaftaran_edit');
+        Route::put('/{pendaftaran}', [PendaftaranController::class, 'update'])->name('pendaftaran.update')
+            ->middleware('permission:pendaftaran_edit');
+        Route::delete('/{pendaftaran}', [PendaftaranController::class, 'destroy'])->name('pendaftaran.destroy')
+            ->middleware('permission:pendaftaran_delete');
     });
 
     // Approval Routes - untuk baak dan prodi
     Route::prefix('approval')->middleware(['permission:approval_view'])->group(function () {
         Route::get('/', [ApprovalController::class, 'index'])->name('approval.index');
-        Route::get('/{pengajuan}', [ApprovalController::class, 'show'])->name('approval.show');
-        Route::post('/{pengajuan}/approve', [ApprovalController::class, 'approve'])->name('approval.approve')
+        Route::get('/{pendaftaran}', [ApprovalController::class, 'show'])->name('approval.show');
+        Route::post('/{pendaftaran}/approve', [ApprovalController::class, 'approve'])->name('approval.approve')
             ->middleware('permission:approval_approve');
-        Route::post('/{pengajuan}/reject', [ApprovalController::class, 'reject'])->name('approval.reject')
+        Route::post('/{pendaftaran}/reject', [ApprovalController::class, 'reject'])->name('approval.reject')
             ->middleware('permission:approval_reject');
-        Route::post('/{pengajuan}/verify', [ApprovalController::class, 'verify'])->name('approval.verify')
+        Route::post('/{pendaftaran}/verify', [ApprovalController::class, 'verify'])->name('approval.verify')
             ->middleware('permission:approval_verify');
     });
 
     // Keuangan Routes - khusus untuk role keuangan
     Route::prefix('keuangan')->middleware(['permission:keuangan_view'])->group(function () {
         Route::get('/', [KeuanganController::class, 'index'])->name('keuangan.index');
-        Route::post('/{pengajuan}/process', [KeuanganController::class, 'process'])->name('keuangan.process')
+        Route::post('/{pendaftaran}/process', [KeuanganController::class, 'process'])->name('keuangan.process')
             ->middleware('permission:keuangan_manage');
     });
 

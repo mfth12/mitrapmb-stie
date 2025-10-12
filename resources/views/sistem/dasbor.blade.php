@@ -33,9 +33,9 @@
             </a>
           </div> --}}
           <div class="btn-list">
-            @can('pengajuan_create')
-              <a href="{{ route('pengajuan.create') }}" class="btn btn-primary">
-                Buat Pengajuan Baru
+            @can('pendaftaran_create')
+              <a href="{{ route('pendaftaran.create') }}" class="btn btn-primary">
+                Buat Pendaftaran Baru
               </a>
             @endcan
 

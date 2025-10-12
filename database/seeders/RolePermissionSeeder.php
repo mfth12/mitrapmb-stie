@@ -21,11 +21,11 @@ class RolePermissionSeeder extends Seeder
             'user_edit',
             'user_delete',
 
-            // Student Registration
-            'pengajuan_view',
-            'pengajuan_create',
-            'pengajuan_edit',
-            'pengajuan_delete',
+            // Student Registration (Pendaftaran)
+            'pendaftaran_view',
+            'pendaftaran_create',
+            'pendaftaran_edit',
+            'pendaftaran_delete',
 
             // Student Approval
             'approval_view',
@@ -56,21 +56,20 @@ class RolePermissionSeeder extends Seeder
         $baak = Role::create(['name' => 'baak']);
         $baak->givePermissionTo([
             'dashboard_view',
-            'pengajuan_view',
+            'pendaftaran_view',
             'approval_view',
             'approval_approve',
             'approval_reject',
             'user_view',
         ]);
 
-        $agen = Role::create(['name' => 'agen']);
+        $agen = Role::firstOrCreate(['name' => 'agen']); // Menggunakan firstOrCreate untuk konsistensi dengan UserSeeder
         $agen->givePermissionTo([
             'dashboard_view',
-            'pengajuan_view',
-            'approval_view',
-            'approval_approve',
-            'approval_reject',
-            'user_view',
+            'pendaftaran_view',
+            'pendaftaran_create',
+            'pendaftaran_edit',
+            'pendaftaran_delete',
         ]);
 
         $keuangan = Role::create(['name' => 'keuangan']);
@@ -78,19 +77,19 @@ class RolePermissionSeeder extends Seeder
             'dashboard_view',
             'keuangan_view',
             'keuangan_manage',
-            'pengajuan_view',
+            'pendaftaran_view',
         ]);
 
         $mahasiswabaru = Role::create(['name' => 'mahasiswabaru']);
         $mahasiswabaru->givePermissionTo([
             'dashboard_view',
-            'pengajuan_create',
+            'pendaftaran_create',
         ]);
 
         $mahasiswa = Role::create(['name' => 'mahasiswa']);
         $mahasiswa->givePermissionTo([
             'dashboard_view',
-            'pengajuan_create',
+            'pendaftaran_create',
         ]);
     }
 }

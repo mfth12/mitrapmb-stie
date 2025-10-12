@@ -18,7 +18,7 @@
 
               {{-- PENDAFTARAN --}}
               <li
-                class="nav-item dropdown {{ request()->routeIs('pengajuan.*') || request()->routeIs('approval.*') ? 'active' : '' }}">
+                class="nav-item dropdown {{ request()->routeIs('pendaftaran.*') || request()->routeIs('approval.*') ? 'active' : '' }}">
                 <a class="nav-link dropdown-toggle" href="#navbar-pendaftaran" data-bs-toggle="dropdown"
                   data-bs-auto-close="outside" role="button" aria-expanded="false">
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -29,11 +29,11 @@
                 <div class="dropdown-menu">
                   <div class="dropdown-menu-columns">
                     <div class="dropdown-menu-column">
-                      {{-- Menu Pengajuan --}}
-                      @can('pengajuan_view')
-                        <a class="dropdown-item {{ request()->routeIs('pengajuan.*') ? 'active' : '' }}"
-                          href="{{ route('pengajuan.index') }}">
-                          Data Pengajuan
+                      {{-- Menu Pendaftaran --}}
+                      @can('pendaftaran_view')
+                        <a class="dropdown-item {{ request()->routeIs('pendaftaran.*') ? 'active' : '' }}"
+                          href="{{ route('pendaftaran.index') }}">
+                          Data Pendaftaran
                         </a>
                       @endcan
 
