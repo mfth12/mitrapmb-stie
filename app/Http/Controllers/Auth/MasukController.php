@@ -124,6 +124,11 @@ class MasukController extends Controller
         ]
       );
 
+      // Validasi status user
+      if ($user->status !== 'active') {
+        return back()->withErrors(['masuk' => 'Akun Siakad Anda tidak aktif.']);
+      }
+
       // Untuk user lain, assign role berdasarkan default_role dari Siakad
       $agen_role = $userData['default_role'] ?? 'mahasiswa';
       $agen_role = is_array($agen_role) ? $agen_role : [$agen_role];
@@ -173,13 +178,19 @@ class MasukController extends Controller
       Auth::attempt([
         'username' => $credentials['username'],
         'password' => $credentials['password'],
-        'status'   => 'active'
       ], $request->boolean('remember'))
     ) {
       RateLimiter::clear($throttleKey);
 
       // Update last logged in
       $user = Auth::user();
+
+      // Validasi ulang (antisipasi jika status berubah setelah attempt)
+      if ($user->status !== 'active') {
+        Auth::logout();
+        return back()->withErrors(['masuk' => 'Akun Anda tidak aktif. Silakan hubungi administrator.']);
+      }
+
       $user->update([
         'last_logged_in' => Carbon::now(),
         'status_login'   => 'online',

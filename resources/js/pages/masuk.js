@@ -143,10 +143,15 @@ document.onkeydown = function (e) {
     }
 }
 
-const switchCheck = document.getElementById('switchCheckDefault');
-const switchLabel = document.getElementById('switchLabel');
+// SWITCHING LOGIN MODE
+document.addEventListener('DOMContentLoaded', function () {
+    const switchInput = document.getElementById('switchCheckDefault');
+    const switchLabel = document.getElementById('switchLabel');
 
-switchCheck.addEventListener('change', () => {
-    switchLabel.textContent = switchCheck.checked ? 'Via Siakad' : 'Akun Agen';
+    function updateLabel() {                      //     Normal
+        switchLabel.textContent = switchInput.checked ? 'Siakad' : 'Normal';
+    }
+
+    switchInput.addEventListener('change', updateLabel);
+    updateLabel(); // Jalankan saat halaman load (biar sesuai old value)
 });
-
