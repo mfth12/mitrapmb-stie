@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 <title>{{ $title }}</title>
 <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
-
+@vite(['resources/js/sweetalert.js'])
 <style>
   /* GLOBAL MANDATORY STYLES */
   @import url("https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css");

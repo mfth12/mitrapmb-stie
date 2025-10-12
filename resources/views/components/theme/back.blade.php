@@ -25,6 +25,7 @@
   @yield('modals')
 
   <x-back.script />
+  <x-back.sweetalert />
   @yield('js_bawah')
 </body>
 
