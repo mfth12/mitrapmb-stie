@@ -74,7 +74,13 @@
                         <span class="avatar avatar-sm me-2"
                           style="background-image: url({{ $user->avatar ? env('URL_ASSET_SIAKAD') . '/' . $user->avatar : asset('img/default.png') }})">
                         </span>
-                        {{ $user->name }}
+                        <span>
+                          {{ $user->name }}
+                        </span>
+                        @if ($user->siakad_id)
+                          <i class="ti ti-rosette-discount-check-filled fs-2 text-primary ms-1" data-bs-toggle="tooltip"
+                            data-bs-placement="top" title="Akun Siakad"></i>
+                        @endif
                       </div>
                     </td>
                     <td>{{ $user->email }}</td>
