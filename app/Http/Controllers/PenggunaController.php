@@ -181,7 +181,7 @@ class PenggunaController extends Controller
     public function resetPassword(User $pengguna): RedirectResponse
     {
         try {
-            $defaultPassword = 'password123'; // atau bisa dari config
+            $defaultPassword = $pengguna->username; // sesuaikan dengan username pengguna ybs
             $pengguna->update([
                 'password' => bcrypt($defaultPassword)
             ]);
