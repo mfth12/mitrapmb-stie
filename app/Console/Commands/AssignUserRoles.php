@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 
 class AssignUserRoles extends Command
 {
-    protected $signature = 'roles:assign';
+    protected $signature = 'roles:assign'; //ini command nya
     protected $description = 'Assign roles to existing users';
 
     public function handle()
