@@ -24,7 +24,7 @@
         <div class="col-md-8">
           <div class="card">
             <div class="card-body my-2">
-              <form action="{{ route('pengguna.update', $pengguna) }}" method="POST">
+              <form action="{{ route('pengguna.update', $pengguna) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -98,6 +98,37 @@
                   </div>
                 </div>
 
+                {{-- Tambahkan di form setelah field nomor_hp2 --}}
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                      <label class="form-label">Foto Profil</label>
+
+                      {{-- Preview avatar --}}
+                      @if ($pengguna->has_custom_avatar)
+                        <div class="mb-2">
+                          <img src="{{ $pengguna->avatar_thumb_url }}" alt="Avatar" class="rounded"
+                            style="max-width: 100px;">
+                          <div class="mt-1">
+                            <a href="#" class="text-danger small delete-avatar-btn"
+                              data-user-id="{{ $pengguna->user_id }}">
+                              <i class="ti ti-trash"></i> Hapus foto
+                            </a>
+                          </div>
+                        </div>
+                      @endif
+
+                      <input type="file" name="avatar" class="form-control @error('avatar') is-invalid @enderror"
+                        accept="image/jpeg,image/png,image/jpg,image/webp">
+                      <small class="form-hint">Format: JPEG, PNG, JPG, WebP. Maksimal 2MB. Kosongkan jika tidak ingin
+                        mengubah.</small>
+                      @error('avatar')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
+                  </div>
+                </div>
+
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
@@ -125,7 +156,8 @@
                     <div class="mb-3">
                       <label class="form-label">Status <span class="text-danger">*</span></label>
                       <select name="status" class="form-select">
-                        <option value="active" {{ old('status', $pengguna->status) == 'active' ? 'selected' : '' }}>Aktif
+                        <option value="active" {{ old('status', $pengguna->status) == 'active' ? 'selected' : '' }}>
+                          Aktif
                         </option>
                         <option value="inactive" {{ old('status', $pengguna->status) == 'inactive' ? 'selected' : '' }}>
                           Nonaktif</option>
@@ -210,4 +242,35 @@
   {{-- @vite(['resources/js/pages/dasbor.js']) --}}
   {{-- KOMPONEN INKLUD --}}
   @include('components.back.konfig-tampilan', ['floating' => false])
+
+  <script>
+    // Delete avatar confirmation
+    document.querySelectorAll('.delete-avatar-btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const userId = this.getAttribute('data-user-id');
+
+        showConfirm({
+          title: 'Hapus Foto Profil?',
+          text: 'Foto profil akan dihapus permanen. Tindakan ini tidak dapat dibatalkan!',
+          icon: 'warning',
+          confirmButtonText: 'Ya, Hapus!',
+          cancelButtonText: 'Batal'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Create form untuk delete avatar
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/pengguna/${userId}/avatar`;
+            form.innerHTML = `
+                    @csrf
+                    @method('DELETE')
+                `;
+            document.body.appendChild(form);
+            form.submit();
+          }
+        });
+      });
+    });
+  </script>
 @endsection

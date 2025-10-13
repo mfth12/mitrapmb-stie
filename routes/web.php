@@ -44,6 +44,8 @@ Route::middleware(['auth'])->group(function () {
             ->middleware('permission:user_delete');
         Route::post('/{pengguna}/reset-password', [PenggunaController::class, 'resetPassword'])->name('pengguna.reset-password')
             ->middleware('permission:user_edit');
+        Route::delete('/{pengguna}/avatar', [PenggunaController::class, 'deleteAvatar'])->name('pengguna.avatar.delete')
+            ->middleware('permission:user_edit');
     });
 
     // Pendaftaran Routes - bisa diakses oleh multiple roles

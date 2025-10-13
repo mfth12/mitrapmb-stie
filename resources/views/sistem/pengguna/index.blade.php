@@ -72,11 +72,15 @@
                   <tr>
                     <td>
                       <div class="d-flex align-items-center">
-                        <span class="avatar avatar-sm me-2"
+                        {{-- <span class="avatar avatar-sm me-2"
                           style="background-image: url({{ $user->avatar ? env('URL_ASSET_SIAKAD') . '/' . $user->avatar : asset('img/default.png') }})">
+                        </span> --}}
+                        <span class="avatar avatar-sm me-2"
+                          style="background-image: url({{ $user->avatar_thumb_url }})">
                         </span>
                         <span>
-                          <a href="{{ route('pengguna.show', $user) }}" class="text-reset text-decoration-none">{{ $user->name }}</a>
+                          <a href="{{ route('pengguna.show', $user) }}"
+                            class="text-reset text-decoration-none">{{ $user->name }}</a>
                         </span>
                         @if ($user->siakad_id)
                           <i class="ti ti-rosette-discount-check-filled fs-2 text-primary ms-1" data-bs-toggle="tooltip"

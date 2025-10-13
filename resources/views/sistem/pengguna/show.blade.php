@@ -26,8 +26,10 @@
             <div class="card-body my-2">
               <div class="row mb-4">
                 <div class="col-md-3 text-center">
-                  <div class="avatar avatar-xl mb-3"
+                  {{-- <div class="avatar avatar-xl mb-3"
                     style="background-image: url({{ $pengguna->avatar ? env('URL_ASSET_SIAKAD') . '/' . $pengguna->avatar : asset('img/default.png') }})">
+                  </div> --}}
+                  <div class="avatar avatar-xl mb-3" style="background-image: url({{ $pengguna->avatar_url }})">
                   </div>
 
                   <h4>{{ $pengguna->name }}
@@ -74,7 +76,7 @@
                       <strong>Nomor Whatsapp:</strong><br>
                       {{ $pengguna->nomor_hp2 }}
                     </div>
-                    
+
                   </div>
                   <div class="row mt-3">
                     <div class="col-md-6">

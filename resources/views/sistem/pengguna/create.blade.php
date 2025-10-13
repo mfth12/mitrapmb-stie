@@ -24,7 +24,7 @@
         <div class="col-md-8">
           <div class="card">
             <div class="card-body my-2">
-              <form action="{{ route('pengguna.store') }}" method="POST">
+              <form action="{{ route('pengguna.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                   <div class="col-md-6">
@@ -97,6 +97,21 @@
                   </div>
                 </div>
 
+                {{-- Tambahkan di form setelah field nomor_hp2 --}}
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                      <label class="form-label">Foto Profil</label>
+                      <input type="file" name="avatar" class="form-control @error('avatar') is-invalid @enderror"
+                        accept="image/jpeg,image/png,image/jpg,image/webp">
+                      <small class="form-hint">Format: JPEG, PNG, JPG, WebP. Maksimal 2MB. Opsional.</small>
+                      @error('avatar')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
+                  </div>
+                </div>
+
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
@@ -129,8 +144,8 @@
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Password <span class="text-danger">*</span></label>
-                      <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
-                        required>
+                      <input type="password" name="password"
+                        class="form-control @error('password') is-invalid @enderror" required>
                       @error('password')
                         <div class="invalid-feedback">{{ $message }}</div>
                       @enderror

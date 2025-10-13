@@ -6,6 +6,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,16 +14,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable implements HasMedia
 {
     /**
-     * thn
      * @use HasFactory<\Database\Factories\UserFactory>
      */
     use HasFactory, Notifiable, HasRoles, InteractsWithMedia;
 
     protected $primaryKey     = 'user_id';
-    protected $guarded        = ['user_id']; //dilindungi agar tidak ada input yang masuk ke user_id
+    protected $guarded        = ['user_id'];
     protected static $logName = 'sistem';
     public $timestamps        = true;
-    // protected $with 				= ['detail', 'level']; //menggunakan eiger loading di models
 
     /**
      * key name route pada model ini.
@@ -60,26 +59,25 @@ class User extends Authenticatable implements HasMedia
      *
      * @var array<int, string>
      */
-    protected $fillable = [ //translation from siakad-db
-        //'user_id',
-        'siakad_id',            //id
-        'username', //original
-        'name',                 //name
-        'asal_sekolah',//original
-        'email',                //email
-        'nomor_hp',             //nomor_hp
-        'nomor_hp2',            //nomor_hp2 (whatsapp)
-        'email_verified_at',    //email_verified_at
-        'about',                //about
-        'default_role',         //default_role 
-        'theme',                //theme
-        'avatar',               //avatar
-        'status',               //status
-        'status_login',         //status_login
-        'isdeleted',            //isdeleted
-        'last_logged_in', //original
-        'last_synced_at', //original
-        'password', // tambahkan ini
+    protected $fillable = [
+        'siakad_id',
+        'username',
+        'name',
+        'email',
+        'nomor_hp',
+        'nomor_hp2',
+        'asal_sekolah',
+        'email_verified_at',
+        'about',
+        'default_role',
+        'theme',
+        'avatar',
+        'status',
+        'status_login',
+        'isdeleted',
+        'last_logged_in',
+        'last_synced_at',
+        'password',
     ];
 
     /**
@@ -106,9 +104,86 @@ class User extends Authenticatable implements HasMedia
     }
 
     /**
+     * Register media collections and conversions
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatar')
+            ->singleFile()
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/webp'])
+            ->registerMediaConversions(function (Media $media) {
+                $this->addMediaConversion('thumb')
+                    ->width(150)
+                    ->height(150)
+                    ->sharpen(10)
+                    ->optimize();
+
+                $this->addMediaConversion('medium')
+                    ->width(300)
+                    ->height(300)
+                    ->sharpen(10)
+                    ->optimize();
+
+                $this->addMediaConversion('large')
+                    ->width(800)
+                    ->height(800)
+                    ->sharpen(10)
+                    ->optimize();
+            });
+    }
+
+    /**
+     * Custom method untuk upload avatar dengan kompresi
+     */
+    public function uploadAvatar($file)
+    {
+        // Hapus avatar lama jika ada
+        $this->clearMediaCollection('avatar');
+
+        // Upload file baru dengan kompresi
+        return $this->addMedia($file)
+            ->withCustomProperties([
+                'original_size' => $file->getSize(),
+                'uploaded_at' => now()->toDateTimeString(),
+            ])
+            ->toMediaCollection('avatar');
+    }
+
+    /**
+     * Get avatar URL
+     */
+    public function getAvatarUrlAttribute()
+    {
+        return $this->getFirstMediaUrl('avatar') ?: ($this->avatar ? env('URL_ASSET_SIAKAD') . '/' . $this->avatar : asset('img/default.png'));
+    }
+
+    /**
+     * Get avatar thumbnail URL
+     */
+    public function getAvatarThumbUrlAttribute()
+    {
+        return $this->getFirstMediaUrl('avatar', 'thumb') ?: ($this->avatar ? env('URL_ASSET_SIAKAD') . '/' . $this->avatar : asset('img/default.png'));
+    }
+
+    /**
+     * Get avatar medium URL
+     */
+    public function getAvatarMediumUrlAttribute()
+    {
+        return $this->getFirstMediaUrl('avatar', 'medium') ?: ($this->avatar ? env('URL_ASSET_SIAKAD') . '/' . $this->avatar : asset('img/default.png'));
+    }
+
+    /**
+     * Check if user has custom avatar
+     */
+    public function getHasCustomAvatarAttribute()
+    {
+        return $this->getFirstMedia('avatar') !== null;
+    }
+
+    /**
      * Additional according to siakad
      */
-
     public function registerMediaConversions(Media $media = null): void
     {
         if (function_exists('proc_open')) {
@@ -132,13 +207,5 @@ class User extends Authenticatable implements HasMedia
     public static function getTableName()
     {
         return with(new static)->getTable();
-    }
-
-    /**
-     * Get the user's primary role
-     */
-    public function getPrimaryRoleAttribute()
-    {
-        return $this->roles->first()->name ?? 'mahasiswa';
     }
 }

@@ -59,7 +59,12 @@ return [
      *
      * This model is only used in Media Library Pro (https://medialibrary.pro)
      */
-    // 'temporary_upload_model' => Spatie\MediaLibraryPro\Models\TemporaryUpload::class,
+    'temporary_upload_model' => Spatie\MediaLibraryPro\Models\TemporaryUpload::class,
+
+    /*
+     * When enabled, Media Library Pro will require a valid license code to be set in the config.
+     */
+    'enable_media_library_pro' => false,
 
     /*
      * When enabled, Media Library Pro will only process temporary uploads that were uploaded

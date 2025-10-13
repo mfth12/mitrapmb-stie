@@ -82,6 +82,11 @@ class PenggunaController extends Controller
                 'password'      => bcrypt($request->password),
             ]);
 
+            // Handle avatar upload
+            if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
+                $pengguna->uploadAvatar($request->file('avatar'));
+            }
+
             // Assign role ke pengguna
             $pengguna->syncRoles([$request->role]);
 
@@ -123,6 +128,8 @@ class PenggunaController extends Controller
      */
     public function update(PenggunaUpdateRequest $request, User $pengguna): RedirectResponse
     {
+        // dd($request->file('avatar'));
+
         try {
             $data = [
                 'name'          => $request->nama,
@@ -135,13 +142,17 @@ class PenggunaController extends Controller
                 'status'        => $request->status,
             ];
 
-            
             // Jika password diisi, update password
             if ($request->filled('password')) {
                 $data['password'] = bcrypt($request->password);
             }
-            
-            $dt = $pengguna->update($data);
+
+            $pengguna->update($data);
+
+            // Handle avatar upload
+            if ($request->hasFile('avatar') && $request->file('avatar')->isValid()) {
+                $pengguna->uploadAvatar($request->file('avatar'));
+            }
 
             // Update role (kecuali superadmin tidak bisa diubah)
             if (!$pengguna->hasRole('superadmin')) {
@@ -149,10 +160,24 @@ class PenggunaController extends Controller
             }
 
             return redirect()->route('pengguna.index')
-                ->with('success', 'Data ' . $pengguna->name . 'berhasil diperbarui.');
+                ->with('success', 'Data ' . $pengguna->name . ' berhasil diperbarui.');
         } catch (Exception $e) {
             return back()->withInput()
                 ->with('error', 'Gagal memperbarui pengguna: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Hapus avatar pengguna
+     */
+    public function deleteAvatar(User $pengguna): RedirectResponse
+    {
+        try {
+            $pengguna->clearMediaCollection('avatar');
+
+            return back()->with('success', 'Foto profil berhasil dihapus.');
+        } catch (Exception $e) {
+            return back()->with('error', 'Gagal menghapus foto profil: ' . $e->getMessage());
         }
     }
 
@@ -172,6 +197,8 @@ class PenggunaController extends Controller
         }
 
         try {
+            // Hapus media terlebih dahulu
+            $pengguna->clearMediaCollection('avatar');
             $pengguna->delete();
 
             return redirect()->route('pengguna.index')
@@ -187,7 +214,7 @@ class PenggunaController extends Controller
     public function resetPassword(User $pengguna): RedirectResponse
     {
         try {
-            $defaultPassword = $pengguna->username; // sesuaikan dengan username pengguna ybs
+            $defaultPassword = $pengguna->username;
             $pengguna->update([
                 'password' => bcrypt($defaultPassword)
             ]);
