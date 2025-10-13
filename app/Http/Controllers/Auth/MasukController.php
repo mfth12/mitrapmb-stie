@@ -100,6 +100,11 @@ class MasukController extends Controller
       $access_token = $data['access_token'];
       $userData     = $data['user'];
 
+      // Validasi, status user harus aktif
+      if ($userData['status'] !== 'active') {
+        return back()->withErrors(['masuk' => 'Akun Siakad Anda tidak aktif.']);
+      }
+
       // Cari atau buat user di sistem
       $user = User::updateOrCreate(
         ['siakad_id' => $userData['id']],
@@ -123,11 +128,6 @@ class MasukController extends Controller
           'last_synced_at'    => Carbon::now(),
         ]
       );
-
-      // Validasi status user
-      if ($user->status !== 'active') {
-        return back()->withErrors(['masuk' => 'Akun Siakad Anda tidak aktif.']);
-      }
 
       // Untuk user lain, assign role berdasarkan default_role dari Siakad
       $agen_role = $userData['default_role'] ?? 'mahasiswa';
