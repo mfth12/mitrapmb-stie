@@ -26,9 +26,6 @@
             <div class="card-body my-2">
               <div class="row mb-4">
                 <div class="col-md-3 text-center">
-                  {{-- <div class="avatar avatar-xl mb-3"
-                    style="background-image: url({{ $pengguna->avatar ? env('URL_ASSET_SIAKAD') . '/' . $pengguna->avatar : asset('img/default.png') }})">
-                  </div> --}}
                   <div class="avatar avatar-xl mb-3" style="background-image: url({{ $pengguna->avatar_url }})">
                   </div>
 
@@ -41,15 +38,17 @@
                     </span>
                   </h4>
 
-                  <span class="">({{ $pengguna->getRoleNames()->first() }})</span>
+                  <span class="badge bg-primary text-primary-fg badge-pill text-uppercase">
+                    {{ $pengguna->getRoleNames()->first() }}
+                  </span>
                 </div>
                 <div class="col-md-9">
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 mt-3">
                       <strong>Asal Sekolah:</strong><br>
                       {{ $pengguna->asal_sekolah }}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mt-3">
                       <strong>Status:</strong><br>
                       <span
                         class="badge {{ $pengguna->status == 'active' ? 'bg-success text-success-fg' : 'bg-danger text-danger-fg' }}">
@@ -57,33 +56,33 @@
                       </span>
                     </div>
                   </div>
-                  <div class="row mt-3">
-                    <div class="col-md-6">
+                  <div class="row">
+                    <div class="col-md-6 mt-3">
                       <strong>Email:</strong><br>
                       {{ $pengguna->email }}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mt-3">
                       <strong>Username:</strong><br>
                       {{ $pengguna->username }}
                     </div>
                   </div>
-                  <div class="row mt-3">
-                    <div class="col-md-6">
+                  <div class="row">
+                    <div class="col-md-6 mt-3">
                       <strong>Nomor HP:</strong><br>
                       {{ $pengguna->nomor_hp }}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mt-3">
                       <strong>Nomor Whatsapp:</strong><br>
                       {{ $pengguna->nomor_hp2 }}
                     </div>
 
                   </div>
-                  <div class="row mt-3">
-                    <div class="col-md-6">
+                  <div class="row">
+                    <div class="col-md-6 mt-3">
                       <strong>Terakhir Login:</strong><br>
                       {{ $pengguna->last_logged_in ? $pengguna->last_logged_in->format('d/m/Y H:i') : 'Belum pernah' }}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mt-3">
                       <strong>Terakhir Sync:</strong><br>
                       {{ $pengguna->last_synced_at ? $pengguna->last_synced_at->format('d/m/Y H:i') : 'Belum sync' }}
                     </div>
