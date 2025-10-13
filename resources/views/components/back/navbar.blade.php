@@ -160,7 +160,7 @@
         <a href="#" class="nav-link d-flex lh-1 pb-2 px-2" data-bs-toggle="dropdown"
           aria-label="Open user menu">
           <span class="avatar avatar-sm"
-            style="background-image: url({{ Auth()->user()->avatar_url }})">
+            style="background-image: url({{ Auth()->user()->avatar_thumb_url }})">
           </span>
           <div class="d-none d-xl-block ps-2">
             <div>{{ Auth()->user()->name }}</div>
