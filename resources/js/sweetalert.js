@@ -56,7 +56,8 @@ window.showInfo = function (message, title = 'Informasi') {
         icon: 'info',
         title: title,
         text: message,
-        timer: 6000
+        timer: 6000,
+        showConfirmButton: true
     });
 };
 
