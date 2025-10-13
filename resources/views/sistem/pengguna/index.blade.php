@@ -107,12 +107,12 @@
                         @endcan
                         @can('user_delete')
                           @if (!$user->hasRole('superadmin') && $user->user_id != auth()->id())
-                            <form action="{{ route('pengguna.destroy', $user) }}" method="POST" class="d-inline"
-                              onsubmit="return confirm('Hapus pengguna ini?')">
+                            <form action="{{ route('pengguna.destroy', $user) }}" method="POST"
+                              class="d-inline delete-form">
                               @csrf
                               @method('DELETE')
-                              <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                Hapus
+                              <button type="button" class="btn btn-sm btn-danger delete-btn" title="Hapus"
+                                data-name="{{ $user->name }}">Hapus
                               </button>
                             </form>
                           @endif
@@ -161,4 +161,35 @@
   {{-- @vite(['resources/js/pages/dasbor.js']) --}}
   {{-- KOMPONEN INKLUD --}}
   @include('components.back.konfig-tampilan', ['floating' => false])
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Delete confirmation
+      document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          const form = this.closest('form');
+          const userName = this.getAttribute('data-name');
+
+          showDeleteConfirmation(() => {
+            form.submit();
+          }, `pengguna ${userName}`);
+        });
+      });
+
+      // Reset password confirmation
+      const resetPasswordBtn = document.getElementById('reset-password-btn');
+      if (resetPasswordBtn) {
+        resetPasswordBtn.addEventListener('click', function() {
+          showConfirm({
+            title: 'Reset Password?',
+            text: 'Password akan direset ke default. Pengguna harus mengganti password setelah login.',
+            icon: 'warning'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              document.getElementById('reset-password-form').submit();
+            }
+          });
+        });
+      }
+    });
+  </script>
 @endsection
