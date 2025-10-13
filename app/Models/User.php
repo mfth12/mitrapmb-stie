@@ -133,16 +133,22 @@ class User extends Authenticatable implements HasMedia
     }
 
     /**
-     * Custom method untuk upload avatar dengan kompresi
+     * Custom method untuk upload avatar dengan kompresi dan nama random
      */
     public function uploadAvatar($file)
     {
         // Hapus avatar lama jika ada
         $this->clearMediaCollection('avatar');
 
-        // Upload file baru dengan kompresi
+        // Generate nama file random
+        $extension = $file->getClientOriginalExtension();
+        $fileName = uniqid() . '_' . time() . '.' . $extension;
+
+        // Upload file baru dengan nama random
         return $this->addMedia($file)
+            ->usingFileName($fileName) // Gunakan nama file random
             ->withCustomProperties([
+                'original_name' => $file->getClientOriginalName(), // Simpan nama asli di custom properties
                 'original_size' => $file->getSize(),
                 'uploaded_at' => now()->toDateTimeString(),
             ])
