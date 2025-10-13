@@ -75,8 +75,7 @@
                         {{-- <span class="avatar avatar-sm me-2"
                           style="background-image: url({{ $user->avatar ? env('URL_ASSET_SIAKAD') . '/' . $user->avatar : asset('img/default.png') }})">
                         </span> --}}
-                        <span class="avatar avatar-sm me-2"
-                          style="background-image: url({{ $user->avatar_thumb_url }})">
+                        <span class="avatar avatar-sm me-2" style="background-image: url({{ $user->avatar_thumb_url }})">
                         </span>
                         <span>
                           <a href="{{ route('pengguna.show', $user) }}"
@@ -133,9 +132,24 @@
           </div>
 
           {{-- Pagination --}}
-          <div class="mt-4">
-            {{ $pengguna->links() }}
-          </div>
+          @if ($pengguna->hasPages())
+            <div class="mt-4">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div class="text-muted">
+                  Menampilkan
+                  <strong>{{ $pengguna->firstItem() }}</strong> -
+                  <strong>{{ $pengguna->lastItem() }}</strong>
+                  dari
+                  <strong>{{ $pengguna->total() }}</strong>
+                  data
+                </div>
+
+                <div class="align-items-center">
+                  {{ $pengguna->links('vendor.pagination.tabler') }}
+                </div>
+              </div>
+            </div>
+          @endif
         </div>
       </div>
     </div>
