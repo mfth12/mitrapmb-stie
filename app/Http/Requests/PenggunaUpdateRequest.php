@@ -31,6 +31,7 @@ class PenggunaUpdateRequest extends FormRequest
                 Rule::unique('users', 'username')->ignore($userId, 'user_id')
             ],
             'nomor_hp'      => 'required|string|max:20',
+            'nomor_hp2'     => 'string|max:20',
             'role'          => 'required|string|exists:roles,name',
             'password'      => 'sometimes|nullable|min:6|confirmed',
             'status'        => 'required|string|in:active,inactive',
@@ -47,6 +48,7 @@ class PenggunaUpdateRequest extends FormRequest
             'username.required'     => 'Username wajib diisi.',
             'username.unique'       => 'Username sudah digunakan.',
             'nomor_hp.required'     => 'Nomor HP wajib diisi.',
+            'nomor_hp2.max'         => 'Nomor Whatsapp tidak boleh lebih dari 20 karakter.',
             'role.required'         => 'Role wajib dipilih.',
             'password.min'          => 'Password minimal 6 karakter.',
             'password.confirmed'    => 'Konfirmasi password tidak sesuai.',

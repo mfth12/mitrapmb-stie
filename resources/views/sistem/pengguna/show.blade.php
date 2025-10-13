@@ -70,6 +70,10 @@
                       <strong>Nomor HP:</strong><br>
                       {{ $pengguna->nomor_hp }}
                     </div>
+                    <div class="col-md-6">
+                      <strong>Nomor Whatsapp:</strong><br>
+                      {{ $pengguna->nomor_hp2 }}
+                    </div>
                     
                   </div>
                   <div class="row mt-3">

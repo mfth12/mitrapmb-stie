@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="mb-3">
                       <label class="form-label">Username <span class="text-danger">*</span></label>
                       <input type="text" name="username" class="form-control @error('username') is-invalid @enderror"
@@ -75,12 +75,22 @@
                       @enderror
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="mb-3">
                       <label class="form-label">Nomor HP <span class="text-danger">*</span></label>
                       <input type="text" name="nomor_hp" class="form-control @error('nomor_hp') is-invalid @enderror"
                         value="{{ old('nomor_hp', $pengguna->nomor_hp) }}" required>
                       @error('nomor_hp')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <label class="form-label">Nomor Whatsapp</label>
+                      <input type="text" name="nomor_hp2" class="form-control @error('nomor_hp2') is-invalid @enderror"
+                        value="{{ old('nomor_hp2', $pengguna->nomor_hp2) }}">
+                      @error('nomor_hp2')
                         <div class="invalid-feedback">{{ $message }}</div>
                       @enderror
                     </div>

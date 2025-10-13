@@ -68,7 +68,7 @@ class User extends Authenticatable implements HasMedia
         'asal_sekolah',//original
         'email',                //email
         'nomor_hp',             //nomor_hp
-        'nomor_hp2',            //nomor_hp2
+        'nomor_hp2',            //nomor_hp2 (whatsapp)
         'email_verified_at',    //email_verified_at
         'about',                //about
         'default_role',         //default_role 

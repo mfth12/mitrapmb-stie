@@ -27,8 +27,8 @@
           {{-- Form filter --}}
           <form method="GET" class="row g-3 mb-4">
             <div class="col-md-5">
-              <input type="text" name="cari" class="form-control" placeholder="Cari nama, sekolah, email, username .."
-                value="{{ request('cari') }}">
+              <input type="text" name="cari" class="form-control"
+                placeholder="Cari nama, sekolah, email, username .." value="{{ request('cari') }}">
             </div>
             <div class="col-md-3">
               <select name="role" class="form-select">
@@ -76,7 +76,7 @@
                           style="background-image: url({{ $user->avatar ? env('URL_ASSET_SIAKAD') . '/' . $user->avatar : asset('img/default.png') }})">
                         </span>
                         <span>
-                          {{ $user->name }}
+                          <a href="{{ route('pengguna.show', $user) }}" class="text-reset text-decoration-none">{{ $user->name }}</a>
                         </span>
                         @if ($user->siakad_id)
                           <i class="ti ti-rosette-discount-check-filled fs-2 text-primary ms-1" data-bs-toggle="tooltip"
@@ -99,9 +99,6 @@
                     <td>{{ $user->last_logged_in ? $user->last_logged_in->format('d/m/Y H:i') : 'Belum pernah' }}</td>
                     <td class="text-center" style="width: 1%;">
                       <div class="btn-list justify-content-center flex-nowrap">
-                        <a href="{{ route('pengguna.show', $user) }}" class="btn btn-sm btn-info" title="Detail">
-                          Lihat
-                        </a>
                         @can('user_edit')
                           <a href="{{ route('pengguna.edit', $user) }}" class="btn btn-sm btn-warning" title="Edit">
                             Edit

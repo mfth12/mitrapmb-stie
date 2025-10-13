@@ -76,6 +76,7 @@ class PenggunaController extends Controller
                 'email'         => $request->email,
                 'username'      => $request->username,
                 'nomor_hp'      => $request->nomor_hp,
+                'nomor_hp2'     => $request->nomor_hp2,
                 'default_role'  => $request->role,
                 'status'        => $request->status ?? 'active',
                 'password'      => bcrypt($request->password),
@@ -129,6 +130,7 @@ class PenggunaController extends Controller
                 'email'         => $request->email,
                 'username'      => $request->username,
                 'nomor_hp'      => $request->nomor_hp,
+                'nomor_hp2'     => $request->nomor_hp2,
                 'default_role'  => $request->role,
                 'status'        => $request->status,
             ];
