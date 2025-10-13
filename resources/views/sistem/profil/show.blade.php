@@ -28,7 +28,9 @@
                 <div class="col-md-4 text-center">
                   <div class="avatar avatar-xl mb-3" style="background-image: url({{ $user->avatar_url }})"></div>
                   <h4>{{ $user->name }}</h4>
-                  <span class="badge bg-primary text-primary-fg">{{ $user->getRoleNames()->first() }}</span>
+                  <span class="badge bg-primary text-primary-fg badge-pill text-uppercase">
+                    {{ $user->getRoleNames()->first() }}
+                  </span>
 
                   @if ($user->siakad_id)
                     <div class="mt-2">
@@ -98,10 +100,10 @@
 
               <div class="mt-4">
                 <a href="{{ route('profil.edit') }}" class="btn btn-primary me-2">
-                  <i class="ti ti-edit me-1"></i> Edit Profil
+                  <i class="ti ti-edit fs-2 me-1"></i> Edit Profil
                 </a>
                 <a href="{{ route('dashboard.index') }}" class="btn btn-secondary">
-                  <i class="ti ti-arrow-back-up me-1"></i> Kembali ke Dashboard
+                  <i class="ti ti-arrow-back-up fs-2 me-1"></i> Kembali ke Dashboard
                 </a>
               </div>
             </div>
