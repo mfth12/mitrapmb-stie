@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -28,7 +29,7 @@ class DasborController extends Controller
         switch ($role) {
             case 'superadmin':
                 return [
-                    'total_users'       => \App\Models\User::count(),
+                    'total_users'       => User::count(),
                     'total_pendaftaran' => 0, // Ganti dengan model yang sesuai
                     'pending_approvals' => 0,
                 ];
