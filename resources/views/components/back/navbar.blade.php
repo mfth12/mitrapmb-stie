@@ -37,8 +37,8 @@
           </a>
         </div>
         <div class="nav-item dropdown d-none d-md-flex">
-          <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1"
-            aria-label="LIhat Notifikasi" data-bs-auto-close="outside" aria-expanded="false">
+          <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="LIhat Notifikasi"
+            data-bs-auto-close="outside" aria-expanded="false">
             <!-- Download SVG icon from http://tabler.io/icons/icon/bell -->
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
@@ -159,14 +159,16 @@
       <div class="nav-item dropdown">
         <a href="#" class="nav-link d-flex lh-1 pb-2 px-2" data-bs-toggle="dropdown"
           aria-label="Open user menu">
-          <span class="avatar avatar-sm" style="background-image: url({{ Auth()->user()->avatar ? env('URL_ASSET_SIAKAD') . '/' . Auth()->user()->avatar : asset('img/default.png') }})"> </span>
+          <span class="avatar avatar-sm"
+            style="background-image: url({{ Auth()->user()->avatar ? env('URL_ASSET_SIAKAD') . '/' . Auth()->user()->avatar : asset('img/default.png') }})">
+          </span>
           <div class="d-none d-xl-block ps-2">
             <div>{{ Auth()->user()->name }}</div>
             <div class="mt-1 small text-secondary">{{ Auth()->user()->getRoleNames()->first() }}</div>
           </div>
         </a>
         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-          <a href="./profile" class="dropdown-item">Profil</a>
+          <a href="{{ route('profil.show') }}" class="dropdown-item">Profil Saya</a>
           <div class="dropdown-divider"></div>
           <a href="./settings.html" class="dropdown-item">Pengaturan</a>
           <form action="{{ route('logout') }}" method="POST" class="inline">

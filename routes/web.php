@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DasborController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\Auth\MasukController;
@@ -27,6 +28,15 @@ Route::middleware(['auth'])->group(function () {
         ->middleware('permission:dashboard_view');
 
     Route::post('/keluar', [MasukController::class, 'keluar'])->name('logout');
+
+    // Rute Profil Pribadi
+    Route::prefix('profil')->group(function () {
+        Route::get('/', [ProfilController::class, 'show'])->name('profil.show');
+        Route::get('/edit', [ProfilController::class, 'edit'])->name('profil.edit');
+        Route::put('/update', [ProfilController::class, 'update'])->name('profil.update');
+        Route::put('/update-password', [ProfilController::class, 'updatePassword'])->name('profil.update-password');
+        Route::delete('/avatar', [ProfilController::class, 'deleteAvatar'])->name('profil.avatar.delete');
+    });
 
     // Manajemen Pengguna Routes - hanya untuk superadmin dan baak
     Route::prefix('pengguna')->middleware(['permission:user_view'])->group(function () {
