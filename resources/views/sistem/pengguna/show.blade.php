@@ -44,6 +44,19 @@
                 <div class="col-md-9">
                   <div class="row">
                     <div class="col-md-6">
+                      <strong>Asal Sekolah:</strong><br>
+                      {{ $pengguna->asal_sekolah }}
+                    </div>
+                    <div class="col-md-6">
+                      <strong>Status:</strong><br>
+                      <span
+                        class="badge {{ $pengguna->status == 'active' ? 'bg-success text-success-fg' : 'bg-danger text-danger-fg' }}">
+                        {{ $pengguna->status == 'active' ? 'Aktif' : 'Nonaktif' }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-md-6">
                       <strong>Email:</strong><br>
                       {{ $pengguna->email }}
                     </div>
@@ -57,13 +70,7 @@
                       <strong>Nomor HP:</strong><br>
                       {{ $pengguna->nomor_hp }}
                     </div>
-                    <div class="col-md-6">
-                      <strong>Status:</strong><br>
-                      <span
-                        class="badge {{ $pengguna->status == 'active' ? 'bg-success text-success-fg' : 'bg-danger text-danger-fg' }}">
-                        {{ $pengguna->status == 'active' ? 'Aktif' : 'Nonaktif' }}
-                      </span>
-                    </div>
+                    
                   </div>
                   <div class="row mt-3">
                     <div class="col-md-6">

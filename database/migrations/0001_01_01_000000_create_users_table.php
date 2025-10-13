@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('username');                             //added
             $table->string('password')->nullable();                                     //notused
             $table->string('name');                                                       //synced
+            $table->string('asal_sekolah', 64)->nullable();         //added
             $table->string('email')->unique();                                            //synced
             $table->string('nomor_hp', 64)->unique();                                     //synced
             $table->string('nomor_hp2', 64)->nullable();                                  //synced

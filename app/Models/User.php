@@ -65,6 +65,7 @@ class User extends Authenticatable implements HasMedia
         'siakad_id',            //id
         'username', //original
         'name',                 //name
+        'asal_sekolah',//original
         'email',                //email
         'nomor_hp',             //nomor_hp
         'nomor_hp2',            //nomor_hp2

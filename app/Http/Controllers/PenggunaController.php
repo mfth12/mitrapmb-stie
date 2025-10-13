@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -24,6 +25,7 @@ class PenggunaController extends Controller
             $search = $request->cari;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('asal_sekolah', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('username', 'like', "%{$search}%")
                     ->orWhere('nomor_hp', 'like', "%{$search}%");
@@ -56,7 +58,6 @@ class PenggunaController extends Controller
     public function create(): View
     {
         $roles = Role::where('name', '!=', 'superadmin')->get();
-
         return view('sistem.pengguna.create', [
             'title' => 'Tambah Pengguna Baru',
             'roles' => $roles,
@@ -70,20 +71,21 @@ class PenggunaController extends Controller
     {
         try {
             $pengguna = User::create([
-                'name' => $request->nama,
-                'email' => $request->email,
-                'username' => $request->username,
-                'nomor_hp' => $request->nomor_hp,
-                'default_role' => $request->role,
-                'status' => $request->status ?? 'active',
-                'password' => bcrypt($request->password),
+                'name'          => $request->nama,
+                'asal_sekolah'  => $request->asal_sekolah,
+                'email'         => $request->email,
+                'username'      => $request->username,
+                'nomor_hp'      => $request->nomor_hp,
+                'default_role'  => $request->role,
+                'status'        => $request->status ?? 'active',
+                'password'      => bcrypt($request->password),
             ]);
 
             // Assign role ke pengguna
             $pengguna->syncRoles([$request->role]);
 
             return redirect()->route('pengguna.index')
-                ->with('success', 'Pengguna berhasil ditambahkan.');
+                ->with('success', 'Pengguna ' . $pengguna->name . ' berhasil ditambahkan.');
         } catch (\Exception $e) {
             return back()->withInput()
                 ->with('error', 'Gagal menambahkan pengguna: ' . $e->getMessage());
@@ -122,20 +124,22 @@ class PenggunaController extends Controller
     {
         try {
             $data = [
-                'name' => $request->nama,
-                'email' => $request->email,
-                'username' => $request->username,
-                'nomor_hp' => $request->nomor_hp,
-                'default_role' => $request->role,
-                'status' => $request->status,
+                'name'          => $request->nama,
+                'asal_sekolah'  => $request->asal_sekolah,
+                'email'         => $request->email,
+                'username'      => $request->username,
+                'nomor_hp'      => $request->nomor_hp,
+                'default_role'  => $request->role,
+                'status'        => $request->status,
             ];
 
+            
             // Jika password diisi, update password
             if ($request->filled('password')) {
                 $data['password'] = bcrypt($request->password);
             }
-
-            $pengguna->update($data);
+            
+            $dt = $pengguna->update($data);
 
             // Update role (kecuali superadmin tidak bisa diubah)
             if (!$pengguna->hasRole('superadmin')) {
@@ -143,8 +147,8 @@ class PenggunaController extends Controller
             }
 
             return redirect()->route('pengguna.index')
-                ->with('success', 'Data pengguna berhasil diperbarui.');
-        } catch (\Exception $e) {
+                ->with('success', 'Data ' . $pengguna->name . 'berhasil diperbarui.');
+        } catch (Exception $e) {
             return back()->withInput()
                 ->with('error', 'Gagal memperbarui pengguna: ' . $e->getMessage());
         }
@@ -161,7 +165,7 @@ class PenggunaController extends Controller
         }
 
         // Cegah hapus diri sendiri
-        if ($pengguna->id === auth()->id()) {
+        if ($pengguna->user_id === auth()->id()) {
             return back()->with('error', 'Tidak dapat menghapus akun sendiri.');
         }
 
@@ -169,8 +173,8 @@ class PenggunaController extends Controller
             $pengguna->delete();
 
             return redirect()->route('pengguna.index')
-                ->with('success', 'Pengguna berhasil dihapus.');
-        } catch (\Exception $e) {
+                ->with('success', 'Pengguna ' . $pengguna->name . ' berhasil dihapus.');
+        } catch (Exception $e) {
             return back()->with('error', 'Gagal menghapus pengguna: ' . $e->getMessage());
         }
     }
@@ -186,8 +190,8 @@ class PenggunaController extends Controller
                 'password' => bcrypt($defaultPassword)
             ]);
 
-            return back()->with('success', 'Password berhasil direset ke: ' . $defaultPassword);
-        } catch (\Exception $e) {
+            return back()->with('success', 'Password berhasil direset. Pengguna: (' . $pengguna->name . ') Password baru: (' . $defaultPassword . ')');
+        } catch (Exception $e) {
             return back()->with('error', 'Gagal reset password: ' . $e->getMessage());
         }
     }

@@ -23,12 +23,11 @@
       <div class="row justify-content-center">
         <div class="col-md-8">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body my-2">
               <form action="{{ route('pengguna.store') }}" method="POST">
                 @csrf
-
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-12">
                     <div class="mb-3">
                       <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
                       <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror"
@@ -38,6 +37,21 @@
                       @enderror
                     </div>
                   </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Asal Sekolah <span class="text-danger">*</span></label>
+                      <input type="text" name="asal_sekolah"
+                        class="form-control @error('asal_sekolah') is-invalid @enderror" value="{{ old('asal_sekolah') }}"
+                        required>
+                      @error('asal_sekolah')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
+                  </div>
+
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Email <span class="text-danger">*</span></label>

@@ -23,11 +23,11 @@
   <div class="page-body">
     <div class="container-xl">
       <div class="card">
-        <div class="card-body">
-          <!-- Filter Form -->
+        <div class="card-body my-2">
+          {{-- Form filter --}}
           <form method="GET" class="row g-3 mb-4">
             <div class="col-md-5">
-              <input type="text" name="cari" class="form-control" placeholder="Cari nama, email, username..."
+              <input type="text" name="cari" class="form-control" placeholder="Cari nama, sekolah, email, username .."
                 value="{{ request('cari') }}">
             </div>
             <div class="col-md-3">
@@ -52,12 +52,13 @@
             </div>
           </form>
 
-          <!-- Users Table -->
+          {{-- Tabel user --}}
           <div class="table-responsive">
             <table class="table table-vcenter table-bordered table-striped">
               <thead>
                 <tr>
                   <th>Nama</th>
+                  <th>Asal Sekolah</th>
                   <th>Email</th>
                   <th>Username</th>
                   <th>Role</th>
@@ -83,6 +84,7 @@
                         @endif
                       </div>
                     </td>
+                    <td>{{ $user->asal_sekolah }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->username }}</td>
                     <td>
@@ -95,8 +97,8 @@
                       </span>
                     </td>
                     <td>{{ $user->last_logged_in ? $user->last_logged_in->format('d/m/Y H:i') : 'Belum pernah' }}</td>
-                    <td class="text-center">
-                      <div class="btn-list justify-content-center">
+                    <td class="text-center" style="width: 1%;">
+                      <div class="btn-list justify-content-center flex-nowrap">
                         <a href="{{ route('pengguna.show', $user) }}" class="btn btn-sm btn-info" title="Detail">
                           Lihat
                         </a>
@@ -129,7 +131,7 @@
             </table>
           </div>
 
-          <!-- Pagination -->
+          {{-- Pagination --}}
           <div class="mt-4">
             {{ $pengguna->links() }}
           </div>
