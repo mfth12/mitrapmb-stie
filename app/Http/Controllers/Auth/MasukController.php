@@ -140,7 +140,7 @@ class MasukController extends Controller
 
       Auth::login($user);
 
-      return redirect()->intended(route('dashboard.index'))->with('success', 'Selamat datang ' . $user->name . ' !');
+      return redirect()->intended(route('dashboard.index'))->with('success', 'Selamat datang ' . $user->name . '!');
     }
 
     // Hit jika gagal login
@@ -196,7 +196,7 @@ class MasukController extends Controller
         'status_login'   => 'online',
       ]);
 
-      return redirect()->intended(route('dashboard.index'))->with('success', 'Selamat datang ' . $user->name . ' !');
+      return redirect()->intended(route('dashboard.index'))->with('success', 'Selamat datang ' . $user->name . '!');
     }
 
     // Hit jika gagal login
