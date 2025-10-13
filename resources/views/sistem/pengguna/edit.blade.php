@@ -29,7 +29,7 @@
                 @method('PUT')
 
                 <div class="row">
-                  <div class="col-md-12">
+                  <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
                       <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror"
@@ -39,15 +39,26 @@
                       @enderror
                     </div>
                   </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Asal Sekolah <span class="text-danger">*</span></label>
+                      <input type="text" name="asal_sekolah"
+                        class="form-control @error('asal_sekolah') is-invalid @enderror"
+                        value="{{ old('asal_sekolah', $pengguna->asal_sekolah) }}" required>
+                      @error('asal_sekolah')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
+                  </div>
                 </div>
 
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Asal Sekolah <span class="text-danger">*</span></label>
-                      <input type="text" name="asal_sekolah" class="form-control @error('asal_sekolah') is-invalid @enderror"
-                        value="{{ old('asal_sekolah', $pengguna->asal_sekolah) }}" required>
-                      @error('asal_sekolah')
+                      <label class="form-label">Username <span class="text-danger">*</span></label>
+                      <input type="text" name="username" class="form-control @error('username') is-invalid @enderror"
+                        value="{{ old('username', $pengguna->username) }}" required>
+                      @error('username')
                         <div class="invalid-feedback">{{ $message }}</div>
                       @enderror
                     </div>
@@ -65,17 +76,7 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-4">
-                    <div class="mb-3">
-                      <label class="form-label">Username <span class="text-danger">*</span></label>
-                      <input type="text" name="username" class="form-control @error('username') is-invalid @enderror"
-                        value="{{ old('username', $pengguna->username) }}" required>
-                      @error('username')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                      @enderror
-                    </div>
-                  </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Nomor HP <span class="text-danger">*</span></label>
                       <input type="text" name="nomor_hp" class="form-control @error('nomor_hp') is-invalid @enderror"
@@ -85,7 +86,7 @@
                       @enderror
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Nomor Whatsapp</label>
                       <input type="text" name="nomor_hp2" class="form-control @error('nomor_hp2') is-invalid @enderror"
@@ -137,7 +138,8 @@
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
+                      <input type="password" name="password"
+                        class="form-control @error('password') is-invalid @enderror"
                         placeholder="Kosongkan jika tidak ingin mengubah">
                       @error('password')
                         <div class="invalid-feedback">{{ $message }}</div>
