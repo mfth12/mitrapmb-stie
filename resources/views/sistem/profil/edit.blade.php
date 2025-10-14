@@ -9,7 +9,7 @@
           <div class="page-pretitle">Perbarui informasi profil Anda</div>
         </div>
         <div class="col-auto">
-          <a href="{{ route('profil.show') }}" class="btn btn-secondary">
+          <a href="{{ route('profil.show') }}" class="btn btn-default">
             <i class="ti ti-arrow-back-up fs-2 me-1"></i>
             Kembali
           </a>
@@ -180,7 +180,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-warning w-100">
-                  <i class="ti ti-lock me-1"></i> Ubah Password
+                  <i class="ti ti-lock fs-2 me-1"></i> Ubah Password
                 </button>
               </form>
             </div>
