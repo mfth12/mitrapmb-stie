@@ -194,7 +194,7 @@
 
                 @can('user_edit')
                   @if (!$pengguna->hasRole('superadmin'))
-                    <button type="button" class="btn btn-secondary ms-md-2"
+                    <button type="button" class="btn btn-secondary ms-md-2 mt-2 mt-md-0"
                       onclick="document.getElementById('reset-password-form').submit()">
                       <i class="ti ti-restore fs-2 me-1"></i>
                       Reset Password
