@@ -117,6 +117,16 @@
                   @enderror
                 </div>
 
+                {{-- TAMBAHAN: Field Tentang --}}
+                <div class="mb-3">
+                  <label class="form-label">Tentang</label>
+                  <textarea name="about" class="form-control @error('about') is-invalid @enderror" rows="3"
+                    placeholder="Ceritakan sedikit tentang pengguna ini...">{{ old('about', $pengguna->about) }}</textarea>
+                  @error('about')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                  @enderror
+                </div>
+
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">

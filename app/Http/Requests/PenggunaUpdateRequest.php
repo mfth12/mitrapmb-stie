@@ -35,7 +35,8 @@ class PenggunaUpdateRequest extends FormRequest
             'role' => 'required|string|exists:roles,name',
             'password' => 'sometimes|nullable|min:6|confirmed',
             'status' => 'required|string|in:active,inactive',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Max 2MB
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'about' => 'nullable|string|max:500', // TAMBAHAN: Field about
         ];
     }
 

@@ -24,6 +24,7 @@ class PenggunaStoreRequest extends FormRequest
             'password' => 'required|string|min:6|confirmed',
             'status' => 'sometimes|string|in:active,inactive',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Max 2MB
+            'about' => 'nullable|string|max:500', // TAMBAHAN: Field about
         ];
     }
 

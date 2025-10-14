@@ -70,6 +70,16 @@
                     </div>
                   </div>
 
+                  {{-- TAMBAHAN: Section Tentang --}}
+                  @if ($pengguna->about)
+                    <div class="row">
+                      <div class="col-12 mt-3">
+                        <strong>Tentang:</strong><br>
+                        {{ $pengguna->about }}
+                      </div>
+                    </div>
+                  @endif
+
                   <div class="row">
                     <div class="col-md-6 mt-3">
                       <strong>Terakhir Login:</strong><br>
