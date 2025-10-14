@@ -181,26 +181,23 @@
                   </div>
                 </div>
 
-                <div class="d-flex flex-row-reverse bd-highlightmt mt-4">
-                  <button type="submit" class="btn btn-primary ms-2">
+                <div class="d-flex flex-column-reverse flex-md-row-reverse bd-highlight mt-4">
+                  <button type="submit" class="btn btn-primary ms-md-2 mt-2">
                     <i class="ti ti-device-floppy fs-2 me-1"></i>
                     Update
                   </button>
-
                   @can('user_edit')
                     @if (!$pengguna->hasRole('superadmin'))
-                      <button type="button" class="btn btn-secondary ms-2"
+                      <button type="button" class="btn btn-secondary ms-md-2 mt-2"
                         onclick="document.getElementById('reset-password-form').submit()">
                         Reset Password
                       </button>
                     @endif
                   @endcan
-
-                  <a href="{{ route('pengguna.index') }}" class="btn btn-default ms-2">
+                  <a href="{{ route('pengguna.index') }}" class="btn btn-default ms-md-2 mt-2">
                     <i class="ti ti-arrow-back-up fs-2 me-1"></i>
                     Kembali
                   </a>
-
                 </div>
               </form>
 

@@ -22,27 +22,27 @@
                 <div class="col-md-4 text-center">
                   <div class="avatar avatar-xl mb-3" style="background-image: url({{ $user->avatar_url }})"></div>
                   <h4>{{ $user->name }}</h4>
-                  <span class="badge bg-primary text-primary-fg badge-pill text-uppercase">
+                  <span class="badge bg-primary text-primary-fg text-uppercase">
                     {{ $user->getRoleNames()->first() }}
                   </span>
 
                   @if ($user->siakad_id)
-                    <div class="mt-2">
-                      <i class="ti ti-rosette-discount-check-filled text-primary fs-3"></i>
+                    <div class="mt-2 d-flex justify-content-center align-items-center">
+                      <i class="ti ti-rosette-discount-check-filled text-primary fs-3 me-1"></i>
                       <small class="text-muted">Terhubung Siakad</small>
                     </div>
                   @endif
                 </div>
                 <div class="col-md-8">
                   <div class="row">
-                    <div class="col-md-6 mt-3">
+                    <div class="col-md-6 mt-3 mt-md-0">
                       <strong>Asal Sekolah:</strong><br>
                       {{ $user->asal_sekolah }}
                     </div>
-                    <div class="col-md-6 mt-3">
+                    <div class="col-md-6 mt-3 mt-md-0">
                       <strong>Status:</strong><br>
                       <span
-                        class="badge {{ $user->status == 'active' ? 'bg-success text-success-fg' : 'bg-danger text-danger-fg' }}">
+                        class="badge badge-pill {{ $user->status == 'active' ? 'bg-success text-success-fg' : 'bg-secondary text-secondary-fg' }}">
                         {{ $user->status == 'active' ? 'Aktif' : 'Nonaktif' }}
                       </span>
                     </div>
@@ -91,16 +91,25 @@
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div>
-                <a href="{{ route('profil.edit') }}" class="btn btn-primary me-2 mt-2">
-                  <i class="ti ti-edit fs-2 me-1"></i>
-                  Edit Profil
-                </a>
-                <a href="{{ route('dashboard.index') }}" class="btn btn-default mt-2">
-                  <i class="ti ti-smart-home fs-2 me-1"></i>
-                  Beranda
-                </a>
+            <div class="card-footer">
+              <div class="row align-items-center">
+                <div class="col">
+                  Pelajari selengkapnya tentang <a href="{{ env("URL_API_SIAKAD") }}" target="_blank">Siakad ID</a>
+                </div>
+                <div class="col-auto">
+                  <div class="d-flex flex-column-reverse flex-md-row-reverse bd-highlight">
+                    <a href="{{ route('profil.edit') }}" class="btn btn-primary ms-md-2">
+                      <i class="ti ti-edit fs-2 me-1"></i>
+                      Edit Profil
+                    </a>
+                    <a href="{{ route('dashboard.index') }}" class="btn btn-default ms-md-2">
+                      <i class="ti ti-arrow-back-up fs-2 me-1"></i>
+                      Beranda
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

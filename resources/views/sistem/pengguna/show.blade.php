@@ -84,14 +84,14 @@
                 </div>
               </div>
 
-              <div class="d-flex flex-row-reverse bd-highlight">
+              <div class="d-flex flex-column-reverse flex-md-row-reverse bd-highlight mt-4">
                 @can('user_edit')
-                  <a href="{{ route('pengguna.edit', $pengguna) }}" class="btn btn-warning ms-2 mt-2">
+                  <a href="{{ route('pengguna.edit', $pengguna) }}" class="btn btn-warning ms-md-2 mt-2">
                     <i class="ti ti-edit fs-2 me-1"></i>
                     Edit Pengguna
                   </a>
                 @endcan
-                <a href="{{ route('pengguna.index') }}" class="btn btn-default mt-2">
+                <a href="{{ route('pengguna.index') }}" class="btn btn-default ms-md-2 mt-2">
                   <i class="ti ti-arrow-back-up fs-2 me-1"></i>
                   Kembali
                 </a>
