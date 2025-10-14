@@ -194,8 +194,8 @@
 
                 @can('user_edit')
                   @if (!$pengguna->hasRole('superadmin'))
-                    <button type="button" class="btn btn-secondary ms-md-2 mt-2 mt-md-0"
-                      onclick="document.getElementById('reset-password-form').submit()">
+                    {{-- PERUBAHAN: Ganti onclick dengan id untuk JavaScript --}}
+                    <button type="button" class="btn btn-secondary ms-md-2 mt-2 mt-md-0" id="reset-password-btn">
                       <i class="ti ti-restore fs-2 me-1"></i>
                       Reset Password
                     </button>
@@ -203,7 +203,8 @@
                 @endcan
 
                 <a href="{{ route('pengguna.index') }}" class="btn btn-default ms-md-2">
-                  Batal
+                  <i class="ti ti-arrow-back-up fs-2 me-1"></i>
+                  Kembali
                 </a>
               </div>
             </div>
@@ -248,6 +249,29 @@
           }).then((result) => {
             if (result.isConfirmed) {
               document.getElementById('delete-avatar-form').submit();
+            }
+          });
+        });
+      }
+
+      // Reset password confirmation
+      const resetPasswordBtn = document.getElementById('reset-password-btn');
+      if (resetPasswordBtn) {
+        resetPasswordBtn.addEventListener('click', function() {
+          showConfirm({
+            title: 'Reset Password?',
+            html: `Password untuk username <strong>{{ $pengguna->username }}</strong>, akan direset menjadi default:
+                      <code class="text-danger">{{ $pengguna->username }}</code><br><br>
+                      <small class="text-muted">Pastikan untuk memberi tahu pengguna tentang password barunya.</small>`,
+            icon: 'warning',
+            confirmButtonText: 'Ya, Reset!',
+            cancelButtonText: 'Batal',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              document.getElementById('reset-password-form').submit();
             }
           });
         });
