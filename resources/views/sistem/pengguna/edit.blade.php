@@ -8,12 +8,6 @@
           <h2 class="page-title">Edit Pengguna - {{ $pengguna->name }}</h2>
           <div class="page-pretitle">Edit data pengguna</div>
         </div>
-        <div class="col-auto">
-          <a href="{{ route('pengguna.index') }}" class="btn btn-secondary">
-            <i class="ti ti-arrow-back-up fs-2 me-1"></i>
-            Kembali
-          </a>
-        </div>
       </div>
     </div>
   </div>
@@ -191,7 +185,10 @@
                   <button type="submit" class="btn btn-primary me-1"><i class="ti ti-device-floppy fs-2 me-1"></i>
                     Update
                   </button>
-                  <a href="{{ route('pengguna.index') }}" class="btn btn-secondary me-1">Batal</a>
+                  <a href="{{ route('pengguna.index') }}" class="btn btn-default me-1">
+                    <i class="ti ti-arrow-back-up fs-2 me-1"></i>
+                    Kembali
+                  </a>
 
                   @can('user_edit')
                     @if (!$pengguna->hasRole('superadmin'))

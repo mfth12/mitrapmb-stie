@@ -5,14 +5,8 @@
     <div class="container-xl">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <h2 class="page-title">Detail Pengguna - {{ $pengguna->name }}</h2>
+          <h2 class="page-title">Detail Pengguna - {{ Str::of($pengguna->name)->explode(' ')->first() }}</h2>
           <div class="page-pretitle">Informasi lengkap pengguna</div>
-        </div>
-        <div class="col-auto">
-          <a href="{{ route('pengguna.index') }}" class="btn btn-secondary">
-            <i class="ti ti-arrow-back-up fs-2 me-1"></i>
-            Kembali
-          </a>
         </div>
       </div>
     </div>
@@ -90,16 +84,16 @@
                 </div>
               </div>
 
-              <div class="mt-4">
+              <div>
                 @can('user_edit')
-                  <a href="{{ route('pengguna.edit', $pengguna) }}" class="btn btn-warning me-1">
+                  <a href="{{ route('pengguna.edit', $pengguna) }}" class="btn btn-warning me-1 mt-2">
                     <i class="ti ti-edit fs-2 me-1"></i>
                     Edit Pengguna
                   </a>
                 @endcan
-                <a href="{{ route('pengguna.index') }}" class="btn btn-default">
+                <a href="{{ route('pengguna.index') }}" class="btn btn-default mt-2">
                   <i class="ti ti-arrow-back-up fs-2 me-1"></i>
-                  Kembali ke Daftar</a>
+                  Kembali</a>
               </div>
             </div>
           </div>

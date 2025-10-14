@@ -8,12 +8,6 @@
           <h2 class="page-title">Tambah Baru</h2>
           <div class="page-pretitle">Tambah pengguna baru ke {{ konfigs('NAMA_SISTEM') }}</div>
         </div>
-        <div class="col-auto">
-          <a href="{{ route('pengguna.index') }}" class="btn btn-secondary">
-            <i class="ti ti-arrow-back-up fs-2 me-1"></i>
-            Kembali
-          </a>
-        </div>
       </div>
     </div>
   </div>
