@@ -48,8 +48,8 @@
               </select>
             </div>
             <div class="col-md-1">
-              <button type="submit" class="btn btn-secondary w-100">
-                <i class="ti ti-filter-filled me-1"></i>
+              <button type="submit" class="btn btn-default w-100">
+                <i class="ti ti-filter me-1"></i>
                 Filter
               </button>
             </div>
@@ -78,8 +78,11 @@
                         <span class="avatar avatar-sm me-2"
                           style="background-image: url({{ $user->avatar_thumb_url }})"></span>
                         <span>
-                          <a href="{{ route('pengguna.show', $user) }}"
-                            class="text-reset text-decoration-none">{{ $user->name }}</a>
+                          <strong>
+                            <a href="{{ route('pengguna.show', $user) }}" class="text-reset link-hover-underline">
+                              {{ $user->name }}
+                            </a>
+                          </strong>
                         </span>
                         @if ($user->siakad_id)
                           <i class="ti ti-rosette-discount-check-filled fs-2 text-primary ms-1" data-bs-toggle="tooltip"
@@ -105,7 +108,7 @@
                     <td class="text-center" style="width: 1%;">
                       <div class="btn-list justify-content-center flex-nowrap">
                         @can('user_edit')
-                          <a href="{{ route('pengguna.edit', $user) }}" class="btn btn-sm btn-warning" title="Edit">
+                          <a href="{{ route('pengguna.edit', $user) }}" class="btn btn-sm btn-default" title="Edit">
                             Edit
                           </a>
                         @endcan
@@ -115,7 +118,7 @@
                               class="d-inline delete-form">
                               @csrf
                               @method('DELETE')
-                              <button type="button" class="btn btn-sm btn-danger delete-btn" title="Hapus"
+                              <button type="button" class="btn btn-sm btn-default text-danger delete-btn" title="Hapus"
                                 data-name="{{ $user->name }}">
                                 Hapus
                               </button>
