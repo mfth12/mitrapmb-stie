@@ -131,7 +131,7 @@
 
                 <div class="mt-4">
                   <button type="submit" class="btn btn-primary">
-                    <i class="ti ti-device-floppy me-1"></i> Simpan Perubahan
+                    <i class="ti ti-device-floppy fs-2 me-1"></i> Simpan Perubahan
                   </button>
                   <a href="{{ route('profil.show') }}" class="btn btn-secondary">Batal</a>
                 </div>
@@ -146,7 +146,7 @@
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4 mt-4 mt-md-0">
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Ubah Password</h3>
