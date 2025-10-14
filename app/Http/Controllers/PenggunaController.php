@@ -219,7 +219,7 @@ class PenggunaController extends Controller
                 'password' => bcrypt($defaultPassword)
             ]);
 
-            return back()->with('success', 'Password berhasil direset. Pengguna: (' . $pengguna->name . ') Password baru: (' . $defaultPassword . ')');
+            return back()->with('success', 'Berhasil direset. Username: (' . $pengguna->username . ') Password baru: (' . $defaultPassword . ')');
         } catch (Exception $e) {
             return back()->with('error', 'Gagal reset password: ' . $e->getMessage());
         }
