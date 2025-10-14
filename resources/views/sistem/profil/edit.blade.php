@@ -8,12 +8,6 @@
           <h2 class="page-title">Edit Profil</h2>
           <div class="page-pretitle">Perbarui informasi profil Anda</div>
         </div>
-        <div class="col-auto">
-          <a href="{{ route('profil.show') }}" class="btn btn-default">
-            <i class="ti ti-arrow-back-up fs-2 me-1"></i>
-            Kembali
-          </a>
-        </div>
       </div>
     </div>
   </div>
@@ -23,10 +17,7 @@
       <div class="row">
         <div class="col-md-8">
           <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Informasi Profil</h3>
-            </div>
-            <div class="card-body">
+            <div class="card-body my-2">
               <form action="{{ route('profil.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -128,30 +119,32 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                   @enderror
                 </div>
-
-                <div class="mt-4">
-                  <button type="submit" class="btn btn-primary">
-                    <i class="ti ti-device-floppy fs-2 me-1"></i> Simpan Perubahan
-                  </button>
-                  <a href="{{ route('profil.show') }}" class="btn btn-secondary">Batal</a>
-                </div>
-              </form>
-
-              <form id="delete-avatar-form" action="{{ route('profil.avatar.delete') }}" method="POST"
-                class="d-none">
-                @csrf
-                @method('DELETE')
-              </form>
             </div>
+
+            <div class="card-footer">
+              <div class="d-flex flex-column-reverse flex-md-row-reverse bd-highlight">
+                <button type="submit" class="btn btn-primary ms-md-2 mt-2 mt-md-0">
+                  <i class="ti ti-device-floppy fs-2 me-1"></i>
+                  Simpan Perubahan
+                </button>
+                <a href="{{ route('profil.show') }}" class="btn btn-default ms-md-2">
+                  <i class="ti ti-arrow-back-up fs-2 me-1"></i>
+                  Kembali
+                </a>
+              </div>
+            </div>
+            </form>
+
+            <form id="delete-avatar-form" action="{{ route('profil.avatar.delete') }}" method="POST" class="d-none">
+              @csrf
+              @method('DELETE')
+            </form>
           </div>
         </div>
 
         <div class="col-md-4 mt-4 mt-md-0">
           <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Ubah Password</h3>
-            </div>
-            <div class="card-body">
+            <div class="card-body my-2">
               <form action="{{ route('profil.update-password') }}" method="POST">
                 @csrf
                 @method('PUT')
@@ -178,12 +171,15 @@
                   <label class="form-label">Konfirmasi Password Baru <span class="text-danger">*</span></label>
                   <input type="password" name="password_baru_confirmation" class="form-control" required>
                 </div>
-
-                <button type="submit" class="btn btn-warning w-100">
-                  <i class="ti ti-lock fs-2 me-1"></i> Ubah Password
-                </button>
-              </form>
             </div>
+
+            <div class="card-footer">
+              <button type="submit" class="btn btn-warning w-100">
+                <i class="ti ti-lock fs-2 me-1"></i>
+                Ubah Password
+              </button>
+            </div>
+            </form>
           </div>
         </div>
       </div>

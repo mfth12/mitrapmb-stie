@@ -28,7 +28,7 @@
           <form method="GET" class="row g-3 mb-4">
             <div class="col-md-5">
               <input type="text" name="cari" class="form-control"
-                placeholder="Cari nama, sekolah, email, username .." value="{{ request('cari') }}">
+                placeholder="Cari nama, sekolah, email, username..." value="{{ request('cari') }}">
             </div>
             <div class="col-md-3">
               <select name="role" class="form-select">
@@ -48,7 +48,10 @@
               </select>
             </div>
             <div class="col-md-1">
-              <button type="submit" class="btn w-100"><i class="ti ti-filter fs-3 me-1"></i>Filter</button>
+              <button type="submit" class="btn btn-secondary w-100">
+                <i class="ti ti-filter-filled me-1"></i>
+                Filter
+              </button>
             </div>
           </form>
 
@@ -72,11 +75,8 @@
                   <tr>
                     <td>
                       <div class="d-flex align-items-center">
-                        {{-- <span class="avatar avatar-sm me-2"
-                          style="background-image: url({{ $user->avatar ? env('URL_ASSET_SIAKAD') . '/' . $user->avatar : asset('img/default.png') }})">
-                        </span> --}}
-                        <span class="avatar avatar-sm me-2" style="background-image: url({{ $user->avatar_thumb_url }})">
-                        </span>
+                        <span class="avatar avatar-sm me-2"
+                          style="background-image: url({{ $user->avatar_thumb_url }})"></span>
                         <span>
                           <a href="{{ route('pengguna.show', $user) }}"
                             class="text-reset text-decoration-none">{{ $user->name }}</a>
@@ -91,7 +91,9 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->username }}</td>
                     <td>
-                      <span>{{ $user->getRoleNames()->first() }}</span>
+                      <span class="badge bg-secondary text-secondary-fg text-uppercase">
+                        {{ $user->getRoleNames()->first() }}
+                      </span>
                     </td>
                     <td>
                       <span
@@ -114,7 +116,8 @@
                               @csrf
                               @method('DELETE')
                               <button type="button" class="btn btn-sm btn-danger delete-btn" title="Hapus"
-                                data-name="{{ $user->name }}">Hapus
+                                data-name="{{ $user->name }}">
+                                Hapus
                               </button>
                             </form>
                           @endif
@@ -124,7 +127,7 @@
                   </tr>
                 @empty
                   <tr>
-                    <td colspan="7" class="text-center text-muted">Tidak ada data pengguna</td>
+                    <td colspan="8" class="text-center text-muted">Tidak ada data pengguna</td>
                   </tr>
                 @endforelse
               </tbody>
@@ -144,7 +147,7 @@
                   data
                 </div>
 
-                <div class="align-items-center">
+                <div>
                   {{ $pengguna->links('vendor.pagination.tabler') }}
                 </div>
               </div>
@@ -156,28 +159,7 @@
   </div>
 @endsection
 
-@section('style')
-  {{-- kosong --}}
-@endsection
-
-@section('modals')
-  {{-- kosong --}}
-@endsection
-
-@section('js_atas')
-  {{-- kosong --}}
-@endsection
-
 @section('js_bawah')
-  {{-- DEPENDENSI UNTUK PAGE SPESIFIK --}}
-  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/apexcharts/dist/apexcharts.min.js"></script> --}}
-  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/jsvectormap.min.js"></script> --}}
-  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world.js"></script> --}}
-  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world-merc.js"></script> --}}
-  {{-- TAMBAHAN JS UNTUK PAGE SPESIFIK --}}
-  {{-- @vite(['resources/js/pages/dasbor.js']) --}}
-  {{-- KOMPONEN INKLUD --}}
-  @include('components.back.konfig-tampilan', ['floating' => false])
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Delete confirmation
@@ -191,22 +173,6 @@
           }, `pengguna ${userName}`);
         });
       });
-
-      // Reset password confirmation
-      const resetPasswordBtn = document.getElementById('reset-password-btn');
-      if (resetPasswordBtn) {
-        resetPasswordBtn.addEventListener('click', function() {
-          showConfirm({
-            title: 'Reset Password?',
-            text: 'Password akan direset ke default. Pengguna harus mengganti password setelah login.',
-            icon: 'warning'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              document.getElementById('reset-password-form').submit();
-            }
-          });
-        });
-      }
     });
   </script>
 @endsection

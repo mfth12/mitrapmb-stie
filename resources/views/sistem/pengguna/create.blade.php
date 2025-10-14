@@ -20,6 +20,7 @@
             <div class="card-body my-2">
               <form action="{{ route('pengguna.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
@@ -55,7 +56,6 @@
                       @enderror
                     </div>
                   </div>
-
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Email <span class="text-danger">*</span></label>
@@ -91,19 +91,14 @@
                   </div>
                 </div>
 
-                {{-- Tambahkan di form setelah field nomor_hp2 --}}
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="mb-3">
-                      <label class="form-label">Foto Profil</label>
-                      <input type="file" name="avatar" class="form-control @error('avatar') is-invalid @enderror"
-                        accept="image/jpeg,image/png,image/jpg,image/webp">
-                      <small class="form-hint">Format: JPEG, PNG, JPG, WebP. Maksimal 2MB. Opsional.</small>
-                      @error('avatar')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                      @enderror
-                    </div>
-                  </div>
+                <div class="mb-3">
+                  <label class="form-label">Foto Profil</label>
+                  <input type="file" name="avatar" class="form-control @error('avatar') is-invalid @enderror"
+                    accept="image/jpeg,image/png,image/jpg,image/webp">
+                  <small class="form-hint">Format: JPEG, PNG, JPG, WebP. Maksimal 2MB. Opsional.</small>
+                  @error('avatar')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                  @enderror
                 </div>
 
                 <div class="row">
@@ -152,45 +147,23 @@
                     </div>
                   </div>
                 </div>
-
-                <div class="d-flex flex-column-reverse flex-md-row-reverse bd-highlight mt-4">
-                  <button type="submit" class="btn btn-primary ms-md-2 mt-2">
-                    <i class="ti ti-device-floppy fs-2 me-1"></i>
-                    Simpan
-                  </button>
-                  <a href="{{ route('pengguna.index') }}" class="btn btn-default ms-md-2 mt-2">
-                    Batal
-                  </a>
-                </div>
-              </form>
             </div>
+
+            <div class="card-footer">
+              <div class="d-flex flex-column-reverse flex-md-row-reverse bd-highlight">
+                <button type="submit" class="btn btn-primary ms-md-2 mt-2 mt-md-0">
+                  <i class="ti ti-device-floppy fs-2 me-1"></i>
+                  Simpan
+                </button>
+                <a href="{{ route('pengguna.index') }}" class="btn btn-default ms-md-2">
+                  Batal
+                </a>
+              </div>
+            </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
   </div>
-@endsection
-
-@section('style')
-  {{-- kosong --}}
-@endsection
-
-@section('modals')
-  {{-- kosong --}}
-@endsection
-
-@section('js_atas')
-  {{-- kosong --}}
-@endsection
-
-@section('js_bawah')
-  {{-- DEPENDENSI UNTUK PAGE SPESIFIK --}}
-  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/apexcharts/dist/apexcharts.min.js"></script> --}}
-  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/jsvectormap.min.js"></script> --}}
-  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world.js"></script> --}}
-  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world-merc.js"></script> --}}
-  {{-- TAMBAHAN JS UNTUK PAGE SPESIFIK --}}
-  {{-- @vite(['resources/js/pages/dasbor.js']) --}}
-  {{-- KOMPONEN INKLUD --}}
-  @include('components.back.konfig-tampilan', ['floating' => false])
 @endsection

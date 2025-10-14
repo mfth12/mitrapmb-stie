@@ -5,7 +5,7 @@
     <div class="container-xl">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <h2 class="page-title">Edit Pengguna - {{ $pengguna->name }}</h2>
+          <h2 class="page-title">Edit Pengguna - {{ Str::of($pengguna->name)->explode(' ')->first() }}</h2>
           <div class="page-pretitle">Edit data pengguna</div>
         </div>
       </div>
@@ -92,35 +92,29 @@
                   </div>
                 </div>
 
-                {{-- Tambahkan di form setelah field nomor_hp2 --}}
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="mb-3">
-                      <label class="form-label">Foto Profil</label>
+                <div class="mb-3">
+                  <label class="form-label">Foto Profil</label>
 
-                      {{-- Preview avatar --}}
-                      @if ($pengguna->has_custom_avatar)
-                        <div class="mb-2">
-                          <img src="{{ $pengguna->avatar_thumb_url }}" alt="Avatar" class="rounded"
-                            style="max-width: 100px;">
-                          <div class="mt-1">
-                            <a href="#" class="text-danger small delete-avatar-btn"
-                              data-user-id="{{ $pengguna->user_id }}">
-                              <i class="ti ti-trash"></i> Hapus foto
-                            </a>
-                          </div>
-                        </div>
-                      @endif
-
-                      <input type="file" name="avatar" class="form-control @error('avatar') is-invalid @enderror"
-                        accept="image/jpeg,image/png,image/jpg,image/webp">
-                      <small class="form-hint">Format: JPEG, PNG, JPG, WebP. Maksimal 2MB. Kosongkan jika tidak ingin
-                        mengubah.</small>
-                      @error('avatar')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                      @enderror
+                  @if ($pengguna->has_custom_avatar)
+                    <div class="mb-2">
+                      <img src="{{ $pengguna->avatar_thumb_url }}" alt="Avatar" class="rounded"
+                        style="max-width: 100px;">
+                      <div class="mt-1">
+                        <a href="#" class="text-danger small delete-avatar-btn"
+                          data-user-id="{{ $pengguna->user_id }}">
+                          <i class="ti ti-trash"></i> Hapus foto
+                        </a>
+                      </div>
                     </div>
-                  </div>
+                  @endif
+
+                  <input type="file" name="avatar" class="form-control @error('avatar') is-invalid @enderror"
+                    accept="image/jpeg,image/png,image/jpg,image/webp">
+                  <small class="form-hint">Format: JPEG, PNG, JPG, WebP. Maksimal 2MB. Kosongkan jika tidak ingin
+                    mengubah.</small>
+                  @error('avatar')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                  @enderror
                 </div>
 
                 <div class="row">
@@ -151,8 +145,7 @@
                       <label class="form-label">Status <span class="text-danger">*</span></label>
                       <select name="status" class="form-select">
                         <option value="active" {{ old('status', $pengguna->status) == 'active' ? 'selected' : '' }}>
-                          Aktif
-                        </option>
+                          Aktif</option>
                         <option value="inactive" {{ old('status', $pengguna->status) == 'inactive' ? 'selected' : '' }}>
                           Nonaktif</option>
                       </select>
@@ -180,36 +173,46 @@
                     </div>
                   </div>
                 </div>
-
-                <div class="d-flex flex-column-reverse flex-md-row-reverse bd-highlight mt-4">
-                  <button type="submit" class="btn btn-primary ms-md-2 mt-2">
-                    <i class="ti ti-device-floppy fs-2 me-1"></i>
-                    Update
-                  </button>
-                  @can('user_edit')
-                    @if (!$pengguna->hasRole('superadmin'))
-                      <button type="button" class="btn btn-secondary ms-md-2 mt-2"
-                        onclick="document.getElementById('reset-password-form').submit()">
-                        Reset Password
-                      </button>
-                    @endif
-                  @endcan
-                  <a href="{{ route('pengguna.index') }}" class="btn btn-default ms-md-2 mt-2">
-                    <i class="ti ti-arrow-back-up fs-2 me-1"></i>
-                    Kembali
-                  </a>
-                </div>
-              </form>
-
-              @can('user_edit')
-                @if (!$pengguna->hasRole('superadmin'))
-                  <form id="reset-password-form" action="{{ route('pengguna.reset-password', $pengguna) }}"
-                    method="POST" class="d-none">
-                    @csrf
-                  </form>
-                @endif
-              @endcan
             </div>
+
+            <div class="card-footer">
+              <div class="d-flex flex-column-reverse flex-md-row-reverse bd-highlight">
+                <button type="submit" class="btn btn-primary ms-md-2 mt-2 mt-md-0">
+                  <i class="ti ti-device-floppy fs-2 me-1"></i>
+                  Update
+                </button>
+
+                @can('user_edit')
+                  @if (!$pengguna->hasRole('superadmin'))
+                    <button type="button" class="btn btn-secondary ms-md-2"
+                      onclick="document.getElementById('reset-password-form').submit()">
+                      <i class="ti ti-restore fs-2 me-1"></i>
+                      Reset Password
+                    </button>
+                  @endif
+                @endcan
+
+                <a href="{{ route('pengguna.index') }}" class="btn btn-default ms-md-2">
+                  Batal
+                </a>
+              </div>
+            </div>
+            </form>
+
+            @can('user_edit')
+              @if (!$pengguna->hasRole('superadmin'))
+                <form id="reset-password-form" action="{{ route('pengguna.reset-password', $pengguna) }}" method="POST"
+                  class="d-none">
+                  @csrf
+                </form>
+              @endif
+            @endcan
+
+            <form id="delete-avatar-form" action="{{ route('pengguna.avatar.delete', $pengguna) }}" method="POST"
+              class="d-none">
+              @csrf
+              @method('DELETE')
+            </form>
           </div>
         </div>
       </div>
@@ -217,57 +220,28 @@
   </div>
 @endsection
 
-@section('style')
-  {{-- kosong --}}
-@endsection
-
-@section('modals')
-  {{-- kosong --}}
-@endsection
-
-@section('js_atas')
-  {{-- kosong --}}
-@endsection
-
 @section('js_bawah')
-  {{-- DEPENDENSI UNTUK PAGE SPESIFIK --}}
-  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/apexcharts/dist/apexcharts.min.js"></script> --}}
-  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/jsvectormap.min.js"></script> --}}
-  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world.js"></script> --}}
-  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world-merc.js"></script> --}}
-  {{-- TAMBAHAN JS UNTUK PAGE SPESIFIK --}}
-  {{-- @vite(['resources/js/pages/dasbor.js']) --}}
-  {{-- KOMPONEN INKLUD --}}
-  @include('components.back.konfig-tampilan', ['floating' => false])
-
   <script>
-    // Delete avatar confirmation
-    document.querySelectorAll('.delete-avatar-btn').forEach(button => {
-      button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const userId = this.getAttribute('data-user-id');
+    document.addEventListener('DOMContentLoaded', function() {
+      // Delete avatar confirmation
+      const deleteAvatarBtn = document.querySelector('.delete-avatar-btn');
+      if (deleteAvatarBtn) {
+        deleteAvatarBtn.addEventListener('click', function(e) {
+          e.preventDefault();
 
-        showConfirm({
-          title: 'Hapus Foto Profil?',
-          text: 'Foto profil akan dihapus permanen. Tindakan ini tidak dapat dibatalkan!',
-          icon: 'warning',
-          confirmButtonText: 'Ya, Hapus!',
-          cancelButtonText: 'Batal'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // Create form untuk delete avatar
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `/pengguna/${userId}/avatar`;
-            form.innerHTML = `
-                    @csrf
-                    @method('DELETE')
-                `;
-            document.body.appendChild(form);
-            form.submit();
-          }
+          showConfirm({
+            title: 'Hapus Foto Profil?',
+            text: 'Foto profil akan dihapus permanen. Tindakan ini tidak dapat dibatalkan!',
+            icon: 'warning',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              document.getElementById('delete-avatar-form').submit();
+            }
+          });
         });
-      });
+      }
     });
   </script>
 @endsection
