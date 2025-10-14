@@ -153,11 +153,12 @@
                   </div>
                 </div>
 
-                <div class="mt-4">
-                  <button type="submit" class="btn btn-primary me-1"><i class="ti ti-device-floppy fs-2 me-1"></i>
+                <div class="d-flex flex-row-reverse bd-highlight mt-4">
+                  <button type="submit" class="btn btn-primary ms-2">
+                    <i class="ti ti-device-floppy fs-2 me-1"></i>
                     Simpan
                   </button>
-                  <a href="{{ route('pengguna.index') }}" class="btn btn-secondary">Batal</a>
+                  <a href="{{ route('pengguna.index') }}" class="btn btn-default ms-2">Batal</a>
                 </div>
               </form>
             </div>

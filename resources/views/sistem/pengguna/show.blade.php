@@ -32,7 +32,7 @@
                     </span>
                   </h4>
 
-                  <span class="badge bg-primary text-primary-fg badge-pill text-uppercase">
+                  <span class="badge bg-primary text-primary-fg text-uppercase">
                     {{ $pengguna->getRoleNames()->first() }}
                   </span>
                 </div>
@@ -45,7 +45,7 @@
                     <div class="col-md-6 mt-3">
                       <strong>Status:</strong><br>
                       <span
-                        class="badge {{ $pengguna->status == 'active' ? 'bg-success text-success-fg' : 'bg-danger text-danger-fg' }}">
+                        class="badge badge-pill {{ $pengguna->status == 'active' ? 'bg-success text-success-fg' : 'bg-secondary text-secondary-fg' }}">
                         {{ $pengguna->status == 'active' ? 'Aktif' : 'Nonaktif' }}
                       </span>
                     </div>
@@ -84,16 +84,17 @@
                 </div>
               </div>
 
-              <div>
+              <div class="d-flex flex-row-reverse bd-highlight">
                 @can('user_edit')
-                  <a href="{{ route('pengguna.edit', $pengguna) }}" class="btn btn-warning me-1 mt-2">
+                  <a href="{{ route('pengguna.edit', $pengguna) }}" class="btn btn-warning ms-2 mt-2">
                     <i class="ti ti-edit fs-2 me-1"></i>
                     Edit Pengguna
                   </a>
                 @endcan
                 <a href="{{ route('pengguna.index') }}" class="btn btn-default mt-2">
                   <i class="ti ti-arrow-back-up fs-2 me-1"></i>
-                  Kembali</a>
+                  Kembali
+                </a>
               </div>
             </div>
           </div>

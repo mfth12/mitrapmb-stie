@@ -181,23 +181,26 @@
                   </div>
                 </div>
 
-                <div class="mt-4">
-                  <button type="submit" class="btn btn-primary me-1"><i class="ti ti-device-floppy fs-2 me-1"></i>
+                <div class="d-flex flex-row-reverse bd-highlightmt mt-4">
+                  <button type="submit" class="btn btn-primary ms-2">
+                    <i class="ti ti-device-floppy fs-2 me-1"></i>
                     Update
                   </button>
-                  <a href="{{ route('pengguna.index') }}" class="btn btn-default me-1">
-                    <i class="ti ti-arrow-back-up fs-2 me-1"></i>
-                    Kembali
-                  </a>
 
                   @can('user_edit')
                     @if (!$pengguna->hasRole('superadmin'))
-                      <button type="button" class="btn btn-warning float-end"
+                      <button type="button" class="btn btn-secondary ms-2"
                         onclick="document.getElementById('reset-password-form').submit()">
                         Reset Password
                       </button>
                     @endif
                   @endcan
+
+                  <a href="{{ route('pengguna.index') }}" class="btn btn-default ms-2">
+                    <i class="ti ti-arrow-back-up fs-2 me-1"></i>
+                    Kembali
+                  </a>
+
                 </div>
               </form>
 

@@ -95,7 +95,7 @@
                     </td>
                     <td>
                       <span
-                        class="badge {{ $user->status == 'active' ? 'bg-success text-success-fg' : 'bg-danger text-danger-fg' }}">
+                        class="badge badge-pill {{ $user->status == 'active' ? 'bg-success text-success-fg' : 'bg-secondary text-secondary-fg' }}">
                         {{ $user->status == 'active' ? 'Aktif' : 'Nonaktif' }}
                       </span>
                     </td>
