@@ -109,14 +109,14 @@ class PendaftaranController extends Controller
                 'hp' => $request->nomor_hp,
                 'hp2' => $request->nomor_hp2,
                 'password' => $request->password,
-                'agen_id' => 'AGEN_' . auth()->id(),
+                'agen_id' => auth()->user()->username,
             ];
 
             // Kirim ke SIAKAD2
             $response = $this->siakadService->registerCalonMahasiswa($dataSiakad);
 
             if (!$response['success']) {
-                // Simpan sebagai pendaftaran gagal
+                // Simpan sebagai pendaftaran gagal - TAMBAHKAN password_text
                 $pendaftaran = PendaftaranModel::create([
                     'user_id' => null, // Belum ada user
                     'agen_id' => auth()->id(),
@@ -133,6 +133,7 @@ class PendaftaranController extends Controller
                     'email' => $request->email,
                     'nomor_hp' => $request->nomor_hp,
                     'nomor_hp2' => $request->nomor_hp2,
+                    'password_text' => $request->password, // SIMPAN PASSWORD PLAIN TEXT
                     'status' => 'failed',
                     'keterangan' => $response['message'] ?? 'Gagal terhubung ke SIAKAD2',
                     'response_data' => $response,
@@ -142,9 +143,9 @@ class PendaftaranController extends Controller
                     ->with('error', 'Pendaftaran gagal: ' . ($response['message'] ?? 'Terjadi kesalahan'));
             }
 
-            // Simpan sebagai pendaftaran berhasil
+            // Simpan sebagai pendaftaran berhasil - TAMBAHKAN password_text
             $pendaftaran = PendaftaranModel::create([
-                'user_id' => null, // Opsional: bisa dibuat user lokal nanti
+                'user_id' => null, // Opsional: bisa dibuat user lokal nanti untuk mhs ybs jika diperlukan
                 'agen_id' => auth()->id(),
                 'id_calon_mahasiswa' => $response['data']['id_calon_mahasiswa'],
                 'username_siakad' => $response['data']['username'],
@@ -159,6 +160,7 @@ class PendaftaranController extends Controller
                 'email' => $response['data']['email'],
                 'nomor_hp' => $request->nomor_hp,
                 'nomor_hp2' => $request->nomor_hp2,
+                'password_text' => $request->password, // SIMPAN PASSWORD PLAIN TEXT
                 'status' => 'success',
                 'keterangan' => 'Pendaftaran berhasil via Agen PMB',
                 'response_data' => $response,

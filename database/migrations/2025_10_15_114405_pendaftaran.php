@@ -19,6 +19,7 @@ return new class extends Migration
             // Data dari SIAKAD2
             $table->string('id_calon_mahasiswa')->unique();
             $table->string('username_siakad');
+            $table->string('password_text')->nullable(); // Menyimpan password dalam plain text
             $table->string('no_transaksi');
 
             // Data Pendaftaran

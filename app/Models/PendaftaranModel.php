@@ -18,6 +18,7 @@ class PendaftaranModel extends Model
         'agen_id',
         'id_calon_mahasiswa',
         'username_siakad',
+        'password_text', // penambahan plain pswd
         'no_transaksi',
         'prodi_id',
         'prodi_nama',

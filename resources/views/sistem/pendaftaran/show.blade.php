@@ -73,12 +73,26 @@
 
               <div class="row mt-3">
                 <div class="col-md-6">
-                  <strong>Nomor HP:</strong><br>
-                  {{ $pendaftaran->nomor_hp }}
+                  <strong>Username SIAKAD:</strong><br>
+                  <code class="fs-5">{{ $pendaftaran->username_siakad }}</code>
                 </div>
                 <div class="col-md-6">
-                  <strong>Nomor WhatsApp:</strong><br>
-                  {{ $pendaftaran->nomor_hp2 ?? '-' }}
+                  <strong>Password SIAKAD:</strong><br>
+                  @if ($pendaftaran->password_text)
+                    <div class="input-group">
+                      <input type="password" class="form-control" id="passwordField"
+                        value="{{ $pendaftaran->password_text }}" readonly style="font-family: monospace;">
+                      <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()">
+                        <i class="ti ti-eye" id="passwordIcon"></i>
+                      </button>
+                      <button type="button" class="btn btn-outline-primary" onclick="copyPassword()">
+                        <i class="ti ti-copy"></i>
+                      </button>
+                    </div>
+                    <small class="text-muted">Berikan kredensial ini ke calon mahasiswa</small>
+                  @else
+                    <span class="text-muted">-</span>
+                  @endif
                 </div>
               </div>
 
@@ -108,7 +122,6 @@
                     {{-- @case('3')
                       International
                     @break --}}
-
                     @case('5')
                       Kemitraan
                     @break
@@ -190,4 +203,45 @@
       </div>
     </div>
   </div>
+@endsection
+
+@section('js_bawah')
+  <script>
+    function togglePassword() {
+      const passwordField = document.getElementById('passwordField');
+      const passwordIcon = document.getElementById('passwordIcon');
+
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        passwordIcon.className = 'ti ti-eye-off';
+      } else {
+        passwordField.type = 'password';
+        passwordIcon.className = 'ti ti-eye';
+      }
+    }
+
+    function copyPassword() {
+      const passwordField = document.getElementById('passwordField');
+      passwordField.select();
+      document.execCommand('copy');
+
+      // Show notification
+      showToast('Password berhasil disalin!', 'success');
+    }
+
+    function showToast(message, type = 'info') {
+      // Simple toast implementation - adjust based on your UI framework
+      const toast = document.createElement('div');
+      toast.className = `alert alert-${type} alert-dismissible fade show`;
+      toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
+  </script>
 @endsection
