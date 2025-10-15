@@ -8,6 +8,7 @@ use Illuminate\View\View;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
 use App\Services\SiakadService;
+use App\Models\PendaftaranModel;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\PendaftaranStoreRequest;
 use App\Http\Requests\PendaftaranUpdateRequest;
@@ -26,7 +27,7 @@ class PendaftaranController extends Controller
      */
     public function index(Request $request): View
     {
-        $query = Pendaftaran::with(['user', 'agen']);
+        $query = PendaftaranModel::with(['user', 'agen']);
 
         // Filter berdasarkan role user
         if (auth()->user()->hasRole('agen')) {
@@ -117,7 +118,7 @@ class PendaftaranController extends Controller
 
             if (!$response['success']) {
                 // Simpan sebagai pendaftaran gagal
-                $pendaftaran = Pendaftaran::create([
+                $pendaftaran = PendaftaranModel::create([
                     'user_id' => null, // Belum ada user
                     'agen_id' => auth()->id(),
                     'id_calon_mahasiswa' => '',
@@ -143,7 +144,7 @@ class PendaftaranController extends Controller
             }
 
             // Simpan sebagai pendaftaran berhasil
-            $pendaftaran = Pendaftaran::create([
+            $pendaftaran = PendaftaranModel::create([
                 'user_id' => null, // Opsional: bisa dibuat user lokal nanti
                 'agen_id' => auth()->id(),
                 'id_calon_mahasiswa' => $response['data']['id_calon_mahasiswa'],

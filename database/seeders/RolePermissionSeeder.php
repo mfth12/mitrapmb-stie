@@ -57,6 +57,9 @@ class RolePermissionSeeder extends Seeder
         $baak->givePermissionTo([
             'dashboard_view',
             'pendaftaran_view',
+            'pendaftaran_create',
+            'pendaftaran_edit',
+            'pendaftaran_delete',
             'approval_view',
             'approval_approve',
             'approval_reject',
