@@ -23,10 +23,13 @@
   <div class="page-body">
     <div class="container-xl">
       <div class="card">
-        <div class="card-body my-2">
+        <div class="card-header">
+          <h3 class="card-title">Daftar Pendaftaran</h3>
+        </div>
+        <div class="card-body">
           {{-- Form filter --}}
           <form method="GET" class="row g-3 mb-4">
-            <div class="col-md-6">
+            <div class="col-md-5">
               <input type="text" name="cari" class="form-control"
                 placeholder="Cari nama, email, ID calon mahasiswa..." value="{{ request('cari') }}">
             </div>
@@ -38,7 +41,7 @@
                 <option value="failed" {{ request('status') == 'failed' ? 'selected' : '' }}>Gagal</option>
               </select>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
               <button type="submit" class="btn btn-default w-100">
                 <i class="ti ti-filter me-1"></i>
                 Filter
@@ -46,81 +49,157 @@
             </div>
           </form>
 
+          {{-- Stats Cards --}}
+          <div class="row row-deck mb-4">
+            <div class="col-sm-6 col-lg-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="subheader">Total Pendaftaran</div>
+                  </div>
+                  <div class="h1 mb-3">{{ $pendaftaran->total() }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="subheader">Berhasil</div>
+                  </div>
+                  <div class="h1 mb-3 text-success">{{ $pendaftaran->where('status', 'success')->count() }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="subheader">Pending</div>
+                  </div>
+                  <div class="h1 mb-3 text-warning">{{ $pendaftaran->where('status', 'pending')->count() }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="subheader">Gagal</div>
+                  </div>
+                  <div class="h1 mb-3 text-danger">{{ $pendaftaran->where('status', 'failed')->count() }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {{-- Tabel pendaftaran --}}
           <div class="table-responsive">
-            <table class="table table-vcenter table-bordered table-striped">
+            <table class="table table-vcenter table-bordered table-striped table-hover">
               <thead>
                 <tr>
-                  <th>ID Calon Mhs</th>
-                  <th>Nama Lengkap</th>
+                  <th class="w-1">No</th>
+                  <th>Calon Mahasiswa</th>
                   <th>Program Studi</th>
-                  <th>Tahun/Gelombang</th>
+                  <th>Akademik</th>
                   <th>Biaya</th>
                   <th>Status</th>
-                  <th>Tanggal Daftar</th>
                   <th class="text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody>
                 @forelse($pendaftaran as $daftar)
                   <tr>
+                    <td class="text-muted">
+                      {{ $loop->iteration + ($pendaftaran->currentPage() - 1) * $pendaftaran->perPage() }}</td>
                     <td>
-                      <code>{{ $daftar->id_calon_mahasiswa ?: '-' }}</code>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar avatar-sm me-3 bg-blue-lt">
+                          <span class="avatar-text">{{ substr($daftar->nama_lengkap, 0, 2) }}</span>
+                        </div>
+                        <div>
+                          <div class="font-weight-medium">{{ $daftar->nama_lengkap }}</div>
+                          <div class="text-muted small">
+                            <i class="ti ti-mail me-1"></i>{{ $daftar->email }}
+                          </div>
+                          @if ($daftar->id_calon_mahasiswa)
+                            <div class="text-muted small">
+                              <i class="ti ti-id me-1"></i>{{ $daftar->id_calon_mahasiswa }}
+                            </div>
+                          @endif
+                        </div>
+                      </div>
                     </td>
                     <td>
-                      <strong>{{ $daftar->nama_lengkap }}</strong>
-                      <br>
-                      <small class="text-muted">{{ $daftar->email }}</small>
+                      <div class="font-weight-medium">{{ $daftar->prodi_nama }}</div>
+                      <div class="text-muted small">Kelas: {{ $daftar->nama_kelas }}</div>
                     </td>
-                    <td>{{ $daftar->prodi_nama }}</td>
                     <td>
-                      {{ $daftar->tahun }}/{{ $daftar->gelombang }}
-                      <br>
-                      {{-- <small class="text-muted">Kelas: {{ $daftar->kelas }}</small> --}}
-                      <small class="text-muted">Kelas: {{ $daftar->nama_kelas }}</small>
+                      <div class="font-weight-medium">{{ $daftar->tahun }}/{{ $daftar->gelombang }}</div>
+                      <div class="text-muted small">{{ $daftar->created_at->format('d/m/Y H:i') }}</div>
                     </td>
-                    <td>{{ $daftar->biaya_formatted }}</td>
-                    <td>{!! $daftar->status_badge !!}</td>
-                    <td>{{ $daftar->created_at->format('d/m/Y H:i') }}</td>
-                    <td class="text-center" style="width: 1%;">
-                      <div class="btn-list justify-content-center flex-nowrap">
-                        <a href="{{ route('pendaftaran.show', $daftar) }}" class="btn btn-sm btn-default" title="Detail">
+                    <td>
+                      <div class="font-weight-medium">{{ $daftar->biaya_formatted }}</div>
+                    </td>
+                    <td>
+                      {!! $daftar->status_badge !!}
+                    </td>
+                    <td class="text-center">
+                      <div class="btn-list justify-content-center">
+                        <a href="{{ route('pendaftaran.show', $daftar) }}" class="btn btn-sm btn-default" title="Detail"
+                          data-bs-toggle="tooltip" data-bs-placement="top">
+                          <i class="ti ti-eye me-1"></i>
                           Detail
                         </a>
                         @if ($daftar->password_text && $daftar->username_siakad)
                           <button class="btn btn-sm btn-default"
-                            onclick="showCredentials('{{ $daftar->username_siakad }}', '{{ $daftar->password_text }}')">
-                            <i class="ti ti-key me-1"></i>
-                            Lihat
+                            onclick="showCredentials('{{ $daftar->username_siakad }}', '{{ $daftar->password_text }}')"
+                            title="Kredensial" data-bs-toggle="tooltip" data-bs-placement="top">
+                            <i class="ti ti-key"></i>
+                            {{-- Key --}}
                           </button>
-                        @else
-                          <span class="text-muted">-</span>
                         @endif
                         @can('pendaftaran_edit')
                           @if ($daftar->status === 'pending')
-                            <a href="{{ route('pendaftaran.edit', $daftar) }}" class="btn btn-sm btn-default"
-                              title="Edit">
-                              Edit
+                            <a href="{{ route('pendaftaran.edit', $daftar) }}" class="btn btn-sm btn-default" title="Edit"
+                              data-bs-toggle="tooltip" data-bs-placement="top">
+                              <i class="ti ti-edit"></i>
+                              {{-- Edit --}}
                             </a>
                           @endif
                         @endcan
                         @can('pendaftaran_delete')
-                          <form action="{{ route('pendaftaran.destroy', $daftar) }}" method="POST"
-                            class="d-inline delete-form">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn btn-sm btn-default text-danger delete-btn" title="Hapus"
-                              data-name="{{ $daftar->nama_lengkap }}">
-                              Hapus
-                            </button>
-                          </form>
+                          <button type="button" class="btn btn-sm btn-default btn-danger delete-btn" title="Hapus"
+                            data-bs-toggle="tooltip" data-bs-placement="top" data-name="{{ $daftar->nama_lengkap }}"
+                            data-url="{{ route('pendaftaran.destroy', $daftar) }}">
+                            <i class="ti ti-trash"></i>
+                            {{-- Hapus --}}
+                          </button>
                         @endcan
                       </div>
                     </td>
                   </tr>
                 @empty
                   <tr>
-                    <td colspan="8" class="text-center text-muted">Tidak ada data pendaftaran</td>
+                    <td colspan="7" class="text-center py-4">
+                      <div class="empty">
+                        <div class="empty-icon">
+                          <i class="ti ti-users fs-4"></i>
+                        </div>
+                        <p class="empty-title">Tidak ada data pendaftaran</p>
+                        <p class="empty-subtitle text-muted">
+                          Mulai dengan menambahkan pendaftaran baru
+                        </p>
+                        @can('pendaftaran_create')
+                          <div class="empty-action">
+                            <a href="{{ route('pendaftaran.create') }}" class="btn btn-primary">
+                              <i class="ti ti-plus me-2"></i>
+                              Tambah Pendaftaran
+                            </a>
+                          </div>
+                        @endcan
+                      </div>
+                    </td>
                   </tr>
                 @endforelse
               </tbody>
@@ -129,21 +208,15 @@
 
           {{-- Pagination --}}
           @if ($pendaftaran->hasPages())
-            <div class="mt-4">
-              <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                <div class="text-muted">
-                  Menampilkan
-                  <strong>{{ $pendaftaran->firstItem() }}</strong> -
-                  <strong>{{ $pendaftaran->lastItem() }}</strong>
-                  dari
-                  <strong>{{ $pendaftaran->total() }}</strong>
-                  data
-                </div>
-
-                <div>
-                  {{ $pendaftaran->links('vendor.pagination.tabler') }}
-                </div>
-              </div>
+            <div class="card-footer d-flex align-items-center">
+              <p class="m-0 text-muted">
+                Menampilkan <span>{{ $pendaftaran->firstItem() }}</span> sampai
+                <span>{{ $pendaftaran->lastItem() }}</span> dari
+                <span>{{ $pendaftaran->total() }}</span> data
+              </p>
+              <ul class="pagination m-0 ms-auto">
+                {{ $pendaftaran->links('vendor.pagination.tabler') }}
+              </ul>
             </div>
           @endif
         </div>
@@ -158,31 +231,13 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Kredensial Login SIAKAD2</h5>
+          <h5 class="modal-title">
+            <i class="ti ti-key me-2 text-success"></i>
+            Kredensial Login SIAKAD2
+          </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div class="mb-3">
-            <label class="form-label">Username</label>
-            <div class="input-group">
-              <input type="text" class="form-control" id="modal-username" readonly value="">
-              <button class="btn btn-outline-secondary" type="button" onclick="copyModalUsername()">
-                <i class="ti ti-copy"></i>
-              </button>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Password</label>
-            <div class="input-group">
-              <input type="password" class="form-control" id="modal-password" readonly value="">
-              <button class="btn btn-outline-secondary" type="button" onclick="toggleModalPassword()">
-                <i class="ti ti-eye" id="modal-password-icon"></i>
-              </button>
-              <button class="btn btn-outline-primary" type="button" onclick="copyModalPassword()">
-                <i class="ti ti-copy"></i>
-              </button>
-            </div>
-          </div>
           <div class="alert alert-info">
             <div class="d-flex">
               <div>
@@ -193,9 +248,32 @@
               </div>
             </div>
           </div>
+
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <div class="input-group">
+              <input type="text" class="form-control font-monospace" id="modal-username" readonly value="">
+              <button class="btn btn-outline-secondary" type="button" onclick="copyModalUsername()">
+                <i class="ti ti-copy"></i>
+              </button>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <div class="input-group">
+              <input type="password" class="form-control font-monospace" id="modal-password" readonly value="">
+              <button class="btn btn-outline-secondary" type="button" onclick="toggleModalPassword()">
+                <i class="ti ti-eye" id="modal-password-icon"></i>
+              </button>
+              <button class="btn btn-outline-primary" type="button" onclick="copyModalPassword()">
+                <i class="ti ti-copy"></i>
+              </button>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+            <i class="ti ti-check me-1"></i>
             Tutup
           </button>
         </div>
@@ -207,22 +285,30 @@
 @section('js_bawah')
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Delete confirmation (existing code)
-      document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function() {
-          const form = this.closest('form');
-          const userName = this.getAttribute('data-name');
-
-          showDeleteConfirmation(() => {
-            form.submit();
-          }, `pendaftaran ${userName}`);
-        });
-      });
-
-      // Initialize Tooltips (jika ada)
+      // Initialize tooltips
       var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
       var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
+      });
+
+      // Delete confirmation
+      document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function() {
+          const userName = this.getAttribute('data-name');
+          const url = this.getAttribute('data-url');
+
+          showDeleteConfirmation(() => {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = url;
+            form.innerHTML = `
+                    @csrf
+                    @method('DELETE')
+                `;
+            document.body.appendChild(form);
+            form.submit();
+          }, `pendaftaran ${userName}`);
+        });
       });
     });
 
@@ -258,67 +344,57 @@
     function copyModalUsername() {
       const field = document.getElementById('modal-username');
       field.select();
-      field.setSelectionRange(0, 99999); // For mobile devices
+      field.setSelectionRange(0, 99999);
 
-      try {
-        navigator.clipboard.writeText(field.value).then(function() {
-          showToast('Username berhasil disalin!', 'success');
-        });
-      } catch (err) {
-        // Fallback untuk browser lama
+      navigator.clipboard.writeText(field.value).then(function() {
+        showToast('Username berhasil disalin!', 'success');
+      }).catch(function() {
         document.execCommand('copy');
         showToast('Username berhasil disalin!', 'success');
-      }
+      });
     }
 
     // Copy password dari modal
     function copyModalPassword() {
       const field = document.getElementById('modal-password');
       field.select();
-      field.setSelectionRange(0, 99999); // For mobile devices
+      field.setSelectionRange(0, 99999);
 
-      try {
-        navigator.clipboard.writeText(field.value).then(function() {
-          showToast('Password berhasil disalin!', 'success');
-        });
-      } catch (err) {
-        // Fallback untuk browser lama
+      navigator.clipboard.writeText(field.value).then(function() {
+        showToast('Password berhasil disalin!', 'success');
+      }).catch(function() {
         document.execCommand('copy');
         showToast('Password berhasil disalin!', 'success');
-      }
-    }
-
-    // Toast notification untuk Tabler
-    function showToast(message, type = 'info') {
-      // Gunakan toast Tabler jika ada
-      if (typeof toastify === 'function') {
-        const background = type === 'success' ? 'bg-success' : 'bg-info';
-        toastify({
-          text: message,
-          duration: 3000,
-          gravity: "top",
-          position: "right",
-          className: `bg-${type}`,
-          stopOnFocus: true
-        }).showToast();
-      } else {
-        // Fallback simple alert
-        alert(message);
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      // Delete confirmation
-      document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function() {
-          const form = this.closest('form');
-          const userName = this.getAttribute('data-name');
-
-          showDeleteConfirmation(() => {
-            form.submit();
-          }, `pendaftaran ${userName}`);
-        });
       });
-    });
+    }
+
+    // Toast notification
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `toast show align-items-center text-bg-${type} border-0 position-fixed top-0 end-0 m-3`;
+      toast.style.zIndex = '1060';
+      toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">${message}</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    `;
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
+    }
   </script>
+
+  <style>
+    .avatar-text {
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .font-monospace {
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    }
+  </style>
 @endsection
