@@ -65,9 +65,11 @@
                         <select name="prodi_id" class="form-select @error('prodi_id') is-invalid @enderror" required>
                           <option value="">Pilih Program Studi</option>
                           @foreach ($prodi as $id => $nama)
-                            <option value="{{ $id }}" {{ old('prodi_id') == $id ? 'selected' : '' }}>
-                              {{ $nama }}
-                            </option>
+                            @if ($id != 1002)
+                              <option value="{{ $id }}" {{ old('prodi_id') == $id ? 'selected' : '' }}>
+                                {{ $nama }}
+                              </option>
+                            @endif
                           @endforeach
                         </select>
                         @error('prodi_id')
