@@ -22,7 +22,7 @@
                 <div class="col-md-4 text-center">
                   <div class="avatar avatar-xl mb-3" style="background-image: url({{ $pengguna->avatar_url }})"></div>
                   <h4>{{ $pengguna->name }}</h4>
-                  <span class="badge bg-primary text-primary-fg text-uppercase">
+                  <span class="badge bg-secondary text-secondary-fg text-uppercase">
                     {{ $pengguna->getRoleNames()->first() }}
                   </span>
 
@@ -97,7 +97,7 @@
             <div class="card-footer">
               <div class="d-flex flex-column-reverse flex-md-row-reverse bd-highlight">
                 @can('user_edit')
-                  <a href="{{ route('pengguna.edit', $pengguna) }}" class="btn btn-warning ms-md-2 mt-2 mt-md-0">
+                  <a href="{{ route('pengguna.edit', $pengguna) }}" class="btn btn-default ms-md-2 mt-2 mt-md-0">
                     <i class="ti ti-edit fs-2 me-1"></i>
                     Edit Pengguna
                   </a>

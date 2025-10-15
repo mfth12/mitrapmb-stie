@@ -94,7 +94,7 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->username }}</td>
                     <td>
-                      <span class="badge bg-secondary text-secondary-fg text-uppercase">
+                      <span class="text-uppercase">
                         {{ $user->getRoleNames()->first() }}
                       </span>
                     </td>

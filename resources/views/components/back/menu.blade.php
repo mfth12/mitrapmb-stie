@@ -12,7 +12,7 @@
                   <span class="nav-link-icon d-md-none d-lg-inline-block">
                     <i class="ti ti-smart-home fs-2"></i>
                   </span>
-                  <span class="nav-link-title">Beranda</span>
+                  <span class="nav-link-title">Dasbor</span>
                 </a>
               </li>
 

@@ -95,13 +95,13 @@
 
             <div class="card-footer">
               <div class="d-flex flex-column-reverse flex-md-row-reverse bd-highlight">
-                <a href="{{ route('profil.edit') }}" class="btn btn-primary ms-md-2 mt-2 mt-md-0">
+                <a href="{{ route('profil.edit') }}" class="btn btn-default ms-md-2 mt-2 mt-md-0">
                   <i class="ti ti-edit fs-2 me-1"></i>
                   Edit Profil
                 </a>
                 <a href="{{ route('dashboard.index') }}" class="btn btn-default ms-md-2">
                   <i class="ti ti-arrow-back-up fs-2 me-1"></i>
-                  Beranda
+                  Dasbor
                 </a>
               </div>
             </div>

@@ -125,7 +125,7 @@
               <div class="d-flex flex-column-reverse flex-md-row-reverse bd-highlight">
                 <button type="submit" class="btn btn-primary ms-md-2 mt-2 mt-md-0">
                   <i class="ti ti-device-floppy fs-2 me-1"></i>
-                  Simpan Perubahan
+                  Simpan
                 </button>
                 <a href="{{ route('profil.show') }}" class="btn btn-default ms-md-2">
                   <i class="ti ti-arrow-back-up fs-2 me-1"></i>
@@ -174,7 +174,7 @@
             </div>
 
             <div class="card-footer">
-              <button type="submit" class="btn btn-warning w-100">
+              <button type="submit" class="btn btn-secondary w-100">
                 <i class="ti ti-lock fs-2 me-1"></i>
                 Ubah Password
               </button>

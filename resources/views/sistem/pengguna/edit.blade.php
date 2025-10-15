@@ -189,7 +189,7 @@
               <div class="d-flex flex-column-reverse flex-md-row-reverse bd-highlight">
                 <button type="submit" class="btn btn-primary ms-md-2 mt-2 mt-md-0">
                   <i class="ti ti-device-floppy fs-2 me-1"></i>
-                  Update
+                  Perbarui
                 </button>
 
                 @can('user_edit')
