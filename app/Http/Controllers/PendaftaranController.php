@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\User;
 use Illuminate\View\View;
-use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
 use App\Services\SiakadService;
 use App\Models\PendaftaranModel;
@@ -177,7 +176,7 @@ class PendaftaranController extends Controller
     /**
      * Menampilkan detail pendaftaran
      */
-    public function show(Pendaftaran $pendaftaran): View
+    public function show(PendaftaranModel $pendaftaran): View
     {
         // Authorization check
         if (auth()->user()->hasRole('agen') && $pendaftaran->agen_id != auth()->id()) {
@@ -193,7 +192,7 @@ class PendaftaranController extends Controller
     /**
      * Menampilkan form edit pendaftaran
      */
-    public function edit(Pendaftaran $pendaftaran): View
+    public function edit(PendaftaranModel $pendaftaran): View
     {
         // Authorization check
         if (auth()->user()->hasRole('agen') && $pendaftaran->agen_id != auth()->id()) {
@@ -218,7 +217,7 @@ class PendaftaranController extends Controller
     /**
      * Update data pendaftaran
      */
-    public function update(PendaftaranUpdateRequest $request, Pendaftaran $pendaftaran): RedirectResponse
+    public function update(PendaftaranUpdateRequest $request, PendaftaranModel $pendaftaran): RedirectResponse
     {
         // Authorization check
         if (auth()->user()->hasRole('agen') && $pendaftaran->agen_id != auth()->id()) {
@@ -246,7 +245,7 @@ class PendaftaranController extends Controller
     /**
      * Hapus pendaftaran
      */
-    public function destroy(Pendaftaran $pendaftaran): RedirectResponse
+    public function destroy(PendaftaranModel $pendaftaran): RedirectResponse
     {
         // Authorization check
         if (auth()->user()->hasRole('agen') && $pendaftaran->agen_id != auth()->id()) {
