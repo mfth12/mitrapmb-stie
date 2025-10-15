@@ -31,4 +31,9 @@ return [
         ],
     ],
 
+    'siakad' => [
+        'base_url' => env('URL_API_SIAKAD', 'http://localhost:8000'),
+        'timeout' => env('URL_API_SIAKAD_TIMEOUT', 30),
+    ],
+
 ];
