@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pendaftaran', function (Blueprint $table) {
             $table->bigIncrements('pendaftaran_id');
-            $table->foreignId('user_id')->constrained('users', 'user_id')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users', 'user_id')->onDelete('cascade');
             $table->foreignId('agen_id')->constrained('users', 'user_id')->onDelete('cascade');
 
             // Data dari SIAKAD2
