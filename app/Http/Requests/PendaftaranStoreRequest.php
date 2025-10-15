@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class PendaftaranStoreRequest extends FormRequest
+{
+  public function authorize(): bool
+  {
+    return true;
+  }
+
+  public function rules(): array
+  {
+    return [
+      'prodi_id' => 'required|string|max:10',
+      'kelas' => 'required|string|in:0,1,2,3,5',
+      'nama_lengkap' => 'required|string|max:255',
+      'email' => 'required|email|unique:users,email',
+      'nomor_hp' => 'required|string|max:20|unique:users,nomor_hp',
+      'nomor_hp2' => 'nullable|string|max:20|unique:users,nomor_hp2',
+      'password' => 'required|string|min:8|confirmed',
+    ];
+  }
+
+  public function messages(): array
+  {
+    return [
+      'prodi_id.required' => 'Program studi wajib dipilih.',
+      'kelas.required' => 'Kelas wajib dipilih.',
+      'nama_lengkap.required' => 'Nama lengkap wajib diisi.',
+      'email.required' => 'Email wajib diisi.',
+      'email.unique' => 'Email sudah digunakan.',
+      'nomor_hp.required' => 'Nomor HP wajib diisi.',
+      'nomor_hp.unique' => 'Nomor HP sudah digunakan.',
+      'nomor_hp2.unique' => 'Nomor HP kedua sudah digunakan.',
+      'password.required' => 'Password wajib diisi.',
+      'password.min' => 'Password minimal 8 karakter.',
+      'password.confirmed' => 'Konfirmasi password tidak sesuai.',
+    ];
+  }
+}
