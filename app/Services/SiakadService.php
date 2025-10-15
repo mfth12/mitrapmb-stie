@@ -12,8 +12,8 @@ class SiakadService
 
   public function __construct()
   {
-    $this->baseUrl = env('URL_API_SIAKAD');
-    $this->timeout = env('URL_API_SIAKAD_TIMEOUT');
+    $this->baseUrl = env('URL_SERVICE_SIAKAD');
+    $this->timeout = env('URL_SERVICE_SIAKAD_TIMEOUT');
   }
 
   /**
