@@ -103,4 +103,19 @@ class PendaftaranModel extends Model
     {
         return 'Rp ' . number_format($this->biaya, 0, ',', '.');
     }
+
+    /**
+     * Accessor untuk nama kelas
+     */
+    public function getNamaKelasAttribute(): string
+    {
+        return match ($this->kelas) {
+            '0' => 'Reguler Pagi',
+            '1' => 'Reguler Sore',
+            '2' => 'Malam',
+            '3' => 'International',
+            '5' => 'Kemitraan',
+            default => 'Tidak Diketahui'
+        };
+    }
 }

@@ -10,43 +10,21 @@
         </div>
 
         <div class="col-auto ms-auto d-print-none">
-          {{-- <div class="btn-list">
-            <span class="d-none d-sm-inline">
-              <a href="#" class="btn btn-1"> New view </a>
-            </span>
-            <a href="#" class="btn btn-primary btn-5 d-none d-sm-inline-block" data-bs-toggle="modal"
-              data-bs-target="#modal-report">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-2">
-                <path d="M12 5l0 14" />
-                <path d="M5 12l14 0" />
-              </svg>
-              Create new report
-            </a>
-            <a href="#" class="btn btn-primary btn-6 d-sm-none btn-icon" data-bs-toggle="modal"
-              data-bs-target="#modal-report" aria-label="Create new report">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-2">
-                <path d="M12 5l0 14" />
-                <path d="M5 12l14 0" />
-              </svg>
-            </a>
-          </div> --}}
           <div class="btn-list">
             @can('pendaftaran_create')
               <a href="{{ route('pendaftaran.create') }}" class="btn btn-primary">
-                Buat Pendaftaran Baru
+                Buat Pendaftaran
               </a>
             @endcan
 
             @can('user_view')
-              <a href="{{ route('pengguna.index') }}" class="btn btn-secondary">
+              <a href="{{ route('pengguna.index') }}" class="btn btn-default">
                 Kelola Pengguna
               </a>
             @endcan
 
             @can('approval_view')
-              <a href="{{ route('approval.index') }}" class="btn btn-success">
+              <a href="{{ route('approval.index') }}" class="btn btn-default">
                 Approval Mahasiswa
               </a>
             @endcan
@@ -64,20 +42,6 @@
             <div class="card-body">
               <div class="row gy-3">
                 <div class="col-12 col-sm d-flex flex-column">
-                  <!-- Content berdasarkan role -->
-                  {{-- @if (Auth()->user()->hasRole('superadmin'))
-                    @include('sistem.dasbor.superadmin')
-                  @elseif(Auth()->user()->hasRole('baak'))
-                    @include('sistem.dasbor.baak')
-                  @elseif(Auth()->user()->hasRole('prodi'))
-                    @include('sistem.dasbor.prodi')
-                  @elseif(Auth()->user()->hasRole('keuangan'))
-                    @include('sistem.dasbor.keuangan')
-                  @elseif(Auth()->user()->hasRole('dosen'))
-                    @include('sistem.dasbor.dosen')
-                  @elseif(Auth()->user()->hasRole('mahasiswa'))
-                    @include('sistem.dasbor.mahasiswa')
-                  @endif --}}
                   <h3 class="h2">Selamat datang, {{ Str::of(auth()->user()->name)->explode(' ')->first() }} </h3>
                   <p class="text-muted">You have 53 new messages and 2 new notifications.</p>
                   <div class="row g-5 mt-auto">
@@ -768,6 +732,14 @@
       </div>
     </div>
   </div>
+@endsection
+
+@section('style')
+  {{-- kosong --}}
+@endsection
+
+@section('modals')
+  {{-- kosong --}}
 @endsection
 
 @section('js_atas')

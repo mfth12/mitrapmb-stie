@@ -51,7 +51,7 @@
             <table class="table table-vcenter table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Kredensial Calon Mhs</th>
+                  <th>ID Calon Mhs</th>
                   <th>Nama Lengkap</th>
                   <th>Program Studi</th>
                   <th>Tahun/Gelombang</th>
@@ -67,7 +67,6 @@
                     <td>
                       <code>{{ $daftar->id_calon_mahasiswa ?: '-' }}</code>
                     </td>
-
                     <td>
                       <strong>{{ $daftar->nama_lengkap }}</strong>
                       <br>
@@ -77,7 +76,8 @@
                     <td>
                       {{ $daftar->tahun }}/{{ $daftar->gelombang }}
                       <br>
-                      <small class="text-muted">Kelas: {{ $daftar->kelas }}</small>
+                      {{-- <small class="text-muted">Kelas: {{ $daftar->kelas }}</small> --}}
+                      <small class="text-muted">Kelas: {{ $daftar->nama_kelas }}</small>
                     </td>
                     <td>{{ $daftar->biaya_formatted }}</td>
                     <td>{!! $daftar->status_badge !!}</td>
