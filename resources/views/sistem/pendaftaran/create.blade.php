@@ -80,10 +80,10 @@
                         <label class="form-label">Kelas <span class="text-danger">*</span></label>
                         <select name="kelas" class="form-select @error('kelas') is-invalid @enderror" required>
                           <option value="">Pilih Kelas</option>
-                          <option value="0" {{ old('kelas') == '0' ? 'selected' : '' }}>Reguler Pagi</option>
-                          <option value="1" {{ old('kelas') == '1' ? 'selected' : '' }}>Reguler Sore</option>
-                          <option value="2" {{ old('kelas') == '2' ? 'selected' : '' }}>Karyawan</option>
-                          <option value="3" {{ old('kelas') == '3' ? 'selected' : '' }}>International</option>
+                          <option value="0" {{ old('kelas') == '0' ? 'selected' : '' }}>Pagi</option>
+                          <option value="1" {{ old('kelas') == '1' ? 'selected' : '' }}>Sore</option>
+                          <option value="2" {{ old('kelas') == '2' ? 'selected' : '' }}>Malam</option>
+                          {{-- <option value="3" {{ old('kelas') == '3' ? 'selected' : '' }}>International</option> --}}
                           <option value="5" {{ old('kelas') == '5' ? 'selected' : '' }}>Kemitraan</option>
                         </select>
                         @error('kelas')

@@ -94,20 +94,20 @@
                   <strong>Kelas:</strong><br>
                   @switch($pendaftaran->kelas)
                     @case('0')
-                      Reguler Pagi
+                      Pagi
                     @break
 
                     @case('1')
-                      Reguler Sore
+                      Sore
                     @break
 
                     @case('2')
-                      Karyawan
+                      Malam
                     @break
 
-                    @case('3')
+                    {{-- @case('3')
                       International
-                    @break
+                    @break --}}
 
                     @case('5')
                       Kemitraan

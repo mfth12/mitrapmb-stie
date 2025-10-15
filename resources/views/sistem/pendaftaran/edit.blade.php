@@ -59,10 +59,10 @@
                           Pagi</option>
                         <option value="1" {{ old('kelas', $pendaftaran->kelas) == '1' ? 'selected' : '' }}>Reguler
                           Sore</option>
-                        <option value="2" {{ old('kelas', $pendaftaran->kelas) == '2' ? 'selected' : '' }}>Karyawan
+                        <option value="2" {{ old('kelas', $pendaftaran->kelas) == '2' ? 'selected' : '' }}>Malam
                         </option>
-                        <option value="3" {{ old('kelas', $pendaftaran->kelas) == '3' ? 'selected' : '' }}>
-                          International</option>
+                        {{-- <option value="3" {{ old('kelas', $pendaftaran->kelas) == '3' ? 'selected' : '' }}>
+                          International</option> --}}
                         <option value="5" {{ old('kelas', $pendaftaran->kelas) == '5' ? 'selected' : '' }}>Kemitraan
                         </option>
                       </select>
