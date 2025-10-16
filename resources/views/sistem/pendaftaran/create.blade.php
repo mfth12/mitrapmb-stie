@@ -199,7 +199,7 @@
                       <div class="mb-3">
                         <label class="form-label">Biaya Pendaftaran</label>
                         <div class="form-control-plaintext">
-                          <span class="text-success fw-bold">Rp
+                          <span class="text-success fw-bold mt-0">Rp
                             {{ number_format($jadwal['BIAYA'], 0, ',', '.') }}</span>
                           <small class="text-muted d-block">Biaya akan dikirim ke SIAKAD2</small>
                         </div>
