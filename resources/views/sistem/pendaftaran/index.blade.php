@@ -12,7 +12,7 @@
           @can('pendaftaran_create')
             <a href="{{ route('pendaftaran.create') }}" class="btn btn-primary">
               <i class="ti ti-plus fs-2 me-1"></i>
-              Tambah Pendaftaran
+              Tambah
             </a>
           @endcan
         </div>
@@ -27,6 +27,79 @@
           <h3 class="card-title">Daftar Pendaftaran</h3>
         </div>
         <div class="card-body">
+
+          {{-- Stats Cards Baru --}}
+          <div class="row row-cards mb-4 mt-0">
+            <div class="col-sm-6 col-lg-3">
+              <div class="card card-sm">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+                      <span class="bg-x text-white avatar">
+                        <i class="ti ti-file-isr fs-1"></i>
+                      </span>
+                    </div>
+                    <div class="col">
+                      <div class="h2 mb-0">{{ $pendaftaran->total() }}</div>
+                      <div class="text-secondary">Total Pendaftaran</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card card-sm">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+                      <span class="bg-green text-white avatar">
+                        <i class="ti ti-cloud-check fs-1"></i>
+                      </span>
+                    </div>
+                    <div class="col">
+                      <div class="h2 mb-0">{{ $pendaftaran->where('status', 'success')->count() }}</div>
+                      <div class="text-secondary">Berhasil</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card card-sm">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+                      <span class="bg-warning text-white avatar">
+                        <i class="ti ti-progress-alert fs-1"></i>
+                      </span>
+                    </div>
+                    <div class="col">
+                      <div class="h2 mb-0">{{ $pendaftaran->where('status', 'pending')->count() }}</div>
+                      <div class="text-secondary">Pending</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card card-sm">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+                      <span class="bg-danger text-white avatar">
+                        <i class="ti ti-cloud-off fs-1"></i>
+                      </span>
+                    </div>
+                    <div class="col">
+                      <div class="h2 mb-0">{{ $pendaftaran->where('status', 'failed')->count() }}</div>
+                      <div class="text-secondary">Gagal</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {{-- Form filter --}}
           <form method="GET" class="row g-3 mb-4">
             <div class="col-md-5">
@@ -49,49 +122,6 @@
             </div>
           </form>
 
-          {{-- Stats Cards --}}
-          <div class="row row-deck mb-4">
-            <div class="col-sm-6 col-lg-3">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex align-items-center">
-                    <div class="subheader">Total Pendaftaran</div>
-                  </div>
-                  <div class="h1 mb-3">{{ $pendaftaran->total() }}</div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex align-items-center">
-                    <div class="subheader">Berhasil</div>
-                  </div>
-                  <div class="h1 mb-3 text-success">{{ $pendaftaran->where('status', 'success')->count() }}</div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex align-items-center">
-                    <div class="subheader">Pending</div>
-                  </div>
-                  <div class="h1 mb-3 text-warning">{{ $pendaftaran->where('status', 'pending')->count() }}</div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex align-items-center">
-                    <div class="subheader">Gagal</div>
-                  </div>
-                  <div class="h1 mb-3 text-danger">{{ $pendaftaran->where('status', 'failed')->count() }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
 
           {{-- Tabel pendaftaran --}}
           <div class="table-responsive">
@@ -148,22 +178,22 @@
                       <div class="btn-list justify-content-center">
                         <a href="{{ route('pendaftaran.show', $daftar) }}" class="btn btn-sm btn-default" title="Detail"
                           data-bs-toggle="tooltip" data-bs-placement="top">
-                          <i class="ti ti-eye me-1"></i>
+                          <i class="ti ti-eye fs-3 me-1"></i>
                           Detail
                         </a>
                         @if ($daftar->password_text && $daftar->username_siakad)
                           <button class="btn btn-sm btn-default"
                             onclick="showCredentials('{{ $daftar->username_siakad }}', '{{ $daftar->password_text }}')"
                             title="Kredensial" data-bs-toggle="tooltip" data-bs-placement="top">
-                            <i class="ti ti-key"></i>
+                            <i class="ti ti-key fs-3"></i>
                             {{-- Key --}}
                           </button>
                         @endif
                         @can('pendaftaran_edit')
                           @if ($daftar->status === 'pending')
-                            <a href="{{ route('pendaftaran.edit', $daftar) }}" class="btn btn-sm btn-default" title="Edit"
-                              data-bs-toggle="tooltip" data-bs-placement="top">
-                              <i class="ti ti-edit"></i>
+                            <a href="{{ route('pendaftaran.edit', $daftar) }}" class="btn btn-sm btn-default"
+                              title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
+                              <i class="ti ti-edit fs-3"></i>
                               {{-- Edit --}}
                             </a>
                           @endif
@@ -172,7 +202,7 @@
                           <button type="button" class="btn btn-sm btn-default btn-danger delete-btn" title="Hapus"
                             data-bs-toggle="tooltip" data-bs-placement="top" data-name="{{ $daftar->nama_lengkap }}"
                             data-url="{{ route('pendaftaran.destroy', $daftar) }}">
-                            <i class="ti ti-trash"></i>
+                            <i class="ti ti-trash fs-3"></i>
                             {{-- Hapus --}}
                           </button>
                         @endcan
@@ -282,7 +312,39 @@
   </div>
 @endsection
 
+@section('style')
+  <style>
+    .avatar-text {
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .font-monospace {
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    }
+  </style>
+@endsection
+
+@section('modals')
+  {{-- kosong --}}
+@endsection
+
+@section('js_atas')
+  {{-- kosong --}}
+@endsection
+
 @section('js_bawah')
+  {{-- DEPENDENSI UNTUK PAGE DASBOR --}}
+  <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/jsvectormap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world-merc.js"></script>
+  {{-- TAMBAHAN JS UNTUK PAGE DASBOR --}}
+  @vite(['resources/js/pages/dasbor.js'])
+  {{-- KOMPONEN INKLUD --}}
+  @include('components.back.konfig-tampilan', ['floating' => false])
+
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Initialize tooltips
@@ -386,15 +448,4 @@
       }, 3000);
     }
   </script>
-
-  <style>
-    .avatar-text {
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    .font-monospace {
-      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-    }
-  </style>
 @endsection
