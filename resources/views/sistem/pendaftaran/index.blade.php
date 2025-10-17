@@ -5,7 +5,7 @@
     <div class="container-xl">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <h2 class="page-title">Manajemen Pendaftaran</h2>
+          <h2 class="page-title">Manajemen Pendaftaran PMB</h2>
           <div class="page-pretitle">Gerbang daftar calon mahasiswa baru STIE</div>
         </div>
         <div class="col-auto ms-auto d-print-none">

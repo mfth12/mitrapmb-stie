@@ -5,7 +5,7 @@
     <div class="container-xl">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <h2 class="page-title">Tambah Pendaftaran Baru</h2>
+          <h2 class="page-title">Tambah Pendaftar Baru</h2>
           <div class="page-pretitle">Daftarkan calon mahasiswa baru ke SIAKAD2</div>
         </div>
         <div class="col-auto">

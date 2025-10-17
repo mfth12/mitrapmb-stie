@@ -5,7 +5,7 @@
     <div class="container-xl">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <h2 class="page-title">Detail Pendaftaran</h2>
+          <h2 class="page-title">Detail Pendaftar</h2>
           <div class="page-pretitle">Informasi lengkap pendaftaran calon mahasiswa</div>
         </div>
         <div class="col-auto">
