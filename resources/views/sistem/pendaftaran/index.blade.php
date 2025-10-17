@@ -336,7 +336,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world-merc.js"></script>
   {{-- TAMBAHAN JS UNTUK PAGE DASBOR --}}
-  @vite(['resources/js/pages/dasbor.js'])
+  {{-- @vite(['resources/js/pages/...']) --}}
   {{-- KOMPONEN INKLUD --}}
   @include('components.back.konfig-tampilan', ['floating' => false])
 
@@ -424,46 +424,6 @@
         document.execCommand('copy');
         showToast('Password berhasil disalin!', 'success');
       });
-    }
-
-    // Toast notification dengan iziToast - FUNGSI BARU
-    function showToast(message, type = 'info') {
-      const config = {
-        message: message,
-        position: 'topRight',
-        timeout: 3000,
-      };
-
-      switch (type) {
-        case 'success':
-          iziToast.success({
-            ...config,
-            title: 'Sukses',
-            backgroundColor: '#2ecc71',
-            icon: 'ti ti-check'
-          });
-          break;
-        case 'error':
-          iziToast.error({
-            ...config,
-            title: 'Error',
-            backgroundColor: '#e74c3c'
-          });
-          break;
-        case 'warning':
-          iziToast.warning({
-            ...config,
-            title: 'Peringatan',
-            backgroundColor: '#f39c12'
-          });
-          break;
-        default:
-          iziToast.info({
-            ...config,
-            title: 'Info',
-            backgroundColor: '#3498db'
-          });
-      }
     }
   </script>
 @endsection
