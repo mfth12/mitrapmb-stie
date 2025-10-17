@@ -22,13 +22,13 @@
     <div class="container-xl">
       <div class="row justify-content-center">
         {{-- KOLOM KIRI --}}
-        <div class="col-md-6 mb-4">
+        <div class="col-md-8 mb-4">
           {{-- CARD: Informasi Calon Mahasiswa --}}
-          <div class="card h-100">
+          <div class="card">
             <div class="card-header">
               <h3 class="card-title">
                 <i class="ti ti-user fs-2 me-2 text-primary"></i>
-                Informasi Calon Mahasiswa
+                Informasi
               </h3>
               <div class="card-actions">
                 {!! $pendaftaran->status_badge !!}
@@ -92,7 +92,7 @@
                   <div class="input-group">
                     <input type="text" class="form-control font-monospace" value="{{ $pendaftaran->username_siakad }}"
                       readonly>
-                    <button class="btn btn-outline-secondary" type="button"
+                    <button class="btn btn-default" type="button"
                       onclick="copyToClipboard('{{ $pendaftaran->username_siakad }}', 'Username')">
                       <i class="ti ti-copy fs-2"></i>
                     </button>
@@ -104,10 +104,10 @@
                   <div class="input-group">
                     <input type="password" class="form-control font-monospace" id="passwordField"
                       value="{{ $pendaftaran->password_text }}" readonly>
-                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
+                    <button class="btn btn-default" type="button" onclick="togglePassword()">
                       <i class="ti ti-eye fs-2" id="passwordIcon"></i>
                     </button>
-                    <button class="btn btn-outline-primary" type="button"
+                    <button class="btn btn-default" type="button"
                       onclick="copyToClipboard('{{ $pendaftaran->password_text }}', 'Password')">
                       <i class="ti ti-copy fs-2"></i>
                     </button>
@@ -139,13 +139,36 @@
         </div>
 
         {{-- KOLOM KANAN --}}
-        <div class="col-md-6 mb-4">
+        <div class="col-md-4 mb-4">
+          {{-- CARD: Data Agen --}}
+          @if ($pendaftaran->agen)
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="ti ti-user-check fs-2 me-2 text-orange"></i>
+                  Data Agen
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="avatar avatar-sm me-3 bg-orange-lt">
+                    <span class="avatar-text">{{ substr($pendaftaran->agen->name, 0, 2) }}</span>
+                  </div>
+                  <div>
+                    <div class="fw-semibold">{{ $pendaftaran->agen->name }}</div>
+                    <div class="text-muted small">{{ $pendaftaran->agen->email }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          @endif
+
           {{-- CARD: Informasi Sistem --}}
-          <div class="card h-100">
+          <div class="card mt-4">
             <div class="card-header">
               <h3 class="card-title">
                 <i class="ti ti-info-circle fs-2 me-2 text-green"></i>
-                Informasi Sistem
+                Informasi Sistem PMB
               </h3>
             </div>
             <div class="card-body my-2">
@@ -174,28 +197,7 @@
             </div>
           </div>
 
-          {{-- CARD: Data Agen --}}
-          @if ($pendaftaran->agen)
-            <div class="card mt-4">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="ti ti-user-check fs-2 me-2 text-orange"></i>
-                  Data Agen
-                </h3>
-              </div>
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div class="avatar avatar-sm me-3 bg-orange-lt">
-                    <span class="avatar-text">{{ substr($pendaftaran->agen->name, 0, 2) }}</span>
-                  </div>
-                  <div>
-                    <div class="fw-semibold">{{ $pendaftaran->agen->name }}</div>
-                    <div class="text-muted small">{{ $pendaftaran->agen->email }}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          @endif
+
 
           {{-- CARD: Response SIAKAD2 --}}
           @if ($pendaftaran->response_data && is_array($pendaftaran->response_data))
@@ -238,7 +240,6 @@
 @endsection
 
 @section('js_bawah')
-  {{-- SCRIPT & STYLE SAMA --}}
   <script>
     function togglePassword() {
       const passwordField = document.getElementById('passwordField');
@@ -264,44 +265,6 @@
         document.body.removeChild(textArea);
         showToast(`${type} berhasil disalin!`, 'success');
       });
-    }
-
-    function showToast(message, type = 'info') {
-      const config = {
-        message: message,
-        position: 'topRight',
-        timeout: 3000
-      };
-      switch (type) {
-        case 'success':
-          iziToast.success({
-            ...config,
-            title: 'Sukses',
-            backgroundColor: '#2ecc71',
-            icon: 'ti ti-check fs-2'
-          });
-          break;
-        case 'error':
-          iziToast.error({
-            ...config,
-            title: 'Error',
-            backgroundColor: '#e74c3c'
-          });
-          break;
-        case 'warning':
-          iziToast.warning({
-            ...config,
-            title: 'Peringatan',
-            backgroundColor: '#f39c12'
-          });
-          break;
-        default:
-          iziToast.info({
-            ...config,
-            title: 'Info',
-            backgroundColor: '#3498db'
-          });
-      }
     }
   </script>
 
