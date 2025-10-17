@@ -6,13 +6,13 @@
       <div class="row g-2 align-items-center">
         <div class="col">
           <h2 class="page-title">Manajemen Pendaftaran</h2>
-          <div class="page-pretitle">Semua pendaftaran calon mahasiswa</div>
+          <div class="page-pretitle">Gerbang daftar calon mahasiswa baru STIE</div>
         </div>
         <div class="col-auto ms-auto d-print-none">
           @can('pendaftaran_create')
             <a href="{{ route('pendaftaran.create') }}" class="btn btn-primary">
               <i class="ti ti-plus fs-2 me-1"></i>
-              Tambah
+              Daftar
             </a>
           @endcan
         </div>
@@ -24,7 +24,7 @@
     <div class="container-xl">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Daftar Pendaftaran</h3>
+          <h3 class="card-title">Daftar Calon Mahasiswa Baru</h3>
         </div>
         <div class="card-body">
 
