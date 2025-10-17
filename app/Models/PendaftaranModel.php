@@ -132,4 +132,26 @@ class PendaftaranModel extends Model
             '5' => 'Kemitraan',
         ];
     }
+
+    /**
+     * Fungsi static untuk daftar prodi yang tersedia saat pendaftaran
+     */
+    public static function daftarProdiAktif(): array
+    {
+        return [
+            '1000' => 'Manajemen',
+            '1001' => 'Akuntansi',
+            // '1002' => 'D III Akuntansi', // ← Nonaktifkan sementara
+        ];
+    }
+
+    /**
+     * Fungsi static untuk daftar prodi yang dinonaktifkan (tidak bisa dipilih)
+     */
+    public static function daftarProdiWithNonaktif(): array
+    {
+        return [
+            '1002', // D III Akuntansi
+        ];
+    }
 }
