@@ -325,10 +325,6 @@
   </style>
 @endsection
 
-@section('modals')
-  {{-- kosong --}}
-@endsection
-
 @section('js_atas')
   {{-- kosong --}}
 @endsection
