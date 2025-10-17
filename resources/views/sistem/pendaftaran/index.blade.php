@@ -23,11 +23,7 @@
   <div class="page-body">
     <div class="container-xl">
       <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">Daftar Calon Mahasiswa Baru</h3>
-        </div>
         <div class="card-body">
-
           {{-- Stats Cards Baru --}}
           <div class="row row-cards mb-4 mt-0">
             <div class="col-sm-6 col-lg-3">

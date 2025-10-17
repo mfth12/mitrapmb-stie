@@ -49,7 +49,7 @@ class PendaftaranController extends Controller
             $query->where('status', $request->status);
         }
 
-        $pendaftaran = $query->latest()->paginate(10);
+        $pendaftaran = $query->latest()->paginate(15);
 
         return view('sistem.pendaftaran.index', [
             'title' => 'Manajemen Pendaftaran',
@@ -64,6 +64,7 @@ class PendaftaranController extends Controller
     {
         // Ambil info prodi dan jadwal dari SIAKAD2
         $infoPendaftaran = $this->siakadService->getInfoPendaftaran();
+        $kelasList = PendaftaranModel::daftarKelas();
 
         if (!$infoPendaftaran['success']) {
             return view('sistem.pendaftaran.create', [
@@ -78,6 +79,7 @@ class PendaftaranController extends Controller
             'title' => 'Tambah Pendaftaran Baru',
             'prodi' => $infoPendaftaran['data']['prodi'] ?? [],
             'jadwal' => $infoPendaftaran['data']['jadwal'] ?? null,
+            'kelasList' => $kelasList
         ]);
     }
 

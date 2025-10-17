@@ -90,9 +90,9 @@ class PendaftaranModel extends Model
     public function getStatusBadgeAttribute(): string
     {
         return match ($this->status) {
-            'success' => '<span class="badge bg-success text-success-fg">Berhasil</span>',
-            'failed' => '<span class="badge bg-danger text-danger-fg">Gagal</span>',
-            default => '<span class="badge bg-warning text-warning-fg">Pending</span>',
+            'success' => '<span class="badge badge-pill px-2 bg-success text-success-fg">Berhasil</span>',
+            'failed' => '<span class="badge badge-pill px-2 bg-danger text-danger-fg">Gagal</span>',
+            default => '<span class="badge badge-pill px-2 bg-warning text-warning-fg">Pending</span>',
         };
     }
 
@@ -117,5 +117,19 @@ class PendaftaranModel extends Model
             '5' => 'Kemitraan',
             default => 'Tidak Diketahui'
         };
+    }
+
+    /**
+     * Fungsi static untuk nama kelas
+     */
+    public static function daftarKelas(): array
+    {
+        return [
+            '0' => 'Reguler Pagi',
+            '1' => 'Reguler Sore',
+            '2' => 'Malam',
+            '3' => 'International',
+            '5' => 'Kemitraan',
+        ];
     }
 }
