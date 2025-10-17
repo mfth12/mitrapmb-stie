@@ -9,8 +9,8 @@
           <div class="page-pretitle">Informasi lengkap calon mahasiswa STIE</div>
         </div>
         <div class="col-auto">
-          <a href="{{ route('pendaftaran.index') }}" class="btn btn-ghost-primary">
-            <i class="ti ti-arrow-left fs-2 me-1"></i>
+          <a href="{{ route('pendaftaran.index') }}" class="btn btn-primary">
+            <i class="ti ti-arrow-back-up fs-2 me-1"></i>
             Kembali
           </a>
         </div>
@@ -83,7 +83,7 @@
               <div class="card-header">
                 <h3 class="card-title">
                   <i class="ti ti-check fs-2 me-2 text-success"></i>
-                  Kredensial SIAKAD2
+                  Kredensial PMB SIAKAD2
                 </h3>
               </div>
               <div class="card-body">
@@ -115,7 +115,7 @@
                 </div>
 
                 <div class="mt-2 text-muted small">
-                  <i class="ti ti-info-circle fs-2 me-1"></i>
+                  <i class="ti ti-info-circle fs-3 me-1"></i>
                   Berikan kredensial ini ke calon mahasiswa untuk login ke SIAKAD2
                 </div>
               </div>
@@ -226,8 +226,8 @@
                     </a>
                   @endif
                 @endcan
-                <a href="{{ route('pendaftaran.index') }}" class="btn btn-ghost-primary">
-                  <i class="ti ti-arrow-left fs-2 me-1"></i>
+                <a href="{{ route('pendaftaran.index') }}" class="btn btn-default">
+                  <i class="ti ti-arrow-back-up fs-2 me-1"></i>
                   Kembali ke Daftar
                 </a>
               </div>
