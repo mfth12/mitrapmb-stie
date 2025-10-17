@@ -6,7 +6,7 @@
       <div class="row g-2 align-items-center">
         <div class="col">
           <h2 class="page-title">Detail Pendaftar</h2>
-          <div class="page-pretitle">Informasi lengkap pendaftaran calon mahasiswa</div>
+          <div class="page-pretitle">Informasi lengkap calon mahasiswa STIE</div>
         </div>
         <div class="col-auto">
           <a href="{{ route('pendaftaran.index') }}" class="btn btn-ghost-primary">
@@ -25,8 +25,8 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">
-                <i class="ti ti-user me-2 text-blue"></i>
-                {{ $pendaftaran->nama_lengkap }}
+                <i class="ti ti-user fs-2 me-2 text-primary"></i>
+                Informasi Calon Mahasiswa
               </h3>
               <div class="card-actions">
                 {!! $pendaftaran->status_badge !!}
@@ -35,7 +35,17 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-md-6">
-                  <div class="mb-4">
+                  <div class="mb-2">
+                    <label class="form-label">Nama Lengkap</label>
+                    <div class="form-control-plaintext">
+                      <i class="ti ti-mail me-2 text-muted"></i>
+                      {{ $pendaftaran->nama_lengkap }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-2">
                     <label class="form-label">Email</label>
                     <div class="form-control-plaintext">
                       <i class="ti ti-mail me-2 text-muted"></i>
@@ -43,8 +53,9 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="col-md-6">
-                  <div class="mb-4">
+                  <div class="mb-2">
                     <label class="form-label">Nomor HP</label>
                     <div class="form-control-plaintext">
                       <i class="ti ti-phone me-2 text-muted"></i>
@@ -56,7 +67,7 @@
 
               <div class="row">
                 <div class="col-md-6">
-                  <div class="mb-4">
+                  <div class="mb-2">
                     <label class="form-label">Program Studi</label>
                     <div class="form-control-plaintext">
                       <i class="ti ti-school me-2 text-muted"></i>
@@ -65,7 +76,7 @@
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <div class="mb-4">
+                  <div class="mb-2">
                     <label class="form-label">Kelas</label>
                     <div class="form-control-plaintext">
                       <i class="ti ti-users me-2 text-muted"></i>
@@ -77,7 +88,7 @@
 
               <div class="row">
                 <div class="col-md-6">
-                  <div class="mb-4">
+                  <div class="mb-2">
                     <label class="form-label">Tahun Akademik</label>
                     <div class="form-control-plaintext">
                       <i class="ti ti-calendar me-2 text-muted"></i>
@@ -86,7 +97,7 @@
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <div class="mb-4">
+                  <div class="mb-2">
                     <label class="form-label">Biaya Pendaftaran</label>
                     <div class="form-control-plaintext">
                       <i class="ti ti-currency-dollar me-2 text-muted"></i>
