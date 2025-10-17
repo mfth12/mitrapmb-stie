@@ -5,14 +5,8 @@
     <div class="container-xl">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <h2 class="page-title">Detail Pendaftar</h2>
+          <h2 class="page-title">Detail Pendaftar - {{ Str::of($pendaftaran->nama_lengkap)->explode(' ')->first() }}</h2>
           <div class="page-pretitle">Informasi lengkap calon mahasiswa STIE</div>
-        </div>
-        <div class="col-auto">
-          <a href="{{ route('pendaftaran.index') }}" class="btn btn-ghost-primary">
-            <i class="ti ti-arrow-left me-1"></i>
-            Kembali
-          </a>
         </div>
       </div>
     </div>
@@ -20,204 +14,169 @@
 
   <div class="page-body">
     <div class="container-xl">
-      <div class="row">
-        <div class="col-lg-8">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-9">
           <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">
-                <i class="ti ti-user fs-2 me-2 text-primary"></i>
-                Informasi Calon Mahasiswa
-              </h3>
-              <div class="card-actions">
-                {!! $pendaftaran->status_badge !!}
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-2">
-                    <label class="form-label">Nama Lengkap</label>
-                    <div class="form-control-plaintext">
-                      <i class="ti ti-mail me-2 text-muted"></i>
-                      {{ $pendaftaran->nama_lengkap }}
-                    </div>
+            <div class="card-body my-3">
+              <div class="row mb-4">
+                <div class="col-md-4 text-center">
+                  <div class="avatar avatar-xl mb-3 bg-primary-lt">
+                    <i class="ti ti-user fs-2 text-primary"></i>
                   </div>
+                  <h4 class="mb-1">{{ $pendaftaran->nama_lengkap }}</h4>
+                  {!! $pendaftaran->status_badge !!}
                 </div>
 
-                <div class="col-md-6">
-                  <div class="mb-2">
-                    <label class="form-label">Email</label>
-                    <div class="form-control-plaintext">
-                      <i class="ti ti-mail me-2 text-muted"></i>
+                <div class="col-md-8">
+                  <div class="row">
+                    <div class="col-md-6 mt-3 mt-md-0">
+                      <strong>Email:</strong><br>
                       {{ $pendaftaran->email }}
                     </div>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="mb-2">
-                    <label class="form-label">Nomor HP</label>
-                    <div class="form-control-plaintext">
-                      <i class="ti ti-phone me-2 text-muted"></i>
+                    <div class="col-md-6 mt-3 mt-md-0">
+                      <strong>Nomor HP:</strong><br>
                       {{ $pendaftaran->nomor_hp }}
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-2">
-                    <label class="form-label">Program Studi</label>
-                    <div class="form-control-plaintext">
-                      <i class="ti ti-school me-2 text-muted"></i>
+                  <div class="row">
+                    <div class="col-md-6 mt-3">
+                      <strong>Program Studi:</strong><br>
                       {{ $pendaftaran->prodi_nama }}
                     </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-2">
-                    <label class="form-label">Kelas</label>
-                    <div class="form-control-plaintext">
-                      <i class="ti ti-users me-2 text-muted"></i>
+                    <div class="col-md-6 mt-3">
+                      <strong>Kelas:</strong><br>
                       {{ $pendaftaran->nama_kelas }}
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-2">
-                    <label class="form-label">Tahun Akademik</label>
-                    <div class="form-control-plaintext">
-                      <i class="ti ti-calendar me-2 text-muted"></i>
+                  <div class="row">
+                    <div class="col-md-6 mt-3">
+                      <strong>Tahun Akademik:</strong><br>
                       {{ $pendaftaran->tahun }}/{{ $pendaftaran->tahun + 1 }} - Gel. {{ $pendaftaran->gelombang }}
                     </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-2">
-                    <label class="form-label">Biaya Pendaftaran</label>
-                    <div class="form-control-plaintext">
-                      <i class="ti ti-currency-dollar me-2 text-muted"></i>
+                    <div class="col-md-6 mt-3">
+                      <strong>Biaya Pendaftaran:</strong><br>
                       <span class="fw-bold text-success">{{ $pendaftaran->biaya_formatted }}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
+              {{-- KREDENSIAL SIAKAD2 --}}
               @if ($pendaftaran->id_calon_mahasiswa)
-                <div class="row">
-                  <div class="col-12">
-                    <div class="alert alert-success">
-                      <h4 class="alert-title">
-                        <i class="ti ti-check me-2"></i>
-                        Kredensial SIAKAD2
-                      </h4>
-                      <div class="row mt-3">
-                        <div class="col-md-6">
-                          <label class="form-label">Username</label>
-                          <div class="input-group">
-                            <input type="text" class="form-control font-monospace"
-                              value="{{ $pendaftaran->username_siakad }}" readonly>
-                            <button class="btn btn-outline-secondary" type="button"
-                              onclick="copyToClipboard('{{ $pendaftaran->username_siakad }}', 'Username')">
-                              <i class="ti ti-copy"></i>
-                            </button>
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label">Password</label>
-                          <div class="input-group">
-                            <input type="password" class="form-control font-monospace" id="passwordField"
-                              value="{{ $pendaftaran->password_text }}" readonly>
-                            <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
-                              <i class="ti ti-eye" id="passwordIcon"></i>
-                            </button>
-                            <button class="btn btn-outline-primary" type="button"
-                              onclick="copyToClipboard('{{ $pendaftaran->password_text }}', 'Password')">
-                              <i class="ti ti-copy"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="mt-2 text-muted small">
-                        <i class="ti ti-info-circle me-1"></i>
-                        Berikan kredensial ini ke calon mahasiswa untuk login ke SIAKAD2
+                <div class="alert alert-success mt-4">
+                  <h4 class="alert-title mb-3">
+                    <i class="ti ti-check me-2"></i>
+                    Kredensial SIAKAD2
+                  </h4>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Username</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control font-monospace"
+                          value="{{ $pendaftaran->username_siakad }}" readonly>
+                        <button class="btn btn-outline-secondary" type="button"
+                          onclick="copyToClipboard('{{ $pendaftaran->username_siakad }}', 'Username')">
+                          <i class="ti ti-copy"></i>
+                        </button>
                       </div>
                     </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Password</label>
+                      <div class="input-group">
+                        <input type="password" class="form-control font-monospace" id="passwordField"
+                          value="{{ $pendaftaran->password_text }}" readonly>
+                        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
+                          <i class="ti ti-eye" id="passwordIcon"></i>
+                        </button>
+                        <button class="btn btn-outline-primary" type="button"
+                          onclick="copyToClipboard('{{ $pendaftaran->password_text }}', 'Password')">
+                          <i class="ti ti-copy"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-2 text-muted small">
+                    <i class="ti ti-info-circle me-1"></i>
+                    Berikan kredensial ini ke calon mahasiswa untuk login ke SIAKAD2
                   </div>
                 </div>
               @endif
 
+              {{-- KETERANGAN --}}
               @if ($pendaftaran->keterangan)
-                <div class="alert {{ $pendaftaran->status === 'failed' ? 'alert-danger' : 'alert-info' }}">
-                  <h4 class="alert-title">
+                <div class="alert mt-4 {{ $pendaftaran->status === 'failed' ? 'alert-danger' : 'alert-info' }}">
+                  <h4 class="alert-title mb-2">
                     <i class="ti ti-{{ $pendaftaran->status === 'failed' ? 'alert-triangle' : 'info-circle' }} me-2"></i>
                     Keterangan
                   </h4>
                   {{ $pendaftaran->keterangan }}
                 </div>
               @endif
+
+              {{-- RESPONSE SIAKAD2 --}}
+              @if ($pendaftaran->response_data && is_array($pendaftaran->response_data))
+                <div class="card mt-4">
+                  <div class="card-header">
+                    <h3 class="card-title">
+                      <i class="ti ti-code me-2 text-purple"></i>
+                      Response SIAKAD2
+                    </h3>
+                  </div>
+                  <div class="card-body">
+                    <pre class="bg-dark text-light p-3 rounded mb-0"><code>{{ json_encode($pendaftaran->response_data, JSON_PRETTY_PRINT) }}</code></pre>
+                  </div>
+                </div>
+              @endif
+            </div>
+
+            <div class="card-footer">
+              <div class="d-flex flex-column-reverse flex-md-row-reverse bd-highlight">
+                @can('pendaftaran_edit')
+                  @if ($pendaftaran->status === 'pending')
+                    <a href="{{ route('pendaftaran.edit', $pendaftaran) }}" class="btn btn-default ms-md-2 mt-2 mt-md-0">
+                      <i class="ti ti-edit fs-2 me-1"></i>
+                      Edit Pendaftaran
+                    </a>
+                  @endif
+                @endcan
+                <a href="{{ route('pendaftaran.index') }}" class="btn btn-default ms-md-2">
+                  <i class="ti ti-arrow-back-up fs-2 me-1"></i>
+                  Kembali
+                </a>
+              </div>
             </div>
           </div>
 
-          @if ($pendaftaran->response_data && is_array($pendaftaran->response_data))
-            <div class="card mt-4">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="ti ti-code me-2 text-purple"></i>
-                  Response SIAKAD2
-                </h3>
-              </div>
-              <div class="card-body">
-                <pre class="bg-dark text-light p-3 rounded"><code>{{ json_encode($pendaftaran->response_data, JSON_PRETTY_PRINT) }}</code></pre>
-              </div>
-            </div>
-          @endif
-        </div>
-
-        <div class="col-lg-4">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">
-                <i class="ti ti-info-circle me-2 text-green"></i>
-                Informasi Sistem
-              </h3>
-            </div>
-            <div class="card-body">
-              <div class="mb-3">
-                <label class="form-label">ID Calon Mahasiswa</label>
-                <div class="form-control-plaintext">
+          {{-- INFORMASI SISTEM --}}
+          <div class="card mt-4">
+            <div class="card-body my-2">
+              <h4 class="mb-3"><i class="ti ti-info-circle me-2 text-green"></i> Informasi Sistem</h4>
+              <div class="row">
+                <div class="col-md-6 mt-2">
+                  <strong>ID Calon Mahasiswa:</strong><br>
                   <code>{{ $pendaftaran->id_calon_mahasiswa ?: '-' }}</code>
                 </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">No. Transaksi</label>
-                <div class="form-control-plaintext">
+                <div class="col-md-6 mt-2">
+                  <strong>No. Transaksi:</strong><br>
                   <code>{{ $pendaftaran->no_transaksi ?: '-' }}</code>
                 </div>
               </div>
-              <div class="mb-3">
-                <label class="form-label">Tanggal Daftar</label>
-                <div class="form-control-plaintext">
-                  <i class="ti ti-calendar me-1 text-muted"></i>
+              <div class="row">
+                <div class="col-md-6 mt-2">
+                  <strong>Tanggal Daftar:</strong><br>
                   {{ $pendaftaran->created_at->format('d/m/Y H:i') }}
                 </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Terakhir Update</label>
-                <div class="form-control-plaintext">
-                  <i class="ti ti-clock me-1 text-muted"></i>
+                <div class="col-md-6 mt-2">
+                  <strong>Terakhir Update:</strong><br>
                   {{ $pendaftaran->updated_at->format('d/m/Y H:i') }}
                 </div>
               </div>
               @if ($pendaftaran->synced_at)
-                <div class="mb-3">
-                  <label class="form-label">Terakhir Sync</label>
-                  <div class="form-control-plaintext">
-                    <i class="ti ti-refresh me-1 text-muted"></i>
+                <div class="row">
+                  <div class="col-md-6 mt-2">
+                    <strong>Terakhir Sync:</strong><br>
                     {{ $pendaftaran->synced_at->format('d/m/Y H:i') }}
                   </div>
                 </div>
@@ -225,46 +184,23 @@
             </div>
           </div>
 
+          {{-- DATA AGEN --}}
           @if ($pendaftaran->agen)
             <div class="card mt-4">
-              <div class="card-header">
-                <h3 class="card-title">
-                  <i class="ti ti-user-check me-2 text-orange"></i>
-                  Data Agen
-                </h3>
-              </div>
-              <div class="card-body">
-                <div class="d-flex align-items-center mb-3">
+              <div class="card-body my-2">
+                <h4 class="mb-3"><i class="ti ti-user-check me-2 text-orange"></i> Data Agen</h4>
+                <div class="d-flex align-items-center">
                   <div class="avatar avatar-sm me-3 bg-orange-lt">
                     <span class="avatar-text">{{ substr($pendaftaran->agen->name, 0, 2) }}</span>
                   </div>
                   <div>
-                    <div class="font-weight-medium">{{ $pendaftaran->agen->name }}</div>
+                    <div class="fw-bold">{{ $pendaftaran->agen->name }}</div>
                     <div class="text-muted small">{{ $pendaftaran->agen->email }}</div>
                   </div>
                 </div>
               </div>
             </div>
           @endif
-
-          <div class="card mt-4">
-            <div class="card-body">
-              <div class="d-grid gap-2">
-                @can('pendaftaran_edit')
-                  @if ($pendaftaran->status === 'pending')
-                    <a href="{{ route('pendaftaran.edit', $pendaftaran) }}" class="btn btn-primary">
-                      <i class="ti ti-edit me-1"></i>
-                      Edit Pendaftaran
-                    </a>
-                  @endif
-                @endcan
-                <a href="{{ route('pendaftaran.index') }}" class="btn btn-ghost-primary">
-                  <i class="ti ti-arrow-left me-1"></i>
-                  Kembali ke Daftar
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
