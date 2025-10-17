@@ -290,21 +290,44 @@
       });
     }
 
+    // Toast notification dengan iziToast - FUNGSI BARU
     function showToast(message, type = 'info') {
-      const toast = document.createElement('div');
-      toast.className = `toast show align-items-center text-bg-${type} border-0 position-fixed top-0 end-0 m-3`;
-      toast.style.zIndex = '1060';
-      toast.innerHTML = `
-        <div class="d-flex">
-            <div class="toast-body">${message}</div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>
-    `;
-      document.body.appendChild(toast);
+      const config = {
+        message: message,
+        position: 'topRight',
+        timeout: 3000,
+      };
 
-      setTimeout(() => {
-        toast.remove();
-      }, 3000);
+      switch (type) {
+        case 'success':
+          iziToast.success({
+            ...config,
+            title: 'Sukses',
+            backgroundColor: '#2ecc71',
+            icon: 'ti ti-check'
+          });
+          break;
+        case 'error':
+          iziToast.error({
+            ...config,
+            title: 'Error',
+            backgroundColor: '#e74c3c'
+          });
+          break;
+        case 'warning':
+          iziToast.warning({
+            ...config,
+            title: 'Peringatan',
+            backgroundColor: '#f39c12'
+          });
+          break;
+        default:
+          iziToast.info({
+            ...config,
+            title: 'Info',
+            backgroundColor: '#3498db'
+          });
+      }
     }
   </script>
 
