@@ -6,11 +6,11 @@
       <div class="row g-2 align-items-center">
         <div class="col">
           <h2 class="page-title">Tambah Pendaftar Baru</h2>
-          <div class="page-pretitle">Daftarkan calon mahasiswa baru ke SIAKAD2</div>
+          <div class="page-pretitle">Daftarkan calon mahasiswa baru ke PMB SIAKAD2</div>
         </div>
         <div class="col-auto">
           <a href="{{ route('pendaftaran.index') }}" class="btn btn-default">
-            <i class="ti ti-arrow-left me-1"></i>
+            <i class="ti ti-arrow-back-up fs-2 me-1"></i>
             Kembali
           </a>
         </div>
@@ -26,7 +26,7 @@
             <div class="alert alert-danger">
               <div class="d-flex">
                 <div>
-                  <i class="ti ti-alert-circle fs-2 me-2"></i>
+                  <i class="ti ti-alert-circle fs-2 me-2 text-danger"></i>
                 </div>
                 <div>
                   <h4 class="alert-title">Koneksi Gagal</h4>
@@ -34,35 +34,30 @@
                 </div>
               </div>
             </div>
-            <div class="text-center mt-4">
-              <a href="{{ route('pendaftaran.index') }}" class="btn btn-primary">
-                <i class="ti ti-arrow-left me-1"></i>
-                Kembali ke Daftar
-              </a>
-            </div>
           @elseif(!$jadwal)
             <div class="alert alert-warning">
               <div class="d-flex">
                 <div>
-                  <i class="ti ti-alert-triangle fs-2 me-2"></i>
+                  <i class="ti ti-alert-triangle fs-2 text-warning me-2"></i>
                 </div>
                 <div>
-                  <h4 class="alert-title">Jadwal Tidak Tersedia</h4>
-                  <div class="text-muted">Jadwal pendaftaran tidak tersedia. Silakan coba lagi nanti.</div>
+                  <h4 class="alert-title">Jadwal PMB Belum Tersedia</h4>
+                  <div class="text-muted">Jadwal pendaftaran PMB belum tersedia. Silakan coba lagi nanti. Atau jika ini
+                    sebuah kesalahan, segera hubungi Tim PMB STIE Pembangunan.</div>
                 </div>
               </div>
             </div>
             <div class="text-center mt-4">
               <a href="{{ route('pendaftaran.index') }}" class="btn btn-primary">
-                <i class="ti ti-arrow-left me-1"></i>
-                Kembali ke Daftar
+                <i class="ti ti-brand-whatsapp fs-2 me-1"></i>
+                Hubungi Tim PMB
               </a>
             </div>
           @else
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
-                  <i class="ti ti-user-plus me-2 text-blue"></i>
+                  <i class="ti ti-user-plus fs-2 me-2 text-blue"></i>
                   Form Pendaftaran Calon Mahasiswa
                 </h3>
               </div>
@@ -71,10 +66,10 @@
                 <div class="alert alert-info">
                   <div class="d-flex">
                     <div>
-                      <i class="ti ti-info-circle me-2"></i>
+                      <i class="ti ti-info-circle fs-2 text-info me-2"></i>
                     </div>
                     <div>
-                      <h4 class="alert-title">Jadwal Pendaftaran Aktif</h4>
+                      <h4 class="alert-title text-info-emphasis">Jadwal Pendaftaran Aktif</h4>
                       <div class="text-muted">
                         <strong>Gelombang {{ $jadwal['GELOMBANG'] }}</strong> -
                         Tahun Akademik {{ $jadwal['TAHUN'] }}/{{ $jadwal['TAHUN'] + 1 }} |
@@ -96,7 +91,7 @@
                         <select name="prodi_id" class="form-select @error('prodi_id') is-invalid @enderror" required>
                           <option value="">Pilih Program Studi</option>
                           @foreach ($prodi as $id => $nama)
-                            @if ($id != 1002)
+                            @if (!in_array($id, \App\Models\PendaftaranModel::daftarProdiWithNonaktif()))
                               <option value="{{ $id }}" {{ old('prodi_id') == $id ? 'selected' : '' }}>
                                 {{ $nama }}
                               </option>
@@ -202,7 +197,7 @@
                         <div class="form-control-plaintext">
                           <span class="text-success fw-bold mt-0">Rp
                             {{ number_format($jadwal['BIAYA'], 0, ',', '.') }}</span>
-                          <small class="text-muted d-block">Biaya akan dikirim ke SIAKAD2</small>
+                          <small class="text-muted d-block">Biaya akan dikirim ke PMB SIAKAD2</small>
                         </div>
                       </div>
                     </div>
@@ -211,13 +206,13 @@
                   <div class="alert alert-warning mt-4">
                     <div class="d-flex">
                       <div>
-                        <i class="ti ti-alert-triangle me-2"></i>
+                        <i class="ti ti-alert-triangle fs-2 text-warning me-2"></i>
                       </div>
                       <div>
-                        <h4 class="alert-title">Perhatian</h4>
+                        <h4 class="alert-title text-warning-emphasis">Perhatian</h4>
                         <div class="text-muted">
-                          Data akan dikirim langsung ke sistem SIAKAD2.
-                          Pastikan semua data sudah benar sebelum memulai proses daftar.
+                          Data akan dikirim langsung ke sistem PMB SIAKAD2.
+                          Pastikan semua data sudah benar sebelum lanjut proses daftar.
                         </div>
                       </div>
                     </div>
@@ -227,12 +222,12 @@
               <div class="card-footer">
                 <div class="d-flex justify-content-between">
                   <a href="{{ route('pendaftaran.index') }}" class="btn btn-default">
-                    <i class="ti ti-arrow-left me-1"></i>
+                    <i class="ti ti-arrow-back-up fs-2 me-1"></i>
                     Kembali
                   </a>
                   <button type="submit" class="btn btn-primary" id="btnSubmit">
-                    <i class="ti ti-send me-1"></i>
-                    Daftarkan ke SIAKAD2
+                    <i class="ti ti-send fs-2 me-1"></i>
+                    Daftarkan Sekarang
                   </button>
                 </div>
               </div>
@@ -255,7 +250,7 @@
       if (form) {
         form.addEventListener('submit', function(e) {
           btnSubmit.disabled = true;
-          btnSubmit.innerHTML = '<i class="ti ti-loader-2 spinner me-1"></i> Mengirim ke SIAKAD2...';
+          btnSubmit.innerHTML = '<i class="ti ti-loader-2 fs-2 spinner me-1"></i> Mengirim ke SIAKAD2...';
         });
       }
     });
