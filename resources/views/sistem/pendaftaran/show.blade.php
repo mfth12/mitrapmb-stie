@@ -36,11 +36,11 @@
             </div>
             <div class="card-body my-2">
               <div class="row">
-                <div class="col-md-6 mt-2">
+                <div class="col-md-6">
                   <strong>Nama Lengkap:</strong><br>
                   {{ $pendaftaran->nama_lengkap }}
                 </div>
-                <div class="col-md-6 mt-2">
+                <div class="col-md-6">
                   <strong>Email:</strong><br>
                   {{ $pendaftaran->email }}
                 </div>
@@ -82,9 +82,14 @@
             <div class="card mt-4">
               <div class="card-header">
                 <h3 class="card-title">
-                  <i class="ti ti-check fs-2 me-2 text-success"></i>
+                  <i class="ti ti-check fs-2 me-2"></i>
                   Kredensial PMB SIAKAD2
                 </h3>
+              </div>
+              <div class="card-stamp">
+                <div class="card-stamp-icon bg-success">
+                  <i class="ti ti-thumb-up"></i>
+                </div>
               </div>
               <div class="card-body">
                 <div class="mb-3">

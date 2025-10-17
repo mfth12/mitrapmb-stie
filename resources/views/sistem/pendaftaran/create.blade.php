@@ -93,7 +93,7 @@
                           @foreach ($prodi as $id => $nama)
                             @if (!in_array($id, \App\Models\PendaftaranModel::daftarProdiWithNonaktif()))
                               <option value="{{ $id }}" {{ old('prodi_id') == $id ? 'selected' : '' }}>
-                                {{ $nama }}
+                                S1 - {{ $nama }}
                               </option>
                             @endif
                           @endforeach
@@ -250,7 +250,7 @@
       if (form) {
         form.addEventListener('submit', function(e) {
           btnSubmit.disabled = true;
-          btnSubmit.innerHTML = '<i class="ti ti-loader-2 fs-2 spinner me-1"></i> Mengirim ke SIAKAD2...';
+          btnSubmit.innerHTML = '<i class="ti ti-loader-2 fs-2 spinner me-1"></i> Proses Daftar ke SIAKAD2...';
         });
       }
     });
