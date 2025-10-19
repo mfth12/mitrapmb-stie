@@ -79,6 +79,27 @@
             </div>
           </div>
 
+          {{-- CARD: Keterangan --}}
+          @if ($pendaftaran->keterangan)
+            <div class="card mt-4 {{ $pendaftaran->status === 'failed' ? 'bg-danger-lt' : 'bg-info-lt' }}">
+              <div class="card-body">
+                <h3 class="card-title">
+                  <i
+                    class="ti ti-{{ $pendaftaran->status === 'failed' ? 'alert-triangle' : 'info-circle' }} fs-2 me-1"></i>
+                  <span
+                    class="{{ $pendaftaran->status === 'failed' ? 'text-danger-emphasis' : 'text-info-emphasis' }}">Keterangan</span>
+                </h3>
+                <h4 class="mb-2">
+
+                </h4>
+                <p class="text-secondary">
+                  {{ $pendaftaran->keterangan }}
+                </p>
+
+              </div>
+            </div>
+          @endif
+
           {{-- CARD: Kredensial PMB SIAKAD2 --}}
           @if ($pendaftaran->id_calon_mahasiswa)
             <div class="card mt-4">
@@ -130,20 +151,7 @@
             </div>
           @endif
 
-          {{-- CARD: Keterangan --}}
-          @if ($pendaftaran->keterangan)
-            <div class="card mt-4">
-              <div
-                class="card-body {{ $pendaftaran->status === 'failed' ? 'bg-light-danger' : 'bg-light-info' }} rounded">
-                <h4 class="mb-2">
-                  <i
-                    class="ti ti-{{ $pendaftaran->status === 'failed' ? 'alert-triangle' : 'info-circle' }} fs-2 me-2"></i>
-                  Keterangan
-                </h4>
-                {{ $pendaftaran->keterangan }}
-              </div>
-            </div>
-          @endif
+
         </div>
 
         {{-- KOLOM KANAN --}}
