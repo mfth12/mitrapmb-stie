@@ -17,7 +17,7 @@ class SiakadService
   }
 
   /**
-   * Get info pendaftaran dari SIAKAD2
+   * Get info pendaftaran dari PMB SIAKAD2
    */
   public function getInfoPendaftaran(): array
   {
@@ -34,19 +34,19 @@ class SiakadService
 
       return [
         'success' => false,
-        'message' => 'Gagal mengambil data dari SIAKAD2'
+        'message' => 'Gagal mengambil data dari PMB SIAKAD2'
       ];
     } catch (\Exception $e) {
       Log::error('SiakadService getInfoPendaftaran error: ' . $e->getMessage());
       return [
         'success' => false,
-        'message' => 'Tidak dapat terhubung ke SIAKAD2'
+        'message' => 'Tidak dapat terhubung ke PMB SIAKAD2'
       ];
     }
   }
 
   /**
-   * Register calon mahasiswa ke SIAKAD2
+   * Register calon mahasiswa ke PMB SIAKAD2
    */
   public function registerCalonMahasiswa(array $data): array
   {
@@ -73,7 +73,7 @@ class SiakadService
       Log::error('SiakadService registerCalonMahasiswa error: ' . $e->getMessage());
       return [
         'success' => false,
-        'message' => 'Tidak dapat terhubung ke SIAKAD2'
+        'message' => 'Tidak dapat terhubung ke PMB SIAKAD2'
       ];
     }
   }

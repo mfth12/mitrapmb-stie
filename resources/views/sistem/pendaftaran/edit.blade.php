@@ -9,8 +9,8 @@
           <div class="page-pretitle">Edit data pendaftaran calon mahasiswa</div>
         </div>
         <div class="col-auto">
-          <a href="{{ route('pendaftaran.index') }}" class="btn btn-ghost-primary">
-            <i class="ti ti-arrow-left me-1"></i>
+          <a href="{{ route('pendaftaran.index') }}" class="btn btn-default">
+            <i class="ti ti-arrow-back-up fs-2 me-1"></i>
             Kembali
           </a>
         </div>
@@ -25,7 +25,7 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">
-                <i class="ti ti-user-edit me-2 text-orange"></i>
+                <i class="ti ti-user-edit fs-2 me-2 text-orange"></i>
                 Edit Data - {{ $pendaftaran->nama_lengkap }}
               </h3>
             </div>
@@ -33,10 +33,10 @@
               <div class="alert alert-info">
                 <div class="d-flex">
                   <div>
-                    <i class="ti ti-info-circle me-2"></i>
+                    <i class="ti ti-info-circle text-info fs-2 me-2"></i>
                   </div>
                   <div>
-                    <h4 class="alert-title">Status: {!! $pendaftaran->status_badge !!}</h4>
+                    <h4 class="alert-title text-info-emphasis">Status: {!! $pendaftaran->status_badge !!}</h4>
                     <div class="text-muted">
                       Hanya pendaftaran dengan status <strong>Pending</strong> yang dapat diedit.
                     </div>
@@ -48,13 +48,13 @@
                 <div class="alert alert-success">
                   <div class="d-flex">
                     <div>
-                      <i class="ti ti-check me-2"></i>
+                      <i class="ti ti-check text-success fs-2 me-2"></i>
                     </div>
                     <div>
-                      <h4 class="alert-title">Data Terkirim ke SIAKAD2</h4>
+                      <h4 class="alert-title text-success-emphasis">Data Terkirim ke PMB SIAKAD2</h4>
                       <div class="text-muted">
-                        ID Calon Mahasiswa: <code>{{ $pendaftaran->id_calon_mahasiswa }}</code> |
-                        Username: <code>{{ $pendaftaran->username_siakad }}</code> |
+                        ID Calon Mahasiswa: <code>{{ $pendaftaran->id_calon_mahasiswa }}</code> <br>
+                        Username: <code>{{ $pendaftaran->username_siakad }}</code> <br>
                         No. Transaksi: <code>{{ $pendaftaran->no_transaksi }}</code>
                       </div>
                     </div>
@@ -73,10 +73,10 @@
                       <select name="prodi_id" class="form-select @error('prodi_id') is-invalid @enderror" required>
                         <option value="">Pilih Program Studi</option>
                         @foreach ($prodi as $id => $nama)
-                          @if ($id != 1002)
+                          @if (!in_array($id, \App\Models\PendaftaranModel::daftarProdiWithNonaktif()))
                             <option value="{{ $id }}"
                               {{ old('prodi_id', $pendaftaran->prodi_id) == $id ? 'selected' : '' }}>
-                              {{ $nama }}
+                              S1 - {{ $nama }}
                             </option>
                           @endif
                         @endforeach
@@ -168,12 +168,12 @@
 
             <div class="card-footer">
               <div class="d-flex justify-content-between">
-                <a href="{{ route('pendaftaran.show', $pendaftaran) }}" class="btn btn-ghost-primary">
-                  <i class="ti ti-arrow-left me-1"></i>
+                <a href="{{ route('pendaftaran.show', $pendaftaran) }}" class="btn btn-default">
+                  <i class="ti ti-arrow-back-up fs-2 me-1"></i>
                   Kembali ke Detail
                 </a>
                 <button type="submit" class="btn btn-primary">
-                  <i class="ti ti-device-floppy me-1"></i>
+                  <i class="ti ti-device-floppy fs-2 me-1"></i>
                   Perbarui Data
                 </button>
               </div>

@@ -250,7 +250,7 @@
       if (form) {
         form.addEventListener('submit', function(e) {
           btnSubmit.disabled = true;
-          btnSubmit.innerHTML = '<i class="ti ti-loader-2 fs-2 spinner me-1"></i> Proses Daftar ke SIAKAD2...';
+          btnSubmit.innerHTML = '<i class="ti ti-loader-2 fs-2 spinner me-1"></i> Memproses Daftar ke PMB SIAKAD2...';
         });
       }
     });

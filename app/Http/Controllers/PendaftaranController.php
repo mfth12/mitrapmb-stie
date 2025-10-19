@@ -62,14 +62,14 @@ class PendaftaranController extends Controller
      */
     public function create(): View
     {
-        // Ambil info prodi dan jadwal dari SIAKAD2
+        // Ambil info prodi dan jadwal dari PMB SIAKAD2
         $infoPendaftaran = $this->siakadService->getInfoPendaftaran();
         $kelasList = PendaftaranModel::daftarKelas();
 
         if (!$infoPendaftaran['success']) {
             return view('sistem.pendaftaran.create', [
                 'title' => 'Tambah Pendaftar Baru',
-                'error' => $infoPendaftaran['message'] ?? 'Gagal mengambil data dari SIAKAD2',
+                'error' => $infoPendaftaran['message'] ?? 'Gagal mengambil data dari PMB SIAKAD2',
                 'prodi' => [],
                 'jadwal' => null,
             ]);
@@ -99,7 +99,7 @@ class PendaftaranController extends Controller
             $jadwal = $infoPendaftaran['data']['jadwal'];
             $prodi = $infoPendaftaran['data']['prodi'][$request->prodi_id] ?? '';
 
-            // Data untuk dikirim ke SIAKAD2
+            // Data untuk dikirim ke PMB SIAKAD2
             $dataSiakad = [
                 'prodi_id' => $request->prodi_id,
                 'tahun' => $jadwal['TAHUN'],
@@ -114,7 +114,7 @@ class PendaftaranController extends Controller
                 'agen_id' => auth()->user()->username,
             ];
 
-            // Kirim ke SIAKAD2
+            // Kirim ke PMB SIAKAD2
             $response = $this->siakadService->registerCalonMahasiswa($dataSiakad);
 
             if (!$response['success']) {
@@ -137,7 +137,7 @@ class PendaftaranController extends Controller
                     'nomor_hp2' => $request->nomor_hp2,
                     'password_text' => $request->password, // SIMPAN PASSWORD PLAIN TEXT
                     'status' => 'failed',
-                    'keterangan' => $response['message'] ?? 'Gagal terhubung ke SIAKAD2',
+                    'keterangan' => $response['message'] ?? 'Gagal terhubung ke PMB SIAKAD2',
                     'response_data' => $response,
                 ]);
 

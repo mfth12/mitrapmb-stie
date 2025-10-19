@@ -259,7 +259,7 @@
         <div class="modal-header">
           <h5 class="modal-title">
             <i class="ti ti-key me-2 text-success"></i>
-            Kredensial Login SIAKAD2
+            Kredensial Login PMB SIAKAD2
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -270,7 +270,7 @@
                 <i class="ti ti-info-circle me-2"></i>
               </div>
               <div>
-                <small>Berikan kredensial ini ke calon mahasiswa untuk login ke SIAKAD2</small>
+                <small>Berikan kredensial ini ke calon mahasiswa untuk login ke PMB SIAKAD2</small>
               </div>
             </div>
           </div>

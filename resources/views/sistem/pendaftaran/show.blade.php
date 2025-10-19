@@ -5,7 +5,9 @@
     <div class="container-xl">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <h2 class="page-title">Detail Pendaftar - {{ Str::of($pendaftaran->nama_lengkap)->explode(' ')->first() }}</h2>
+          <h2 class="page-title">
+            Detail Pendaftar - {{ Str::ucfirst(Str::lower(Str::of($pendaftaran->nama_lengkap)->explode(' ')->first())) }}
+          </h2>
           <div class="page-pretitle">Informasi lengkap calon mahasiswa STIE</div>
         </div>
         <div class="col-auto">
@@ -77,20 +79,20 @@
             </div>
           </div>
 
-          {{-- CARD: Kredensial SIAKAD2 --}}
+          {{-- CARD: Kredensial PMB SIAKAD2 --}}
           @if ($pendaftaran->id_calon_mahasiswa)
             <div class="card mt-4">
               <div class="card-header">
                 <h3 class="card-title">
-                  <i class="ti ti-check fs-2 me-2"></i>
+                  <i class="ti ti-check text-success fs-2 me-2"></i>
                   Kredensial PMB SIAKAD2
                 </h3>
               </div>
-              <div class="card-stamp">
+              {{-- <div class="card-stamp">
                 <div class="card-stamp-icon bg-success">
-                  <i class="ti ti-thumb-up"></i>
+                  <i class="ti ti-face-id"></i>
                 </div>
-              </div>
+              </div> --}}
               <div class="card-body">
                 <div class="mb-3">
                   <label class="form-label">Username</label>
@@ -120,8 +122,9 @@
                 </div>
 
                 <div class="mt-2 text-muted small">
-                  <i class="ti ti-info-circle fs-3 me-1"></i>
-                  Berikan kredensial ini ke calon mahasiswa untuk login ke SIAKAD2
+                  <i class="ti ti-alert-triangle fs-3 me-1"></i>
+                  Berikan kredensial ini ke calon mahasiswa untuk login ke <a
+                    href="https://dash.pmb.stie-pembangunan.ac.id/login" target="_blank">PMB SIAKAD2</a>
                 </div>
               </div>
             </div>
@@ -204,13 +207,13 @@
 
 
 
-          {{-- CARD: Response SIAKAD2 --}}
+          {{-- CARD: Response PMB SIAKAD2 --}}
           @if ($pendaftaran->response_data && is_array($pendaftaran->response_data))
             <div class="card mt-4">
               <div class="card-header">
                 <h3 class="card-title">
                   <i class="ti ti-code fs-2 me-2 text-purple"></i>
-                  Response SIAKAD2
+                  Respon PMB SIAKAD2
                 </h3>
               </div>
               <div class="card-body">

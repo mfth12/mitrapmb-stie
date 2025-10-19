@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users', 'user_id')->onDelete('cascade');
             $table->foreignId('agen_id')->constrained('users', 'user_id')->onDelete('cascade');
 
-            // Data dari SIAKAD2
+            // Data dari PMB SIAKAD2
             $table->string('id_calon_mahasiswa')->unique();
             $table->string('username_siakad');
             $table->string('password_text')->nullable(); // Menyimpan password dalam plain text
@@ -38,7 +38,7 @@ return new class extends Migration
             $table->enum('status', ['pending', 'success', 'failed'])->default('pending');
             $table->text('keterangan')->nullable();
 
-            // Response dari SIAKAD2
+            // Response dari PMB SIAKAD2
             $table->text('response_data')->nullable();
             $table->timestamp('synced_at')->nullable();
 
