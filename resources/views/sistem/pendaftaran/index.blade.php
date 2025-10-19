@@ -6,7 +6,7 @@
       <div class="row g-2 align-items-center">
         <div class="col">
           <h2 class="page-title">Manajemen Pendaftaran PMB</h2>
-          <div class="page-pretitle">Gerbang daftar calon mahasiswa baru STIE</div>
+          <div class="page-pretitle">Gerbang pendaftaran calon mahasiswa baru melalui agen PMB</div>
         </div>
         <div class="col-auto ms-auto d-print-none">
           @can('pendaftaran_create')
