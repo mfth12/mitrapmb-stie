@@ -5,7 +5,7 @@
     <div class="container-xl">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <h2 class="page-title">Tambah Pendaftar Baru</h2>
+          <h2 class="page-title">Buat Pendaftaran Baru</h2>
           <div class="page-pretitle">Daftarkan calon mahasiswa baru ke PMB SIAKAD2</div>
         </div>
         <div class="col-auto">
@@ -41,9 +41,9 @@
                   <i class="ti ti-alert-triangle fs-2 text-warning me-2"></i>
                 </div>
                 <div>
-                  <h4 class="alert-title">Jadwal PMB Belum Tersedia</h4>
+                  <h4 class="alert-title text-warning-emphasis">Jadwal PMB Belum Tersedia</h4>
                   <div class="text-muted">Jadwal pendaftaran PMB belum tersedia. Silakan coba lagi nanti. Atau jika ini
-                    sebuah kesalahan, segera hubungi Tim PMB STIE Pembangunan.</div>
+                    sebuah kesalahan, segera hubungi Kami.</div>
                 </div>
               </div>
             </div>
@@ -69,14 +69,31 @@
                       <i class="ti ti-info-circle fs-2 text-info me-2"></i>
                     </div>
                     <div>
-                      <h4 class="alert-title text-info-emphasis">Jadwal Pendaftaran Aktif</h4>
-                      <div class="text-muted">
-                        <strong>Gelombang {{ $jadwal['GELOMBANG'] }}</strong> -
-                        Tahun Akademik {{ $jadwal['TAHUN'] }}/{{ $jadwal['TAHUN'] + 1 }} |
-                        Periode: {{ \Carbon\Carbon::parse($jadwal['TANGGALMULAI'])->format('d/m/Y') }} -
-                        {{ \Carbon\Carbon::parse($jadwal['TANGGALSELESAI'])->format('d/m/Y') }} |
-                        Biaya: <strong>Rp {{ number_format($jadwal['BIAYA'], 0, ',', '.') }}</strong>
-                      </div>
+                      <h4 class="alert-title text-info-emphasis mb-2">Jadwal Pendaftaran Aktif</h4>
+                      <table class="table table-sm table-borderless text-muted mb-0">
+                        <tr>
+                          <td><strong>Gelombang</strong></td>
+                          <td>: {{ $jadwal['GELOMBANG'] }}</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Tahun Akademik</strong></td>
+                          <td>: {{ $jadwal['TAHUN'] }}/{{ $jadwal['TAHUN'] + 1 }}</td>
+                        </tr>
+                        <tr>
+                          <td><strong>Periode Daftar</strong></td>
+                          <td>:
+                            {{ \Carbon\Carbon::parse($jadwal['TANGGALMULAI'])->format('d/m/Y') }} -
+                            {{ \Carbon\Carbon::parse($jadwal['TANGGALSELESAI'])->format('d/m/Y') }}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><strong>Biaya</strong></td>
+                          <td>:
+                            <strong>Rp {{ number_format($jadwal['BIAYA'], 0, ',', '.') }}</strong>
+                            <span class="text-success">(Gratis Formulir Rp 100.000)</span>
+                          </td>
+                        </tr>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -193,7 +210,7 @@
                     </div>
                     <div class="col-lg-6">
                       <div class="mb-3">
-                        <label class="form-label">Biaya Pendaftaran</label>
+                        <label class="form-label">Total Biaya Pendaftaran</label>
                         <div class="form-control-plaintext">
                           <span class="text-success fw-bold mt-0">Rp
                             {{ number_format($jadwal['BIAYA'], 0, ',', '.') }}</span>
@@ -203,7 +220,7 @@
                     </div>
                   </div>
 
-                  <div class="alert alert-warning mt-4">
+                  <div class="alert alert-warning mt-0">
                     <div class="d-flex">
                       <div>
                         <i class="ti ti-alert-triangle fs-2 text-warning me-2"></i>
@@ -250,7 +267,7 @@
       if (form) {
         form.addEventListener('submit', function(e) {
           btnSubmit.disabled = true;
-          btnSubmit.innerHTML = '<i class="ti ti-loader-2 fs-2 spinner me-1"></i> Memproses Daftar ke PMB SIAKAD2...';
+          btnSubmit.innerHTML = '<i class="ti ti-loader-2 fs-2 spinner me-1"></i> Memproses...';
         });
       }
     });

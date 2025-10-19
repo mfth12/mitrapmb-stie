@@ -12,7 +12,7 @@
           @can('pendaftaran_create')
             <a href="{{ route('pendaftaran.create') }}" class="btn btn-primary">
               <i class="ti ti-plus fs-2 me-1"></i>
-              Daftar
+              Buat Pendaftaran
             </a>
           @endcan
         </div>
@@ -209,8 +209,8 @@
                   <tr>
                     <td colspan="7" class="text-center py-4">
                       <div class="empty">
-                        <div class="empty-icon">
-                          <i class="ti ti-users fs-4"></i>
+                        <div class=" mb-2">
+                          <i class="ti ti-users fs-1"></i>
                         </div>
                         <p class="empty-title">Tidak ada data pendaftaran</p>
                         <p class="empty-subtitle text-muted">
@@ -219,8 +219,8 @@
                         @can('pendaftaran_create')
                           <div class="empty-action">
                             <a href="{{ route('pendaftaran.create') }}" class="btn btn-primary">
-                              <i class="ti ti-plus me-2"></i>
-                              Tambah Pendaftaran
+                              <i class="ti ti-plus fs-2 me-1"></i>
+                              Buat
                             </a>
                           </div>
                         @endcan

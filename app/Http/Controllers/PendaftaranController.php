@@ -58,7 +58,7 @@ class PendaftaranController extends Controller
     }
 
     /**
-     * Menampilkan form tambah pendaftaran
+     * Menampilkan form buat pendaftaran
      */
     public function create(): View
     {
@@ -68,7 +68,7 @@ class PendaftaranController extends Controller
 
         if (!$infoPendaftaran['success']) {
             return view('sistem.pendaftaran.create', [
-                'title' => 'Tambah Pendaftar Baru',
+                'title' => 'Buat Pendaftaran Baru',
                 'error' => $infoPendaftaran['message'] ?? 'Gagal mengambil data dari PMB SIAKAD2',
                 'prodi' => [],
                 'jadwal' => null,
@@ -76,7 +76,7 @@ class PendaftaranController extends Controller
         }
 
         return view('sistem.pendaftaran.create', [
-            'title' => 'Tambah Pendaftar Baru',
+            'title' => 'Buat Pendaftaran Baru',
             'prodi' => $infoPendaftaran['data']['prodi'] ?? [],
             'jadwal' => $infoPendaftaran['data']['jadwal'] ?? null,
             'kelasList' => $kelasList

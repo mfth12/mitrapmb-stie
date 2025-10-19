@@ -12,8 +12,8 @@
         <div class="col-auto ms-auto d-print-none">
           <div class="btn-list">
             @can('pendaftaran_create')
-              <a href="{{ route('pendaftaran.create') }}" class="btn btn-primary">
-                Buat Pendaftaran
+              <a href="{{ route('pendaftaran.index') }}" class="btn btn-primary">
+                Pendaftaran Calon Mahasiswa
               </a>
             @endcan
 
