@@ -23,7 +23,7 @@
   <x-modal.umum />
   @yield('modals')
 
-  <x-back.izitoast />
+  {{-- <x-back.izitoast /> --}}
   <x-back.script />
   <x-back.sweetalert />
   @yield('js_bawah')
