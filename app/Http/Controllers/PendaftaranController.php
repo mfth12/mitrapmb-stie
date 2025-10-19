@@ -98,13 +98,14 @@ class PendaftaranController extends Controller
 
             $jadwal = $infoPendaftaran['data']['jadwal'];
             $prodi = $infoPendaftaran['data']['prodi'][$request->prodi_id] ?? '';
+            $biayadiscount = $jadwal['BIAYA'] - 100000;
 
             // Data untuk dikirim ke PMB SIAKAD2
             $dataSiakad = [
                 'prodi_id' => $request->prodi_id,
                 'tahun' => $jadwal['TAHUN'],
                 'gelombang' => $jadwal['GELOMBANG'],
-                'biaya' => $jadwal['BIAYA'],
+                'biaya' => $biayadiscount,
                 'kelas' => $request->kelas,
                 'nama' => $request->nama_lengkap,
                 'email' => $request->email,
@@ -164,7 +165,7 @@ class PendaftaranController extends Controller
                 'nomor_hp2' => $request->nomor_hp2,
                 'password_text' => $request->password, // SIMPAN PASSWORD PLAIN TEXT
                 'status' => 'success',
-                'keterangan' => 'Pendaftaran berhasil via Agen PMB',
+                'keterangan' => 'Pendaftaran berhasil via ' . konfigs('NAMA_SISTEM') . '. Diskon formulir pendaftaran sebesar 100.000.',
                 'response_data' => $response,
                 'synced_at' => now(),
             ]);
