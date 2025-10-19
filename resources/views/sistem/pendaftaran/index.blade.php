@@ -22,79 +22,79 @@
 
   <div class="page-body">
     <div class="container-xl">
-      <div class="card">
-        <div class="card-body">
-          {{-- Stats Cards Baru --}}
-          <div class="row row-cards mb-4 mt-0">
-            <div class="col-sm-6 col-lg-3">
-              <div class="card card-sm">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-auto">
-                      <span class="bg-x text-white avatar">
-                        <i class="ti ti-file-isr fs-1"></i>
-                      </span>
-                    </div>
-                    <div class="col">
-                      <div class="h2 mb-0">{{ $pendaftaran->total() }}</div>
-                      <div class="text-secondary">Total Pendaftaran</div>
-                    </div>
-                  </div>
+      {{-- Stats Cards Baru --}}
+      <div class="row row-cards mb-4 mt-0">
+        <div class="col-sm-6 col-lg-3">
+          <div class="card card-sm">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <span class="bg-x text-white avatar">
+                    <i class="ti ti-file-isr fs-1"></i>
+                  </span>
                 </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-              <div class="card card-sm">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-auto">
-                      <span class="bg-green text-white avatar">
-                        <i class="ti ti-cloud-check fs-1"></i>
-                      </span>
-                    </div>
-                    <div class="col">
-                      <div class="h2 mb-0">{{ $pendaftaran->where('status', 'success')->count() }}</div>
-                      <div class="text-secondary">Berhasil</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-              <div class="card card-sm">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-auto">
-                      <span class="bg-warning text-white avatar">
-                        <i class="ti ti-progress-alert fs-1"></i>
-                      </span>
-                    </div>
-                    <div class="col">
-                      <div class="h2 mb-0">{{ $pendaftaran->where('status', 'pending')->count() }}</div>
-                      <div class="text-secondary">Pending</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-              <div class="card card-sm">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-auto">
-                      <span class="bg-danger text-white avatar">
-                        <i class="ti ti-cloud-off fs-1"></i>
-                      </span>
-                    </div>
-                    <div class="col">
-                      <div class="h2 mb-0">{{ $pendaftaran->where('status', 'failed')->count() }}</div>
-                      <div class="text-secondary">Gagal</div>
-                    </div>
-                  </div>
+                <div class="col">
+                  <div class="h2 mb-0">{{ $pendaftaran->total() }}</div>
+                  <div class="text-secondary">Total Pendaftaran</div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="card card-sm">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <span class="bg-green text-white avatar">
+                    <i class="ti ti-cloud-check fs-1"></i>
+                  </span>
+                </div>
+                <div class="col">
+                  <div class="h2 mb-0">{{ $pendaftaran->where('status', 'success')->count() }}</div>
+                  <div class="text-secondary">Berhasil</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="card card-sm">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <span class="bg-warning text-white avatar">
+                    <i class="ti ti-progress-alert fs-1"></i>
+                  </span>
+                </div>
+                <div class="col">
+                  <div class="h2 mb-0">{{ $pendaftaran->where('status', 'pending')->count() }}</div>
+                  <div class="text-secondary">Pending</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="card card-sm">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <span class="bg-danger text-white avatar">
+                    <i class="ti ti-cloud-off fs-1"></i>
+                  </span>
+                </div>
+                <div class="col">
+                  <div class="h2 mb-0">{{ $pendaftaran->where('status', 'failed')->count() }}</div>
+                  <div class="text-secondary">Gagal</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
 
           {{-- Form filter --}}
           <form method="GET" class="row g-3 mb-4">
