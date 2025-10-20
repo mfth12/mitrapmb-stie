@@ -324,6 +324,28 @@
     .font-monospace {
       font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
     }
+
+    /* Toast di tengah atas */
+    .custom-toast {
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      opacity: 0;
+      transition: all 0.4s ease;
+      z-index: 1060;
+    }
+
+    /* Saat muncul */
+    .custom-toast.showing {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Saat hilang ke bawah */
+    .custom-toast.hiding {
+      transform: translateX(-50%) translateY(30px);
+      opacity: 0;
+    }
   </style>
 @endsection
 
@@ -333,10 +355,10 @@
 
 @section('js_bawah')
   {{-- DEPENDENSI UNTUK PAGE DASBOR --}}
-  <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/apexcharts/dist/apexcharts.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/jsvectormap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world-merc.js"></script>
+  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/apexcharts/dist/apexcharts.min.js"></script> --}}
+  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/jsvectormap.min.js"></script> --}}
+  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world.js"></script> --}}
+  {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world-merc.js"></script> --}}
   {{-- TAMBAHAN JS UNTUK PAGE DASBOR --}}
   {{-- @vite(['resources/js/pages/...']) --}}
   {{-- KOMPONEN INKLUD --}}
@@ -345,11 +367,11 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Initialize tooltips
-      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-      var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl)
-      });
+      // // Initialize tooltips
+      // var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      // var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+      //   return new bootstrap.Tooltip(tooltipTriggerEl)
+      // });
 
       // Delete confirmation
       document.querySelectorAll('.delete-btn').forEach(button => {
