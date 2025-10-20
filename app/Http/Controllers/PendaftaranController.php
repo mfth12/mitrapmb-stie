@@ -211,11 +211,13 @@ class PendaftaranController extends Controller
 
         $infoPendaftaran = $this->siakadService->getInfoPendaftaran();
         $prodi = $infoPendaftaran['data']['prodi'] ?? [];
+        $kelas = PendaftaranModel::daftarKelas();
 
         return view('sistem.pendaftaran.edit', [
             'title' => 'Edit Pendaftaran - ' . $pendaftaran->nama_lengkap,
             'pendaftaran' => $pendaftaran,
             'prodi' => $prodi,
+            'kelas' => $kelas,
         ]);
     }
 

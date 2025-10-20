@@ -134,6 +134,17 @@ class PendaftaranModel extends Model
     }
 
     /**
+     * Fungsi static untuk nama kelas yang dinonaktifkan (tidak bisa dipilih)
+     */
+    public static function daftarKelasWithNonaktif(): array
+    {
+        return [
+            '1', // Reguler Sore
+            '3', // International
+        ];
+    }
+
+    /**
      * Fungsi static untuk daftar prodi yang tersedia saat pendaftaran
      */
     public static function daftarProdiAktif(): array
