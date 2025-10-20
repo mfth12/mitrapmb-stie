@@ -263,10 +263,10 @@
 
       if (passwordField.type === 'password') {
         passwordField.type = 'text';
-        passwordIcon.className = 'ti ti-eye-off';
+        passwordIcon.className = 'ti ti-eye-off fs-2';
       } else {
         passwordField.type = 'password';
-        passwordIcon.className = 'ti ti-eye';
+        passwordIcon.className = 'ti ti-eye fs-2';
       }
     }
 
@@ -287,18 +287,24 @@
 
     function showToast(message, type = 'info') {
       const toast = document.createElement('div');
-      toast.className = `toast show align-items-center text-bg-${type} border-0 position-fixed top-0 end-0 m-3`;
-      toast.style.zIndex = '1060';
+      toast.className = `toast show align-items-center text-bg-${type} border-0 position-fixed custom-toast`;
       toast.innerHTML = `
-        <div class="d-flex">
-            <div class="toast-body">${message}</div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>
+      <div class="d-flex">
+        <div class="toast-body">${message}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
     `;
+
       document.body.appendChild(toast);
 
+      // Efek animasi muncul
+      setTimeout(() => toast.classList.add('showing'), 50);
+
+      // Hapus setelah 3 detik
       setTimeout(() => {
-        toast.remove();
+        toast.classList.remove('showing');
+        toast.classList.add('hiding');
+        setTimeout(() => toast.remove(), 500);
       }, 3000);
     }
   </script>
@@ -311,6 +317,28 @@
     .avatar-text {
       font-weight: 600;
       text-transform: uppercase;
+    }
+
+    /* Toast di tengah atas */
+    .custom-toast {
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      opacity: 0;
+      transition: all 0.4s ease;
+      z-index: 1060;
+    }
+
+    /* Saat muncul */
+    .custom-toast.showing {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Saat hilang */
+    .custom-toast.hiding {
+      transform: translateX(-50%) translateY(-20px);
+      opacity: 0;
     }
   </style>
 @endsection
