@@ -260,12 +260,13 @@
     function togglePassword() {
       const passwordField = document.getElementById('passwordField');
       const passwordIcon = document.getElementById('passwordIcon');
+
       if (passwordField.type === 'password') {
         passwordField.type = 'text';
-        passwordIcon.className = 'ti ti-eye-off fs-2';
+        passwordIcon.className = 'ti ti-eye-off';
       } else {
         passwordField.type = 'password';
-        passwordIcon.className = 'ti ti-eye fs-2';
+        passwordIcon.className = 'ti ti-eye';
       }
     }
 
@@ -273,6 +274,7 @@
       navigator.clipboard.writeText(text).then(function() {
         showToast(`${type} berhasil disalin!`, 'success');
       }).catch(function() {
+        // Fallback untuk browser lama
         const textArea = document.createElement('textarea');
         textArea.value = text;
         document.body.appendChild(textArea);
@@ -281,6 +283,23 @@
         document.body.removeChild(textArea);
         showToast(`${type} berhasil disalin!`, 'success');
       });
+    }
+
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `toast show align-items-center text-bg-${type} border-0 position-fixed top-0 end-0 m-3`;
+      toast.style.zIndex = '1060';
+      toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">${message}</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    `;
+      document.body.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 3000);
     }
   </script>
 
