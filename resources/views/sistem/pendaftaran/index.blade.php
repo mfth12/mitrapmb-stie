@@ -144,7 +144,11 @@
                           <span class="avatar-text">{{ substr($daftar->nama_lengkap, 0, 2) }}</span>
                         </div>
                         <div>
-                          <div class="font-weight-medium">{{ $daftar->nama_lengkap }}</div>
+                          <div class="font-weight-medium">
+                            <a href="{{ route('pendaftaran.show', $daftar) }}" class="text-reset link-hover-underline">
+                              {{ $daftar->nama_lengkap }}
+                            </a>
+                          </div>
                           <div class="text-muted small">
                             <i class="ti ti-mail me-1"></i>{{ $daftar->email }}
                           </div>
@@ -177,14 +181,6 @@
                           <i class="ti ti-eye fs-3 me-1"></i>
                           Detail
                         </a>
-                        @if ($daftar->password_text && $daftar->username_siakad)
-                          <button class="btn btn-sm btn-default"
-                            onclick="showCredentials('{{ $daftar->username_siakad }}', '{{ $daftar->password_text }}')"
-                            title="Kredensial" data-bs-toggle="tooltip" data-bs-placement="top">
-                            <i class="ti ti-key fs-3"></i>
-                            {{-- Key --}}
-                          </button>
-                        @endif
                         @can('pendaftaran_edit')
                           @if ($daftar->status === 'pending')
                             <a href="{{ route('pendaftaran.edit', $daftar) }}" class="btn btn-sm btn-default"
@@ -194,8 +190,17 @@
                             </a>
                           @endif
                         @endcan
+                        @if ($daftar->password_text && $daftar->username_siakad)
+                          <a href="#"
+                            onclick="showCredentials('{{ $daftar->username_siakad }}', '{{ $daftar->password_text }}')"
+                            class="btn btn-sm btn-default text-success d-none d-sm-inline-block" data-bs-toggle="modal"
+                            data-bs-target="#credentials-modal" title="Kredensial" data-bs-toggle="tooltip"
+                            data-bs-placement="top">
+                            <i class="ti ti-key fs-3"></i>
+                          </a>
+                        @endif
                         @can('pendaftaran_delete')
-                          <button type="button" class="btn btn-sm btn-default btn-danger delete-btn" title="Hapus"
+                          <button type="button" class="btn btn-sm btn-default text-danger delete-btn" title="Hapus"
                             data-bs-toggle="tooltip" data-bs-placement="top" data-name="{{ $daftar->nama_lengkap }}"
                             data-url="{{ route('pendaftaran.destroy', $daftar) }}">
                             <i class="ti ti-trash fs-3"></i>
@@ -251,6 +256,7 @@
   </div>
 @endsection
 
+
 @section('modals')
   {{-- Modal Kredensial --}}
   <div class="modal modal-blur fade" id="credentials-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -258,7 +264,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            <i class="ti ti-key me-2 text-success"></i>
+            <i class="ti ti-key fs-2 me-2 text-success"></i>
             Kredensial Login PMB SIAKAD2
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -267,7 +273,7 @@
           <div class="alert alert-info">
             <div class="d-flex">
               <div>
-                <i class="ti ti-info-circle me-2"></i>
+                <i class="ti ti-info-circle fs-2 me-2"></i>
               </div>
               <div>
                 <small>Berikan kredensial ini ke calon mahasiswa untuk login ke PMB SIAKAD2</small>
@@ -279,8 +285,8 @@
             <label class="form-label">Username</label>
             <div class="input-group">
               <input type="text" class="form-control font-monospace" id="modal-username" readonly value="">
-              <button class="btn btn-outline-secondary" type="button" onclick="copyModalUsername()">
-                <i class="ti ti-copy"></i>
+              <button class="btn btn-default" type="button" onclick="copyModalUsername()">
+                <i class="ti ti-copy fs-3"></i>
               </button>
             </div>
           </div>
@@ -288,19 +294,19 @@
             <label class="form-label">Password</label>
             <div class="input-group">
               <input type="password" class="form-control font-monospace" id="modal-password" readonly value="">
-              <button class="btn btn-outline-secondary" type="button" onclick="toggleModalPassword()">
-                <i class="ti ti-eye" id="modal-password-icon"></i>
+              <button class="btn btn-default" type="button" onclick="toggleModalPassword()">
+                <i class="ti ti-eye fs-3" id="modal-password-icon"></i>
               </button>
-              <button class="btn btn-outline-primary" type="button" onclick="copyModalPassword()">
-                <i class="ti ti-copy"></i>
+              <button class="btn btn-default text-success" type="button" onclick="copyModalPassword()">
+                <i class="ti ti-copy fs-3"></i>
               </button>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-            <i class="ti ti-check me-1"></i>
-            Tutup
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+            <i class="ti ti-check fs-2 me-1"></i>
+            Oke
           </button>
         </div>
       </div>
@@ -373,11 +379,11 @@
 
       // Reset ke state awal
       document.getElementById('modal-password').type = 'password';
-      document.getElementById('modal-password-icon').className = 'ti ti-eye';
+      document.getElementById('modal-password-icon').className = 'ti ti-eye fs-2';
 
-      // Show modal menggunakan Bootstrap 5
-      var modal = new bootstrap.Modal(document.getElementById('credentials-modal'));
-      modal.show();
+      // Show modal menggunakan Bootstrap 5 (Tabler)
+      const modalElement = document.getElementById('credentials-modal');
+      modalElement.show();
     }
 
     // Toggle show/hide password di modal
@@ -387,10 +393,10 @@
 
       if (passwordField.type === 'password') {
         passwordField.type = 'text';
-        passwordIcon.className = 'ti ti-eye-off';
+        passwordIcon.className = 'ti ti-eye-off fs-2';
       } else {
         passwordField.type = 'password';
-        passwordIcon.className = 'ti ti-eye';
+        passwordIcon.className = 'ti ti-eye fs-2';
       }
     }
 
