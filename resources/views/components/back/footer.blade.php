@@ -6,11 +6,8 @@
         <ul class="list-inline list-inline-dots mb-0">
           <li class="list-inline-item">
             <a href="https://github.com/stiepemb/" target="_blank" class="link-secondary" rel="noopener">
-              Made with <i class="ti ti-heart-filled me-1"></i> IT STIE Pembangunan
+              Made with<i class="ti ti-heart-filled mx-1"></i>IT STIE Pembangunan. {{ env('APP_VERSION') }}
             </a>
-          </li>
-          <li class="list-inline-item">
-            <a href="./changelog.html" class="link-secondary" rel="noopener"> {{ env('APP_VERSION') }} </a>
           </li>
         </ul>
       </div>
