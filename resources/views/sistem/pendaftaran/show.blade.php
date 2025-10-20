@@ -300,7 +300,7 @@
       // Efek animasi muncul
       setTimeout(() => toast.classList.add('showing'), 50);
 
-      // Hapus setelah 3 detik
+      // Hapus setelah 3 detik (menghilang ke bawah)
       setTimeout(() => {
         toast.classList.remove('showing');
         toast.classList.add('hiding');
@@ -335,9 +335,9 @@
       opacity: 1;
     }
 
-    /* Saat hilang */
+    /* Saat hilang ke bawah */
     .custom-toast.hiding {
-      transform: translateX(-50%) translateY(-20px);
+      transform: translateX(-50%) translateY(30px);
       opacity: 0;
     }
   </style>
