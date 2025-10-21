@@ -5,7 +5,7 @@
     <div class="container-xl">
       <div class="row g-2 align-items-center">
         <div class="col">
-          <h2 class="page-title">Manajemen Pendaftaran PMB</h2>
+          <h2 class="page-title">Manajemen Pendaftaran</h2>
           <div class="page-pretitle">Gerbang pendaftaran calon mahasiswa baru melalui agen PMB</div>
         </div>
         <div class="col-auto ms-auto d-print-none">
@@ -161,7 +161,7 @@
                       </div>
                     </td>
                     <td>
-                      <div class="font-weight-medium">{{ $daftar->prodi_nama }}</div>
+                      <div class="font-weight-medium">S1-{{ $daftar->prodi_nama }}</div>
                       <div class="text-muted small">Kelas: {{ $daftar->nama_kelas }}</div>
                     </td>
                     <td>

@@ -33,7 +33,7 @@
                       @can('pendaftaran_view')
                         <a class="dropdown-item {{ request()->routeIs('pendaftaran.*') ? 'active' : '' }}"
                           href="{{ route('pendaftaran.index') }}">
-                          Data Pendaftaran
+                          Manajemen Pendaftaran
                         </a>
                       @endcan
 

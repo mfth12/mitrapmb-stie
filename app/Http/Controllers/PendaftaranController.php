@@ -52,7 +52,7 @@ class PendaftaranController extends Controller
         $pendaftaran = $query->latest()->paginate(15);
 
         return view('sistem.pendaftaran.index', [
-            'title' => 'Manajemen Pendaftaran PMB',
+            'title' => 'Manajemen Pendaftaran',
             'pendaftaran' => $pendaftaran,
         ]);
     }
@@ -68,7 +68,7 @@ class PendaftaranController extends Controller
 
         if (!$infoPendaftaran['success']) {
             return view('sistem.pendaftaran.create', [
-                'title' => 'Buat Pendaftaran Baru',
+                'title' => 'Buat Pendaftaran',
                 'error' => $infoPendaftaran['message'] ?? 'Gagal mengambil data dari PMB SIAKAD2',
                 'prodi' => [],
                 'jadwal' => null,
@@ -76,7 +76,7 @@ class PendaftaranController extends Controller
         }
 
         return view('sistem.pendaftaran.create', [
-            'title' => 'Buat Pendaftaran Baru',
+            'title' => 'Buat Pendaftaran',
             'prodi' => $infoPendaftaran['data']['prodi'] ?? [],
             'jadwal' => $infoPendaftaran['data']['jadwal'] ?? null,
             'kelasList' => $kelasList
