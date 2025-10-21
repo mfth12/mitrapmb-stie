@@ -17,86 +17,93 @@
               </li>
 
               {{-- PENDAFTARAN --}}
-              <li
-                class="nav-item dropdown {{ request()->routeIs('pendaftaran.*') || request()->routeIs('approval.*') ? 'active' : '' }}">
-                <a class="nav-link dropdown-toggle" href="#navbar-pendaftaran" data-bs-toggle="dropdown"
-                  data-bs-auto-close="outside" role="button" aria-expanded="false">
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <i class="ti ti-book-2 fs-2"></i>
-                  </span>
-                  <span class="nav-link-title">Pendaftaran</span>
-                </a>
-                <div class="dropdown-menu">
-                  <div class="dropdown-menu-columns">
-                    <div class="dropdown-menu-column">
-                      {{-- Menu Pendaftaran --}}
-                      @can('pendaftaran_view')
-                        <a class="dropdown-item {{ request()->routeIs('pendaftaran.*') ? 'active' : '' }}"
-                          href="{{ route('pendaftaran.index') }}">
-                          Manajemen Pendaftaran
-                        </a>
-                      @endcan
+              @canany(['pendaftaran_view', 'approval_view', 'keuangan_view'])
+                <li
+                  class="nav-item dropdown {{ request()->routeIs('pendaftaran.*') || request()->routeIs('approval.*') ? 'active' : '' }}">
+                  <a class="nav-link dropdown-toggle" href="#navbar-pendaftaran" data-bs-toggle="dropdown"
+                    data-bs-auto-close="outside" role="button" aria-expanded="false">
+                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                      <i class="ti ti-book-2 fs-2"></i>
+                    </span>
+                    <span class="nav-link-title">Pendaftaran</span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-menu-columns">
+                      <div class="dropdown-menu-column">
+                        {{-- Menu Pendaftaran --}}
+                        @can('pendaftaran_view')
+                          <a class="dropdown-item {{ request()->routeIs('pendaftaran.*') ? 'active' : '' }}"
+                            href="{{ route('pendaftaran.index') }}">
+                            Manajemen Pendaftaran
+                          </a>
+                        @endcan
 
-                      {{-- Menu Approval --}}
-                      @can('approval_view')
-                        <a class="dropdown-item {{ request()->routeIs('approval.*') ? 'active' : '' }}"
-                          href="{{ route('approval.index') }}">
-                          Approval Mahasiswa
-                        </a>
-                      @endcan
+                        {{-- Menu Approval --}}
+                        @can('approval_view')
+                          <a class="dropdown-item {{ request()->routeIs('approval.*') ? 'active' : '' }}"
+                            href="{{ route('approval.index') }}">
+                            Approval Mahasiswa
+                          </a>
+                        @endcan
 
-                      {{-- Menu Keuangan --}}
-                      @can('keuangan_view')
-                        <a class="dropdown-item {{ request()->routeIs('keuangan.*') ? 'active' : '' }}"
-                          href="{{ route('keuangan.index') }}">
-                          Verifikasi Keuangan
-                        </a>
-                      @endcan
+                        {{-- Menu Keuangan --}}
+                        @can('keuangan_view')
+                          <a class="dropdown-item {{ request()->routeIs('keuangan.*') ? 'active' : '' }}"
+                            href="{{ route('keuangan.index') }}">
+                            Verifikasi Keuangan
+                          </a>
+                        @endcan
+                      </div>
                     </div>
                   </div>
-                </div>
-              </li>
+                </li>
+              @endcanany
 
-              {{-- PENGATURAN --}}
-              <li
-                class="nav-item dropdown {{ request()->routeIs('pengguna.*') || request()->routeIs('konfigurasi.*') ? 'active' : '' }}">
-                <a class="nav-link dropdown-toggle" href="#navbar-pengaturan" data-bs-toggle="dropdown"
-                  data-bs-auto-close="outside" role="button" aria-expanded="false">
-                  <span class="nav-link-icon d-md-none d-lg-inline-block">
-                    <i class="ti ti-adjustments fs-2"></i>
-                  </span>
-                  <span class="nav-link-title">Sistem</span>
-                </a>
-                <div class="dropdown-menu">
-                  <div class="dropdown-menu-columns">
-                    <div class="dropdown-menu-column">
-                      {{-- Menu Manajemen Pengguna --}}
-                      @can('user_view')
-                        <a class="dropdown-item {{ request()->routeIs('pengguna.*') ? 'active' : '' }}"
-                          href="{{ route('pengguna.index') }}">
-                          Manajemen Pengguna
-                        </a>
-                      @endcan
 
-                      {{-- Menu Konfigurasi Sistem --}}
-                      @can('system_manage') {{-- Asumsikan ada permission system_manage --}}
-                        <a class="dropdown-item {{ request()->routeIs('konfigurasi.*') ? 'active' : '' }}"
-                          href="{{ route('konfigurasi.index') }}">
-                          Konfigurasi Sistem
-                        </a>
-                      @endcan
+              {{-- PENGATURAN SISTEM --}}
+              @canany(['user_view', 'system_manage', 'role_view'])
+                <li
+                  class="nav-item dropdown {{ request()->routeIs('pengguna.*') || request()->routeIs('konfigurasi.*') ? 'active' : '' }}">
+                  <a class="nav-link dropdown-toggle" href="#navbar-pengaturan" data-bs-toggle="dropdown"
+                    data-bs-auto-close="outside" role="button" aria-expanded="false">
+                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                      <i class="ti ti-adjustments fs-2"></i>
+                    </span>
+                    <span class="nav-link-title">Sistem</span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-menu-columns">
+                      <div class="dropdown-menu-column">
+                        {{-- Menu Manajemen Pengguna --}}
+                        @can('user_view')
+                          <a class="dropdown-item {{ request()->routeIs('pengguna.*') ? 'active' : '' }}"
+                            href="{{ route('pengguna.index') }}">
+                            Manajemen Pengguna
+                          </a>
+                        @endcan
 
-                      {{-- Menu Roles & Permissions --}}
-                      @can('role_view') {{-- Asumsikan ada permission role_view --}}
-                        <a class="dropdown-item {{ request()->routeIs('roles.*') ? 'active' : '' }}"
-                          href="{{ route('roles.index') }}">
-                          Roles & Permissions
-                        </a>
-                      @endcan
+                        {{-- Menu Konfigurasi Sistem --}}
+                        @can('system_manage')
+                          {{-- Asumsikan ada permission system_manage --}}
+                          <a class="dropdown-item {{ request()->routeIs('konfigurasi.*') ? 'active' : '' }}"
+                            href="{{ route('konfigurasi.index') }}">
+                            Konfigurasi Sistem
+                          </a>
+                        @endcan
+
+                        {{-- Menu Roles & Permissions --}}
+                        @can('role_view')
+                          {{-- Asumsikan ada permission role_view --}}
+                          <a class="dropdown-item {{ request()->routeIs('roles.*') ? 'active' : '' }}"
+                            href="{{ route('roles.index') }}">
+                            Roles & Permissions
+                          </a>
+                        @endcan
+                      </div>
                     </div>
                   </div>
-                </div>
-              </li>
+                </li>
+              @endcanany
 
               {{-- LAPORAN --}}
               @can('report_view')
