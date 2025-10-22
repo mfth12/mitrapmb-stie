@@ -210,7 +210,7 @@
               <button class="btn btn-default" type="button" onclick="toggleModalPassword()">
                 <i class="ti ti-eye fs-3" id="modal-password-icon"></i>
               </button>
-              <button class="btn btn-default text-success" type="button" onclick="copyModalPassword()">
+              <button class="btn btn-default" type="button" onclick="copyModalPassword()">
                 <i class="ti ti-copy fs-3"></i>
               </button>
             </div>
@@ -218,7 +218,6 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-success" data-bs-dismiss="modal">
-            <i class="ti ti-check fs-2 me-1"></i>
             Oke
           </button>
         </div>
