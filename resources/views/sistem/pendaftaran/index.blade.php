@@ -93,10 +93,9 @@
           </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-body">
 
-          {{-- Form filter --}}
+      {{-- <div class="card mb-4">
+        <div class="card-body">
           <form method="GET" class="row g-3 mb-4">
             <div class="col-md-5">
               <input type="text" name="cari" class="form-control"
@@ -117,11 +116,36 @@
               </button>
             </div>
           </form>
+        </div>
+      </div> --}}
 
-
+      <div class="card">
+        <div class="card-table">
+          <div class="card-header">
+            <div class="row w-full">
+              <div class="col">
+                <h3 class="card-title mb-0">Daftar Calon Mahasiswa</h3>
+                <p class="text-secondary m-0">Table description.</p>
+              </div>
+              <div class="col-md-auto col-sm-12">
+                <div class="ms-auto d-flex flex-wrap btn-list">
+                  <form method="GET" class="row g-3">
+                    <div class="col">
+                      <select name="status" class="form-select">
+                        <option value="">Semua Status</option>
+                        <option value="success" {{ request('status') == 'success' ? 'selected' : '' }}>Berhasil</option>
+                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="failed" {{ request('status') == 'failed' ? 'selected' : '' }}>Gagal</option>
+                      </select>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
           {{-- Tabel pendaftaran --}}
-          <div class="table-responsive">
-            <table id="pendaftaran-table" class="table table-vcenter table-bordered table-striped table-hover">
+          <div class="table-responsive" style="padding: 1rem">
+            <table id="pendaftaran-table" class="table table-vcenter table-md table-hover">
               <thead>
                 <tr>
                   <th class="w-1">No</th>
@@ -134,24 +158,11 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- Data akan diisi oleh DataTables -->
+                {{-- Data akan diisi oleh DataTables --}}
               </tbody>
             </table>
           </div>
-
-          {{-- Pagination --}}
-          @if ($pendaftaran->hasPages())
-            <div class="card-footer d-flex align-items-center">
-              <p class="m-0 text-muted">
-                Menampilkan <span>{{ $pendaftaran->firstItem() }}</span> sampai
-                <span>{{ $pendaftaran->lastItem() }}</span> dari
-                <span>{{ $pendaftaran->total() }}</span> data
-              </p>
-              <ul class="pagination m-0 ms-auto">
-                {{ $pendaftaran->links('vendor.pagination.tabler') }}
-              </ul>
-            </div>
-          @endif
+          {{-- end --}}
         </div>
       </div>
     </div>
@@ -256,7 +267,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      padding: 20px;
+      padding: 50px;
       border: 1px solid #ccc;
       z-index: 9999;
     }
@@ -294,6 +305,7 @@
         processing: true, // Tampilkan proses loading
         serverSide: true, // Aktifkan server-side processing
         responsive: true, // Aktifkan responsif
+        searchDelay: 500,
         ajax: {
           url: "{{ route('pendaftaran.data') }}", // Ganti dengan route yang akan kita buat untuk data
           type: 'GET',
@@ -349,6 +361,13 @@
         language: {
           url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json' // Bahasa Indonesia
         },
+        stateSave: true,
+        // stateSaveCallback: function(settings, data) {
+        //   window.storageSetItem(settings.sInstance, JSON.stringify(data));
+        // },
+        // stateLoadCallback: function(settings) {
+        //   return JSON.parse(window.storageGetItem(settings.sInstance));
+        // }
         // Tambahkan konfigurasi lain sesuai kebutuhan
       });
 
