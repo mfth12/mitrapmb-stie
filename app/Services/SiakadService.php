@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
+use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class SiakadService
 {
@@ -36,7 +37,7 @@ class SiakadService
         'success' => false,
         'message' => 'Gagal mengambil data dari PMB SIAKAD2'
       ];
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       Log::error('SiakadService getInfoPendaftaran error: ' . $e->getMessage());
       return [
         'success' => false,
@@ -69,7 +70,7 @@ class SiakadService
         'message' => $responseData['message'] ?? 'Registrasi gagal',
         'errors' => $responseData['errors'] ?? []
       ];
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       Log::error('SiakadService registerCalonMahasiswa error: ' . $e->getMessage());
       return [
         'success' => false,
@@ -88,7 +89,7 @@ class SiakadService
         ->get($this->baseUrl . '/api/v2/ping');
 
       return $response->successful() && ($response->json()['message'] ?? '') === 'pong';
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       return false;
     }
   }
