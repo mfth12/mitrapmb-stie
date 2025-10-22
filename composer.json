@@ -29,7 +29,7 @@
         "spatie/laravel-html": "^3.12",
         "spatie/laravel-medialibrary": "^11.14",
         "spatie/laravel-permission": "^6.21",
-        "yajra/laravel-datatables-oracle": "^11"
+        "yajra/laravel-datatables-oracle": "^11.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.15",

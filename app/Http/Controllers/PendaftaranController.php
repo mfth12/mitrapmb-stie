@@ -8,7 +8,9 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Services\SiakadService;
 use App\Models\PendaftaranModel;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\PendaftaranStoreRequest;
 use App\Http\Requests\PendaftaranUpdateRequest;
 
@@ -19,6 +21,116 @@ class PendaftaranController extends Controller
     public function __construct(SiakadService $siakadService)
     {
         $this->siakadService = $siakadService;
+    }
+
+    /**
+     * Menyediakan data untuk DataTables
+     */
+    public function data(Request $request): JsonResponse
+    {
+        $query = PendaftaranModel::with(['user', 'agen']);
+
+        // Filter berdasarkan role user
+        if (auth()->user()->hasRole('agen')) {
+            $query->where('agen_id', auth()->id());
+        }
+
+        // Filter berdasarkan pencarian
+        if ($request->has('cari') && $request->cari != '') {
+            $search = $request->cari;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('id_calon_mahasiswa', 'like', "%{$search}%")
+                    ->orWhere('no_transaksi', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter berdasarkan status
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        // Gunakan Yajra DataTables untuk mengolah query
+        return DataTables::eloquent($query)
+            ->addIndexColumn() // Kolom DT_RowIndex
+            ->addColumn('calon_mahasiswa', function ($row) {
+                $html = '<div class="d-flex align-items-center">
+                        <div class="avatar avatar-sm me-3 bg-blue-lt">
+                          <span class="avatar-text">' . substr($row->nama_lengkap, 0, 2) . '</span>
+                        </div>
+                        <div>
+                          <div class="font-weight-medium">
+                            <a href="' . route('pendaftaran.show', $row) . '" class="text-reset link-hover-underline">
+                              ' . $row->nama_lengkap . '
+                            </a>
+                          </div>
+                          <div class="text-muted small">
+                            <i class="ti ti-mail me-1"></i>' . $row->email . '
+                          </div>';
+                if ($row->id_calon_mahasiswa) {
+                    $html .= '<div class="text-muted small">
+                            <i class="ti ti-id me-1"></i>' . $row->id_calon_mahasiswa . '
+                          </div>';
+                }
+                $html .= '</div></div>';
+                return $html;
+            })
+            ->addColumn('prodi', function ($row) {
+                return '<div class="font-weight-medium">S1-' . $row->prodi_nama . '</div>
+                    <div class="text-muted small">Kelas: ' . $row->nama_kelas . '</div>';
+            })
+            ->addColumn('akademik', function ($row) {
+                return '<div class="font-weight-medium">' . $row->tahun . '/' . $row->gelombang . '</div>
+                    <div class="text-muted small">' . $row->created_at->format('d/m/Y H:i') . '</div>';
+            })
+            ->addColumn('biaya', function ($row) {
+                return '<div class="font-weight-medium">' . $row->biaya_formatted . '</div>';
+            })
+            ->addColumn('status_badge', function ($row) {
+                return $row->status_badge;
+            })
+            ->addColumn('aksi', function ($row) {
+                $html = '<div class="btn-list justify-content-center">
+                        <a href="' . route('pendaftaran.show', $row) . '" class="btn btn-sm btn-default" title="Detail"
+                          data-bs-toggle="tooltip" data-bs-placement="top">
+                          <i class="ti ti-eye fs-3 me-1"></i>
+                          Detail
+                        </a>';
+
+                // Edit Button
+                if (auth()->user()->can('pendaftaran_edit') && $row->status === 'pending') {
+                    $html .= '<a href="' . route('pendaftaran.edit', $row) . '" class="btn btn-sm btn-default"
+                              title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
+                              <i class="ti ti-edit fs-3"></i>
+                          </a>';
+                }
+
+                // Credential Button
+                if ($row->password_text && $row->username_siakad) {
+                    $html .= '<a href="#"
+                            onclick="showCredentials(\'' . addslashes($row->username_siakad) . '\', \'' . addslashes($row->password_text) . '\')"
+                            class="btn btn-sm btn-default text-success d-none d-sm-inline-block" data-bs-toggle="modal"
+                            data-bs-target="#credentials-modal" title="Kredensial" data-bs-toggle="tooltip"
+                            data-bs-placement="top">
+                            <i class="ti ti-key fs-3"></i>
+                          </a>';
+                }
+
+                // Delete Button
+                if (auth()->user()->can('pendaftaran_delete')) {
+                    $html .= '<button type="button" class="btn btn-sm btn-default text-danger delete-btn" title="Hapus"
+                            data-bs-toggle="tooltip" data-bs-placement="top" data-name="' . addslashes($row->nama_lengkap) . '"
+                            data-url="' . route('pendaftaran.destroy', $row) . '">
+                            <i class="ti ti-trash fs-3"></i>
+                          </button>';
+                }
+
+                $html .= '</div>';
+                return $html;
+            })
+            ->rawColumns(['calon_mahasiswa', 'prodi', 'akademik', 'biaya', 'status_badge', 'aksi']) // Kolom yang berisi HTML
+            ->make(true);
     }
 
     /**

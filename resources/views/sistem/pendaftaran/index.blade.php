@@ -121,7 +121,7 @@
 
           {{-- Tabel pendaftaran --}}
           <div class="table-responsive">
-            <table class="table table-vcenter table-bordered table-striped table-hover">
+            <table id="pendaftaran-table" class="table table-vcenter table-bordered table-striped table-hover">
               <thead>
                 <tr>
                   <th class="w-1">No</th>
@@ -134,105 +134,7 @@
                 </tr>
               </thead>
               <tbody>
-                @forelse($pendaftaran as $daftar)
-                  <tr>
-                    <td class="text-muted">
-                      {{ $loop->iteration + ($pendaftaran->currentPage() - 1) * $pendaftaran->perPage() }}</td>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <div class="avatar avatar-sm me-3 bg-blue-lt">
-                          <span class="avatar-text">{{ substr($daftar->nama_lengkap, 0, 2) }}</span>
-                        </div>
-                        <div>
-                          <div class="font-weight-medium">
-                            <a href="{{ route('pendaftaran.show', $daftar) }}" class="text-reset link-hover-underline">
-                              {{ $daftar->nama_lengkap }}
-                            </a>
-                          </div>
-                          <div class="text-muted small">
-                            <i class="ti ti-mail me-1"></i>{{ $daftar->email }}
-                          </div>
-                          @if ($daftar->id_calon_mahasiswa)
-                            <div class="text-muted small">
-                              <i class="ti ti-id me-1"></i>{{ $daftar->id_calon_mahasiswa }}
-                            </div>
-                          @endif
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="font-weight-medium">S1-{{ $daftar->prodi_nama }}</div>
-                      <div class="text-muted small">Kelas: {{ $daftar->nama_kelas }}</div>
-                    </td>
-                    <td>
-                      <div class="font-weight-medium">{{ $daftar->tahun }}/{{ $daftar->gelombang }}</div>
-                      <div class="text-muted small">{{ $daftar->created_at->format('d/m/Y H:i') }}</div>
-                    </td>
-                    <td>
-                      <div class="font-weight-medium">{{ $daftar->biaya_formatted }}</div>
-                    </td>
-                    <td>
-                      {!! $daftar->status_badge !!}
-                    </td>
-                    <td class="text-center">
-                      <div class="btn-list justify-content-center">
-                        <a href="{{ route('pendaftaran.show', $daftar) }}" class="btn btn-sm btn-default" title="Detail"
-                          data-bs-toggle="tooltip" data-bs-placement="top">
-                          <i class="ti ti-eye fs-3 me-1"></i>
-                          Detail
-                        </a>
-                        @can('pendaftaran_edit')
-                          @if ($daftar->status === 'pending')
-                            <a href="{{ route('pendaftaran.edit', $daftar) }}" class="btn btn-sm btn-default"
-                              title="Edit" data-bs-toggle="tooltip" data-bs-placement="top">
-                              <i class="ti ti-edit fs-3"></i>
-                              {{-- Edit --}}
-                            </a>
-                          @endif
-                        @endcan
-                        @if ($daftar->password_text && $daftar->username_siakad)
-                          <a href="#"
-                            onclick="showCredentials('{{ $daftar->username_siakad }}', '{{ $daftar->password_text }}')"
-                            class="btn btn-sm btn-default text-success d-none d-sm-inline-block" data-bs-toggle="modal"
-                            data-bs-target="#credentials-modal" title="Kredensial" data-bs-toggle="tooltip"
-                            data-bs-placement="top">
-                            <i class="ti ti-key fs-3"></i>
-                          </a>
-                        @endif
-                        @can('pendaftaran_delete')
-                          <button type="button" class="btn btn-sm btn-default text-danger delete-btn" title="Hapus"
-                            data-bs-toggle="tooltip" data-bs-placement="top" data-name="{{ $daftar->nama_lengkap }}"
-                            data-url="{{ route('pendaftaran.destroy', $daftar) }}">
-                            <i class="ti ti-trash fs-3"></i>
-                            {{-- Hapus --}}
-                          </button>
-                        @endcan
-                      </div>
-                    </td>
-                  </tr>
-                @empty
-                  <tr>
-                    <td colspan="7" class="text-center py-4">
-                      <div class="empty">
-                        <div class=" mb-2">
-                          <i class="ti ti-users fs-1"></i>
-                        </div>
-                        <p class="empty-title">Tidak ada data pendaftaran</p>
-                        <p class="empty-subtitle text-muted">
-                          Mulai dengan menambahkan pendaftaran baru
-                        </p>
-                        @can('pendaftaran_create')
-                          <div class="empty-action">
-                            <a href="{{ route('pendaftaran.create') }}" class="btn btn-primary">
-                              <i class="ti ti-plus fs-2 me-1"></i>
-                              Buat
-                            </a>
-                          </div>
-                        @endcan
-                      </div>
-                    </td>
-                  </tr>
-                @endforelse
+                <!-- Data akan diisi oleh DataTables -->
               </tbody>
             </table>
           </div>
@@ -346,7 +248,23 @@
       transform: translateX(-50%) translateY(30px);
       opacity: 0;
     }
+
+    /* Gaya untuk loading di DataTables */
+    .dataTables_processing {
+      background: rgba(255, 255, 255, 0.9);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      border: 1px solid #ccc;
+      z-index: 9999;
+    }
   </style>
+
+  {{-- DataTables CSS --}}
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
 @endsection
 
 @section('js_atas')
@@ -359,6 +277,10 @@
   {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/jsvectormap.min.js"></script> --}}
   {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world.js"></script> --}}
   {{-- <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/libs/jsvectormap/dist/maps/world-merc.js"></script> --}}
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
   {{-- TAMBAHAN JS UNTUK PAGE DASBOR --}}
   {{-- @vite(['resources/js/pages/...']) --}}
   {{-- KOMPONEN INKLUD --}}
@@ -367,30 +289,100 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // // Initialize tooltips
-      // var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-      // var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-      //   return new bootstrap.Tooltip(tooltipTriggerEl)
-      // });
+      // Inisialisasi DataTables
+      let table = $('#pendaftaran-table').DataTable({
+        processing: true, // Tampilkan proses loading
+        serverSide: true, // Aktifkan server-side processing
+        responsive: true, // Aktifkan responsif
+        ajax: {
+          url: "{{ route('pendaftaran.data') }}", // Ganti dengan route yang akan kita buat untuk data
+          type: 'GET',
+          data: function(d) {
+            // Kirim parameter filter ke server
+            d.cari = $('input[name="cari"]').val();
+            d.status = $('select[name="status"]').val();
+          }
+        },
+        columns: [{
+            data: 'DT_RowIndex',
+            name: 'DT_RowIndex',
+            orderable: false,
+            searchable: false,
+            className: 'text-muted'
+          },
+          {
+            data: 'calon_mahasiswa',
+            name: 'nama_lengkap'
+          },
+          {
+            data: 'prodi',
+            name: 'prodi_nama'
+          },
+          {
+            data: 'akademik',
+            name: 'tahun'
+          },
+          {
+            data: 'biaya',
+            name: 'biaya'
+          },
+          {
+            data: 'status_badge',
+            name: 'status'
+          },
+          {
+            data: 'aksi',
+            name: 'aksi',
+            orderable: false,
+            searchable: false,
+            className: 'text-center'
+          }
+        ],
+        columnDefs: [{
+            targets: [0, 6],
+            orderable: false
+          } // Kolom No dan Aksi tidak bisa diurutkan
+        ],
+        order: [
+          [3, 'desc']
+        ], // Urutkan berdasarkan kolom tahun (indeks 3) secara descending
+        language: {
+          url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json' // Bahasa Indonesia
+        },
+        // Tambahkan konfigurasi lain sesuai kebutuhan
+      });
 
-      // Delete confirmation
-      document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function() {
-          const userName = this.getAttribute('data-name');
-          const url = this.getAttribute('data-url');
+      // Trigger ulang pencarian saat filter diubah
+      $('input[name="cari"], select[name="status"]').on('keyup change', function() {
+        table.draw();
+      });
 
-          showDeleteConfirmation(() => {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = url;
-            form.innerHTML = `
-                        @csrf
-                        @method('DELETE')
-                    `;
-            document.body.appendChild(form);
-            form.submit();
-          }, `pendaftaran ${userName}`);
-        });
+      // Delete confirmation (gunakan event delegation karena elemen di-load oleh DataTables)
+      $(document).on('click', '.delete-btn', function() {
+        const userName = $(this).data('name');
+        const url = $(this).data('url');
+
+        showDeleteConfirmation(() => {
+          $.ajax({
+            url: url,
+            type: 'POST',
+            data: {
+              '_token': $('meta[name="csrf-token"]').attr('content'),
+              '_method': 'DELETE'
+            },
+            success: function(response) {
+              table.ajax.reload(); // Reload tabel setelah penghapusan
+              showToast(response.success || 'Pendaftaran berhasil dihapus.', 'success');
+            },
+            error: function(xhr) {
+              let msg = 'Gagal menghapus pendaftaran.';
+              if (xhr.responseJSON && xhr.responseJSON.message) {
+                msg = xhr.responseJSON.message;
+              }
+              showToast(msg, 'error');
+            }
+          });
+        }, `pendaftaran ${userName}`);
       });
     });
 

@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
     // Pendaftaran Routes - bisa diakses oleh multiple roles
     Route::prefix('pendaftaran')->middleware(['permission:pendaftaran_view'])->group(function () {
         Route::get('/', [PendaftaranController::class, 'index'])->name('pendaftaran.index');
+        Route::get('/data', [PendaftaranController::class, 'data'])->name('pendaftaran.data');
         Route::get('/create', [PendaftaranController::class, 'create'])->name('pendaftaran.create')
             ->middleware('permission:pendaftaran_create');
         Route::post('/', [PendaftaranController::class, 'store'])->name('pendaftaran.store')
