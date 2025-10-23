@@ -125,13 +125,13 @@
             <div class="row w-full">
               <div class="col">
                 <h3 class="card-title mb-0">Daftar Calon Mahasiswa</h3>
-                <p class="text-secondary m-0">Table description.</p>
+                {{-- <p class="text-secondary m-0">Table description.</p> --}}
               </div>
               <div class="col-md-auto col-sm-12">
                 <div class="ms-auto d-flex flex-wrap btn-list">
                   <form method="GET" class="row g-3">
                     <div class="col">
-                      <select name="status" class="form-select">
+                      <select name="status" class="form-select mt-2 mt-md-0">
                         <option value="">Semua Status</option>
                         <option value="success" {{ request('status') == 'success' ? 'selected' : '' }}>Berhasil</option>
                         <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
@@ -261,14 +261,15 @@
 
     /* Gaya untuk loading di DataTables */
     .dataTables_processing {
-      background: rgba(255, 255, 255, 0.9);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 50px;
-      border: 1px solid #ccc;
-      z-index: 9999;
+      margin-top: 4rem;
+      /* background: rgba(255, 255, 255, 0.9); */
+      /* position: absolute; */
+      /* top: 50%; */
+      /* left: 50%; */
+      /* transform: translate(-50%, -50%); */
+      /* padding: 50px; */
+      /* border: 1px solid #ccc; */
+      /* z-index: 9999; */
     }
   </style>
 
@@ -316,8 +317,8 @@
         },
         columns: [{
             data: 'DT_RowIndex',
-            name: 'DT_RowIndex',
-            orderable: false,
+            name: 'pendaftaran_id',
+            orderable: true,
             searchable: false,
             className: 'text-muted'
           },
@@ -354,11 +355,15 @@
             orderable: false
           } // Kolom No dan Aksi tidak bisa diurutkan
         ],
+        lengthMenu: [
+          [25, 50, 100, -1],
+          [25, 50, 100, "Semua"]
+        ], //jumlah data yang ditampilkan
         order: [
           [3, 'desc']
         ], // Urutkan berdasarkan kolom tahun (indeks 3) secara descending
         language: {
-          url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json' // Bahasa Indonesia
+          url: '/data/datatables-id.json' // Bahasa Indonesia
         },
         stateSave: true,
         // stateSaveCallback: function(settings, data) {
@@ -380,27 +385,37 @@
         const userName = $(this).data('name');
         const url = $(this).data('url');
 
-        showDeleteConfirmation(() => {
-          $.ajax({
-            url: url,
-            type: 'POST',
-            data: {
-              '_token': $('meta[name="csrf-token"]').attr('content'),
-              '_method': 'DELETE'
-            },
-            success: function(response) {
-              table.ajax.reload(); // Reload tabel setelah penghapusan
-              showToast(response.success || 'Pendaftaran berhasil dihapus.', 'success');
-            },
-            error: function(xhr) {
-              let msg = 'Gagal menghapus pendaftaran.';
-              if (xhr.responseJSON && xhr.responseJSON.message) {
-                msg = xhr.responseJSON.message;
+        showDeleteConfirmation({}, `pendaftaran ${userName}`).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+              url: url,
+              type: 'POST',
+              data: {
+                '_token': $('meta[name="csrf-token"]').attr('content'),
+                '_method': 'DELETE'
+              },
+              success: function(response) {
+                table.ajax.reload(); // Reload tabel setelah penghapusan
+                // Gunakan Toast.fire untuk pesan sukses
+                Swal.fire({
+                  icon: 'success',
+                  title: response.success || 'Pendaftaran berhasil dihapus.'
+                });
+              },
+              error: function(xhr) {
+                let msg = 'Gagal menghapus pendaftaran.';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                  msg = xhr.responseJSON.message;
+                }
+                // Gunakan Toast.fire untuk pesan error
+                Swal.fire({
+                  icon: 'error',
+                  title: msg
+                });
               }
-              showToast(msg, 'error');
-            }
-          });
-        }, `pendaftaran ${userName}`);
+            });
+          }
+        });
       });
     });
 
