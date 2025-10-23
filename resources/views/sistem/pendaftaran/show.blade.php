@@ -145,7 +145,7 @@
                 <div class="mt-2 text-muted small">
                   <i class="ti ti-alert-triangle fs-3 me-1"></i>
                   Berikan kredensial ini ke calon mahasiswa untuk login ke <a
-                    href="https://dash.pmb.stie-pembangunan.ac.id/login" target="_blank">PMB SIAKAD2</a>
+                    href="{{ env('URL_SERVICE_SIAKAD') }}/login" target="_blank">PMB SIAKAD2</a>
                 </div>
               </div>
             </div>

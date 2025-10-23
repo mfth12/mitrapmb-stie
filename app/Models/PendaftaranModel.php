@@ -126,7 +126,7 @@ class PendaftaranModel extends Model
     {
         return [
             '0' => 'Reguler Pagi',
-            '1' => 'Reguler Sore',
+            // '1' => 'Reguler Sore',
             '2' => 'Malam',
             // '3' => 'International',
             '5' => 'Kemitraan',

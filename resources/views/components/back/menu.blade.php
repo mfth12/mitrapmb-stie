@@ -47,12 +47,12 @@
                         @endcan
 
                         {{-- Menu Keuangan --}}
-                        @can('keuangan_view')
+                        {{-- @can('keuangan_view')
                           <a class="dropdown-item {{ request()->routeIs('keuangan.*') ? 'active' : '' }}"
                             href="{{ route('keuangan.index') }}">
                             Verifikasi Keuangan
                           </a>
-                        @endcan
+                        @endcan --}}
                       </div>
                     </div>
                   </div>

@@ -16,66 +16,97 @@ class UserSeeder extends Seeder
     {
         // Pastikan role 'agen' tersedia
         $roleAgen = Role::firstOrCreate(['name' => 'agen']);
-        $roleMahasiswa = Role::firstOrCreate(['name' => 'mahasiswa']);
-        $roleDosen = Role::firstOrCreate(['name' => 'dosen']);
+        $roleBaak = Role::firstOrCreate(['name' => 'baak']);
+        $roleKeuangan = Role::firstOrCreate(['name' => 'keuangan']);
 
-        // Buat user spesifik dari seeder lama (untuk keperluan testing)
+        // Buat user spesifik untuk agen
         $specificUsers = [
             [
-                'username' => 'agen111',
-                'name' => 'Agen Sekolah Pertama',
-                'asal_sekolah' => 'SMA Negeri 1 Tanjungpinang',
-                'email' => 'agen01@example.com',
-                'nomor_hp' => '081234567801',
+                'username'      => 'hartono91',
+                'name'          => 'Hartono',
+                'asal_sekolah'  => 'SMKN 2 Tanjungpinang',
+                'email'         => 'hartono961@guru.smk.belajar.id',
+                'nomor_hp'      => '08127757411',
+                'nomor_hp2'     => '08127757411',
+                // 'passsword'     => '$2y$12$cFmKPiJrgf3EME.s11wesOpUjwwVnOHTCRhA.mBty6xX58xibxpca',
+                'passsword'     => 'hartono91',
             ],
             [
-                'username' => 'agen222',
-                'name' => 'Agen Sekolah Kedua',
-                'asal_sekolah' => 'SMA Negeri 2 Tanjungpinang',
-                'email' => 'agen02@example.com',
-                'nomor_hp' => '081234567802',
+                'username'      => 'ucueni',
+                'name'          => 'Armaini Mardalena',
+                'asal_sekolah'  => 'SMA Negeri 4 Tanjungpinang',
+                'email'         => 'armaini3031@hmail.com',
+                'nomor_hp'      => '081350101036',
+                'nomor_hp2'     => '081350101036',
+                // 'passsword'     => '$2y$12$SDTjERQMmyNGPrJP2braL.J54Lnqlb5MqumSPTVPlOnvJgNrilqMC',
+                'passsword'     => 'ucueni',
             ],
+            [
+                'username'      => 'skatratpi',
+                'name'          => 'Mutia Khairunnisya, A.Md.KL',
+                'asal_sekolah'  => 'SMK Maitreyawira Tanjungpinang',
+                'email'         => 'khairunnisya1697@gmail.com',
+                'nomor_hp'      => '082386085226',
+                'nomor_hp2'     => '082386085226',
+                // 'passsword'     => '$2y$12$RJ2UWCAh9juB/IEFTVJZJe6Iza.rqtHRwa80sFcgAiXnmtcDdxCm.',
+                'passsword'     => 'skatratpi',
+            ],
+            [
+                'username'      => 'ratna123456',
+                'name'          => 'Ratna Wulandari',
+                'asal_sekolah'  => 'SMAS Maitreyawira Tanjungpinang',
+                'email'         => 'ratnawulandari432@gmail.com',
+                'nomor_hp'      => '085364993104',
+                'nomor_hp2'     => '085364993104',
+                // 'passsword'     => '$2y$12$ayNw216k0IAnOP.SBjEUheDAWl7ZxnSSjVq3j6cx/gfddTz3Bhlee',
+                'passsword'     => 'ratna123456',
+            ],
+            // [
+            //     'username'      => '',
+            //     'name'          => '',
+            //     'asal_sekolah'  => '',
+            //     'email'         => '',
+            //     'nomor_hp'      => '',
+            //     'nomor_hp2'     => '',
+            //     'passsword'     => '',
+            // ],
         ];
 
         foreach ($specificUsers as $userData) {
             $user = User::factory()->create([
-                'username' => $userData['username'],
-                'name' => $userData['name'],
-                'asal_sekolah' => $userData['asal_sekolah'],
-                'email' => $userData['email'],
-                'nomor_hp' => $userData['nomor_hp'],
-                'password' => Hash::make('123123'),
+                'username'      => $userData['username'],
+                'name'          => $userData['name'],
+                'asal_sekolah'  => $userData['asal_sekolah'],
+                'email'         => $userData['email'],
+                'nomor_hp'      => $userData['nomor_hp'],
+                'nomor_hp2'     => $userData['nomor_hp2'] ?? $userData['nomor_hp'],
+                'password'      => bcrypt($userData['passsword']),
             ]);
             $user->syncRoles([$roleAgen]);
         }
 
-        // Buat user random menggunakan factory
-        User::factory()->count(10)->create()->each(function ($user) use ($roleAgen) {
-            $user->syncRoles([$roleAgen]);
-        });
+        // // Buat user random menggunakan factory
+        // User::factory()->count(10)->create()->each(function ($user) use ($roleAgen) {
+        //     $user->syncRoles([$roleAgen]);
+        // });
 
-        // Buat beberapa user dengan role berbeda
-        User::factory()->count(3)->withRole('mahasiswa')->create()->each(function ($user) use ($roleMahasiswa) {
-            $user->syncRoles([$roleMahasiswa]);
-        });
+        // User::factory()->count(2)->withRole('keuangan')->create()->each(function ($user) use ($roleKeuangan) {
+        //     $user->syncRoles([$roleKeuangan]);
+        // });
 
-        User::factory()->count(2)->withRole('dosen')->create()->each(function ($user) use ($roleDosen) {
-            $user->syncRoles([$roleDosen]);
-        });
+        // // Buat beberapa user dengan status online
+        // User::factory()->count(2)->online()->create()->each(function ($user) use ($roleAgen) {
+        //     $user->syncRoles([$roleAgen]);
+        // });
 
-        // Buat beberapa user dengan status online
-        User::factory()->count(2)->online()->create()->each(function ($user) use ($roleAgen) {
-            $user->syncRoles([$roleAgen]);
-        });
+        // // Buat beberapa user dengan siakad_id
+        // User::factory()->count(3)->withSiakad()->create()->each(function ($user) use ($roleAgen) {
+        //     $user->syncRoles([$roleAgen]);
+        // });
 
-        // Buat beberapa user dengan siakad_id
-        User::factory()->count(3)->withSiakad()->create()->each(function ($user) use ($roleAgen) {
-            $user->syncRoles([$roleAgen]);
-        });
-
-        // Buat user dengan data lengkap
-        User::factory()->count(2)->complete()->create()->each(function ($user) use ($roleAgen) {
-            $user->syncRoles([$roleAgen]);
-        });
+        // // Buat user dengan data lengkap
+        // User::factory()->count(2)->complete()->create()->each(function ($user) use ($roleAgen) {
+        //     $user->syncRoles([$roleAgen]);
+        // });
     }
 }

@@ -189,7 +189,8 @@
                 <i class="ti ti-info-circle fs-2 me-2"></i>
               </div>
               <div>
-                <small>Berikan kredensial ini ke calon mahasiswa untuk login ke PMB SIAKAD2</small>
+                <small>Berikan kredensial ini ke calon mahasiswa untuk login ke <a
+                    href="{{ env('URL_SERVICE_SIAKAD') }}/login" target="_blank">PMB SIAKAD2</a></small>
               </div>
             </div>
           </div>

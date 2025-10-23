@@ -27,19 +27,19 @@ class RolePermissionSeeder extends Seeder
             'pendaftaran_edit',
             'pendaftaran_delete',
 
-            // Student Approval
-            'approval_view',
-            'approval_approve',
-            'approval_reject',
-            'approval_verify',
+            // // Student Approval
+            // 'approval_view',
+            // 'approval_approve',
+            // 'approval_reject',
+            // 'approval_verify',
 
             // Financial
             'keuangan_view',
             'keuangan_manage',
 
-            // Academic
-            'akademik_view',
-            'akademik_manage',
+            // // Academic
+            // 'akademik_view',
+            // 'akademik_manage',
 
             // Dashboard
             'dashboard_view',
@@ -60,9 +60,9 @@ class RolePermissionSeeder extends Seeder
             'pendaftaran_create',
             'pendaftaran_edit',
             'pendaftaran_delete',
-            'approval_view',
-            'approval_approve',
-            'approval_reject',
+            // 'approval_view',
+            // 'approval_approve',
+            // 'approval_reject',
             'user_view',
         ]);
 
@@ -83,16 +83,16 @@ class RolePermissionSeeder extends Seeder
             'pendaftaran_view',
         ]);
 
-        $mahasiswabaru = Role::create(['name' => 'mahasiswabaru']);
-        $mahasiswabaru->givePermissionTo([
-            'dashboard_view',
-            'pendaftaran_create',
-        ]);
+        // $mahasiswabaru = Role::create(['name' => 'mahasiswabaru']);
+        // $mahasiswabaru->givePermissionTo([
+        //     'dashboard_view',
+        //     'pendaftaran_create',
+        // ]);
 
-        $mahasiswa = Role::create(['name' => 'mahasiswa']);
-        $mahasiswa->givePermissionTo([
-            'dashboard_view',
-            'pendaftaran_create',
-        ]);
+        // $mahasiswa = Role::create(['name' => 'mahasiswa']);
+        // $mahasiswa->givePermissionTo([
+        //     'dashboard_view',
+        //     'pendaftaran_create',
+        // ]);
     }
 }
