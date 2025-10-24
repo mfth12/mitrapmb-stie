@@ -1,6 +1,6 @@
 {
-    "name": "Sistem Non-akademik STIE",
-    "short_name": "Non-akademik STIE",
+    "name": "Portal Agen PMB STIE",
+    "short_name": "Agen PMB STIE",
     "description": "Portal Agen PMB STIE Pembangunan Tanjungpinang",
     "icons": [
         {
@@ -32,7 +32,7 @@
     "display": "standalone",
     "orientation": "portrait",
     "start_url": ".",
-    "android_package_name": "id.ac.stie-pemb.non-akademik.pwa",
+    "android_package_name": "id.ac.stie-pemb.agen-pmb.pwa",
     "shortcuts": [],
     "scope": "."
 }
