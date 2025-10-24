@@ -23,11 +23,11 @@
               </a>
             @endcan
 
-            @can('approval_view')
+            {{-- @can('approval_view')
               <a href="{{ route('approval.index') }}" class="btn btn-default">
                 Approval Mahasiswa
               </a>
-            @endcan
+            @endcan --}}
           </div>
         </div>
       </div>

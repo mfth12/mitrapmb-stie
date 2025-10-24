@@ -39,12 +39,12 @@
                         @endcan
 
                         {{-- Menu Approval --}}
-                        @can('approval_view')
+                        {{-- @can('approval_view')
                           <a class="dropdown-item {{ request()->routeIs('approval.*') ? 'active' : '' }}"
                             href="{{ route('approval.index') }}">
                             Approval Mahasiswa
                           </a>
-                        @endcan
+                        @endcan --}}
 
                         {{-- Menu Keuangan --}}
                         {{-- @can('keuangan_view')
