@@ -225,6 +225,8 @@ class PendaftaranController extends Controller
                 'hp2' => $request->nomor_hp2,
                 'password' => $request->password,
                 'agen_id' => auth()->user()->username,
+                'agen_nama' => auth()->user()->name,
+                'agen_asalsma' => auth()->user()->asal_sekolah,
             ];
 
             // Kirim ke PMB SIAKAD2
@@ -277,7 +279,7 @@ class PendaftaranController extends Controller
                 'nomor_hp2' => $request->nomor_hp2,
                 'password_text' => $request->password, // SIMPAN PASSWORD PLAIN TEXT
                 'status' => 'success',
-                'keterangan' => 'Pendaftaran berhasil via ' . konfigs('NAMA_SISTEM') . '. Diskon formulir pendaftaran sebesar Rp 100.000.',
+                'keterangan' => 'Pendaftaran berhasil via ' . konfigs('NAMA_SISTEM') . '. Diskon formulir pendaftaran berhasil diterapkan sebesar Rp 100.000.',
                 'response_data' => $response,
                 'synced_at' => now(),
             ]);

@@ -213,7 +213,10 @@
                         <label class="form-label">Total Biaya Pendaftaran</label>
                         <div class="form-control-plaintext">
                           <span class="text-success fw-bold mt-0">Rp
-                            {{ number_format($jadwal['BIAYA'], 0, ',', '.') }}</span>
+                            {{ number_format($jadwal['BIAYA']-100000, 0, ',', '.') }}
+                          </span>
+                          <span class="text-default mt-0">(Terpotong diskon formulir Rp 100.000)
+                          </span>
                           <small class="text-muted d-block">Biaya akan dikirim ke PMB SIAKAD2</small>
                         </div>
                       </div>
