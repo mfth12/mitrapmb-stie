@@ -10,6 +10,10 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
 
+//job queue default seperti email, media library, rutin
+Schedule::command('queue:work --stop-when-empty --queue=default')
+    ->everyMinute();
+
 // job whatsapp
 Schedule::command('queue:work --stop-when-empty --queue=whatsapp')
     ->sendOutputTo(storage_path() . '/logs/whatsapp.log')
