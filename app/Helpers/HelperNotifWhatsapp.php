@@ -22,7 +22,7 @@ class HelperNotifWhatsapp
   private static function init()
   {
     self::$session = konfigs('wa.session', env('WA_GATEWAY_SESSION', 'notifstie87x6v8r2js'));
-    self::$baseUrl = konfigs('wa.url', env('WA_GATEWAY_URL', 'https://wa.stie-pembangunan.ac.id'));
+    self::$baseUrl = konfigs('wa.endpoint', env('WA_GATEWAY_URL', 'https://wa.stie-pembangunan.ac.id'));
   }
 
   /**
