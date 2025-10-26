@@ -11,8 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('antrian_notif_whatsapp_models', function (Blueprint $table) {
-            $table->id();
+        Schema::create('antrian_whatsapps', function (Blueprint $table) {
+            /** Definisikan struktur tabel */
+            $table->bigIncrements('antrian_id')->from(61231);
+            // $table->integer('user_id')->unsigned();
+            $table->bigInteger('user_id')->nullable();
+            $table->string('sesi');
+            $table->string('target');
+            $table->string('tipe');
+            $table->text('isi_pesan');
+            $table->tinyInteger('status')->default(0)->unsigned();
+            $table->unsignedTinyInteger('retry_count')->default(0);
             $table->timestamps();
         });
     }
@@ -22,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('antrian_notif_whatsapp_models');
+        Schema::dropIfExists('antrian_whatsapps');
     }
 };
