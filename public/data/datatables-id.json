@@ -1,5 +1,5 @@
 {
-  "emptyTable": "Tidak ada data yang tersedia pada tabel ini",
+  "emptyTable": "Tidak ada data yang tersedia",
   "info": "Menampilkan _START_-_END_ dari _TOTAL_ entri",
   "infoEmpty": "Menampilkan 0-0 dari 0 entri",
   "infoFiltered": "(disaring dari _MAX_ entri)",

@@ -306,6 +306,7 @@
         processing: true, // Tampilkan proses loading
         serverSide: true, // Aktifkan server-side processing
         responsive: false, // Aktifkan responsif
+        stateSave: true,
         searchDelay: 500,
         ajax: {
           url: "{{ route('pendaftaran.data') }}", // Ganti dengan route yang akan kita buat untuk data
@@ -352,29 +353,21 @@
           }
         ],
         columnDefs: [{
-            targets: [0, 6],
+            targets: [6],
             orderable: false
           } // Kolom No dan Aksi tidak bisa diurutkan
         ],
-        pageLength: 50,
+        pageLength: 25,
         lengthMenu: [
-          [2, 25, 50, 100, -1],
-          [2, 25, 50, 100, "Semua"]
+          [10, 25, 50, 100, -1],
+          [10, 25, 50, 100, "Semua"]
         ], //jumlah data yang ditampilkan
         order: [
           [0, 'desc']
-        ], // Urutkan berdasarkan kolom tahun (indeks 3) secara descending
+        ], // Urutkan berdasarkan kolom tahun (indeks 0) secara descending
         language: {
           url: '/data/datatables-id.json' // Bahasa Indonesia
         },
-        stateSave: true,
-        // stateSaveCallback: function(settings, data) {
-        //   window.storageSetItem(settings.sInstance, JSON.stringify(data));
-        // },
-        // stateLoadCallback: function(settings) {
-        //   return JSON.parse(window.storageGetItem(settings.sInstance));
-        // }
-        // Tambahkan konfigurasi lain sesuai kebutuhan
       });
 
       // Trigger ulang pencarian saat filter diubah
