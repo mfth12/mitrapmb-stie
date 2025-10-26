@@ -89,7 +89,7 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
             'processors' => [PsrLogMessageProcessor::class],
         ],
@@ -125,6 +125,15 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+
+        //whatsapp
+        'whatsapp' => [
+            'driver' => 'daily',
+            'tap' => [App\Helpers\HelperLogFormatBaris::class],
+            'path' => storage_path('logs/whatsapp/whatsapp.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 7,
         ],
 
     ],
