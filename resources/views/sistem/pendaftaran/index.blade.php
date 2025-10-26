@@ -120,12 +120,12 @@
       </div> --}}
 
       <div class="card">
-        <div class="card-table">
+        <div class="card">
           <div class="card-header">
             <div class="row w-full">
               <div class="col">
                 <h3 class="card-title mb-0">Daftar Calon Mahasiswa</h3>
-                {{-- <p class="text-secondary m-0">Table description.</p> --}}
+                <p class="text-secondary m-0">Berikut data calon mahasiswa yang telah didaftarkan</p>
               </div>
               <div class="col-md-auto col-sm-12">
                 <div class="ms-auto d-flex flex-wrap btn-list">
@@ -145,7 +145,7 @@
           </div>
           {{-- Tabel pendaftaran --}}
           <div class="table-responsive" style="padding: 1rem">
-            <table id="pendaftaran-table" class="table table-vcenter table-md table-hover">
+            <table id="pendaftaran-table" class="table table-vcenter table-bordered table-md table-hover">
               <thead>
                 <tr>
                   <th class="w-1">No</th>
@@ -305,7 +305,7 @@
       let table = $('#pendaftaran-table').DataTable({
         processing: true, // Tampilkan proses loading
         serverSide: true, // Aktifkan server-side processing
-        responsive: true, // Aktifkan responsif
+        responsive: false, // Aktifkan responsif
         searchDelay: 500,
         ajax: {
           url: "{{ route('pendaftaran.data') }}", // Ganti dengan route yang akan kita buat untuk data
@@ -356,12 +356,13 @@
             orderable: false
           } // Kolom No dan Aksi tidak bisa diurutkan
         ],
+        pageLength: 50,
         lengthMenu: [
-          [25, 50, 100, -1],
-          [25, 50, 100, "Semua"]
+          [2, 25, 50, 100, -1],
+          [2, 25, 50, 100, "Semua"]
         ], //jumlah data yang ditampilkan
         order: [
-          [3, 'desc']
+          [0, 'desc']
         ], // Urutkan berdasarkan kolom tahun (indeks 3) secara descending
         language: {
           url: '/data/datatables-id.json' // Bahasa Indonesia
