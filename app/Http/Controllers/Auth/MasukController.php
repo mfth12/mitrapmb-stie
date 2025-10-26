@@ -87,14 +87,8 @@ class MasukController extends Controller
     $data = $response->json();
 
     // Verifikasi Turnstile
-    if (env('USING_TURNSTILE', true)) {
-      $turnstileResponse = $request->input('cf-turnstile-response');
-      if (!$turnstileResponse) {
-        return back()->withErrors(['turnstile_notvalid' => 'Wajib verifikasi keamanan']);
-      }
-      if (!$this->validateTurnstile($turnstileResponse, $request->ip())) {
-        return back()->withErrors(['turnstile_notvalid' => 'Verifikasi keamanan gagal']);
-      }
+    if (!$this->handleTurnstileValidation($request)) {
+      return back()->withErrors(['turnstile_notvalid' => 'Verifikasi keamanan gagal']);
     }
 
     // Jika login berhasil
@@ -143,34 +137,10 @@ class MasukController extends Controller
       Session::put('api_userroles', $userData['roles'] ?? []);
 
       Auth::login($user);
-      // ------------------------------
-      // NOTIF WHATSAPP (CACHE-BASED GUARD)
-      // ------------------------------
-      $sessionLifetime = (int) env('SESSION_LIFETIME', 120); // menit
-      $ip = $request->ip(); // Ambil IP user
-      $cacheKey = 'last_whatsapp_notif_login_' . $user->user_id . '_' . $ip; // include IP
 
-      // Jika cache ada, langsung SKIP pengiriman notifikasi tapi tetap lanjutkan proses login
-      if (!Cache::has($cacheKey)) {
-        try {
-          // Pesan WhatsApp
-          $greeting = now()->hour < 11 ? 'Pagi' : (now()->hour < 15 ? 'Siang' : (now()->hour < 18 ? 'Sore' : 'Malam'));
-          $waktu = Carbon::now()->locale('id')->translatedFormat('l, d F Y H:i:s');
-          $pesan = "Selamat " . $greeting . ", {$user->name}.\n"
-            . "Akun SIAKAD Anda telah digunakan untuk akses Portal Agen PMB pada:\n"
-            . "{$waktu}\n"
-            . "\n"
-            . "Jika aktivitas ini mencurigakan, segera lakukan langkah pengamanan pada Akun Anda.";
-          $this->notifikasiWhatsapp($user, $pesan);
-        } catch (\Throwable $e) {
-          Log::channel('whatsapp')->warning('Gagal masuk antrean notif whatsapp (login)', [
-            'err'     => $e->getMessage(),
-            'user_id' => $user->id ?? null
-          ]);
-        }
-        // Simpan flag cache per user per IP, agar tidak kirim lagi dalam masa SESSION_LIFETIME
-        Cache::put($cacheKey, true, now()->addMinutes($sessionLifetime));
-      }
+      // Kirim notifikasi WhatsApp setelah login berhasil
+      $this->sendLoginNotification($user, $request, $from = 'siakad');
+
       return redirect()->intended(route('dashboard.index'));
     }
 
@@ -194,14 +164,8 @@ class MasukController extends Controller
   protected function loginLocal(LoginRequest $request, array $credentials, string $throttleKey, int $decaySeconds): RedirectResponse
   {
     // Verifikasi Turnstile untuk login lokal juga
-    if (env('USING_TURNSTILE', true)) {
-      $turnstileResponse = $request->input('cf-turnstile-response');
-      if (!$turnstileResponse) {
-        return back()->withErrors(['turnstile_notvalid' => 'Wajib verifikasi keamanan']);
-      }
-      if (!$this->validateTurnstile($turnstileResponse, $request->ip())) {
-        return back()->withErrors(['turnstile_notvalid' => 'Verifikasi keamanan gagal']);
-      }
+    if (!$this->handleTurnstileValidation($request)) {
+      return back()->withErrors(['turnstile_notvalid' => 'Verifikasi keamanan gagal']);
     }
 
     // Coba login dengan kredensial lokal
@@ -221,36 +185,11 @@ class MasukController extends Controller
 
       // Update last logged in
       $user = Auth::user();
-      // ------------------------------
-      // NOTIF WHATSAPP (CACHE-BASED GUARD)
-      // ------------------------------
-      $sessionLifetime = (int) env('SESSION_LIFETIME', 120); // menit
-      $ip = $request->ip(); // Ambil IP user
-      $cacheKey = 'last_whatsapp_notif_login_' . $user->user_id . '_' . $ip; // include IP
 
-      // Jika cache ada, langsung SKIP pengiriman notifikasi tapi tetap lanjutkan proses login
-      if (!Cache::has($cacheKey)) {
-        try {
-          // Pesan WhatsApp
-          $greeting = now()->hour < 11 ? 'Pagi' : (now()->hour < 15 ? 'Siang' : (now()->hour < 18 ? 'Sore' : 'Malam'));
-          $waktu = Carbon::now()->locale('id')->translatedFormat('l, d F Y H:i:s');
-          $pesan = "Selamat " . $greeting . ", {$user->name}.\n"
-            . "Akun Anda telah digunakan untuk akses masuk Portal Agen PMB pada:\n"
-            . "{$waktu}\n"
-            . "\n"
-            . "Jika aktivitas ini mencurigakan, segera lakukan langkah pengamanan pada Akun Anda.";
-          $this->notifikasiWhatsapp($user, $pesan);
-        } catch (\Throwable $e) {
-          Log::channel('whatsapp')->warning('Gagal masuk antrean notif whatsapp (login)', [
-            'err'     => $e->getMessage(),
-            'user_id' => $user->id ?? null
-          ]);
-        }
-        // Simpan flag cache per user per IP, agar tidak kirim lagi dalam masa SESSION_LIFETIME
-        Cache::put($cacheKey, true, now()->addMinutes($sessionLifetime));
-      }
+      // Kirim notifikasi WhatsApp setelah login berhasil
+      $this->sendLoginNotification($user, $request, $from = 'local');
+
       return redirect()->intended(route('dashboard.index'));
-      // return redirect()->intended(route('dashboard.index'))->with('success', 'Selamat datang ' . $user->name . '!');
     }
 
     // Hit jika gagal login
@@ -267,9 +206,12 @@ class MasukController extends Controller
   protected function notifikasiWhatsapp($user, $pesan)
   {
     $nomor_wa = $user->nomor_hp ?? $user->nomor_hp2;
-    ($user->nomor_hp == $user->nomor_hp2) ? $nomor_wa = $user->nomor_hp2 : $nomor_wa = $user->nomor_hp;
+    // Jika nomor_hp dan nomor_hp2 sama, gunakan salah satunya
+    if ($user->nomor_hp == $user->nomor_hp2) {
+      $nomor_wa = $user->nomor_hp2; // $user->nomor_hp2
+    }
     $antrian = AntrianNotifWhatsappModel::create([
-      'user_id'   => $user->id,
+      'user_id'   => $user->user_id,
       'sesi'      => konfigs('wa.session', env('WA_GATEWAY_SESSION')),
       'target'    => $nomor_wa,
       'tipe'      => 'text',
@@ -281,12 +223,11 @@ class MasukController extends Controller
     NotifWhatsappJob::dispatch($antrian)->onQueue('whatsapp');
     // log whatsapp
     Log::channel('whatsapp')->info('Notif whatsapp (login) berhasil masuk antrean', [
-      'user_id'     => $user->id,
-      'to'          => $user->nomor_hp2,
+      'user_id'     => $user->user_id,
+      'to'          => $nomor_wa, // Log nomor yang digunakan
       'antrian_id'  => $antrian->antrian_id,
     ]);
   }
-
 
   /**
    * Proses logout
@@ -311,7 +252,7 @@ class MasukController extends Controller
   protected function validateTurnstile(string $response, string $ip): bool
   {
     $apiResponse = Http::asForm()->post(
-      'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+      'https://challenges.cloudflare.com/turnstile/v0/siteverify', // Perhatikan spasi di akhir URL sebelumnya
       [
         'secret'   => env('TURNSTILE_SECRET_KEY'),
         'response' => $response,
@@ -320,5 +261,59 @@ class MasukController extends Controller
     );
 
     return $apiResponse->json('success', false);
+  }
+
+  // --- FUNGSI PEMBANTU BARU UNTUK MENGURANGI DUPLIKASI ---
+
+  /**
+   * Handle Turnstile validation logic.
+   * Returns true if validation passes, false otherwise.
+   */
+  private function handleTurnstileValidation(LoginRequest $request)
+  {
+    if (!env('USING_TURNSTILE', true)) {
+      return true; // Bypass if Turnstile is disabled
+    }
+
+    $turnstileResponse = $request->input('cf-turnstile-response');
+    if (!$turnstileResponse) {
+      return false; // Tidak ada respons turnstile
+    }
+
+    return $this->validateTurnstile($turnstileResponse, $request->ip());
+  }
+
+  /**
+   * Send login notification via WhatsApp with cache guard.
+   */
+  private function sendLoginNotification($user, $request, $from): void
+  {
+    $sessionLifetime = (int) env('SESSION_LIFETIME', 120); // menit
+    $ip = $request->ip(); // Ambil IP user
+    $cacheKey = 'last_whatsapp_notif_login_' . $user->user_id . '_' . $ip; // Gunakan $user->user_id bukan $user->user_id
+
+    // Jika cache ada, langsung SKIP pengiriman notifikasi
+    if (Cache::has($cacheKey)) {
+      return; // Keluar dari fungsi jika sudah pernah dikirim dalam periode ini
+    }
+
+    try {
+      // Pesan WhatsApp
+      $greeting = now()->hour < 11 ? 'Pagi' : (now()->hour < 15 ? 'Siang' : (now()->hour < 18 ? 'Sore' : 'Malam'));
+      $waktu = Carbon::now()->locale('id')->translatedFormat('l, d F Y H:i:s');
+      $pesan = "Selamat " . $greeting . ", {$user->name}.\n"
+        . "Akun" . ($from == 'siakad' ? ' SIAKAD' : '') . " Anda telah digunakan untuk akses masuk *Portal Agen PMB* pada:\n"
+        . "{$waktu}\n" . "\n"
+        . "Jika aktivitas ini mencurigakan, segera lakukan langkah pengamanan pada Akun Anda.";
+      $this->notifikasiWhatsapp($user, $pesan);
+    } catch (\Throwable $e) {
+      Log::channel('whatsapp')->warning('Gagal masuk antrean notif whatsapp (login)', [
+        'err'     => $e->getMessage(),
+        'user_id' => $user->user_id ?? null
+      ]);
+    }
+
+    // Simpan flag cache per user per IP, agar tidak kirim lagi dalam masa SESSION_LIFETIME
+    Cache::put($cacheKey, true, now()->addMinutes($sessionLifetime));
   }
 }
