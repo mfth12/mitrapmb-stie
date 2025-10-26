@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AntrianNotifWhatsappModel extends Model
 {
-    protected $table = 'v2_antrian_notif_whatsapps';
+    protected $table = 'antrian_whatsapps';
     protected $primaryKey = 'antrian_id';
     protected $casts = [
         'status' => 'integer',
