@@ -28,7 +28,7 @@ window.showSuccess = function (message, title = 'Sukses') {
         icon: 'success',
         title: title,
         text: message,
-        timer: 3000,
+        // timer: 3000,
         showConfirmButton: false
     });
 };
@@ -38,7 +38,7 @@ window.showError = function (message, title = 'Error') {
         icon: 'error',
         title: title,
         text: message,
-        timer: 6000
+        // timer: 6000
     });
 };
 
@@ -47,7 +47,7 @@ window.showWarning = function (message, title = 'Peringatan') {
         icon: 'warning',
         title: title,
         text: message,
-        timer: 6000
+        // timer: 6000
     });
 };
 
@@ -56,7 +56,7 @@ window.showInfo = function (message, title = 'Informasi') {
         icon: 'info',
         title: title,
         text: message,
-        timer: 6000,
+        // timer: 6000,
         showConfirmButton: true
     });
 };
