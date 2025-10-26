@@ -12,8 +12,8 @@
   "paginate": {
     "first": "Pertama",
     "last": "Terakhir",
-    "next": "Selanjutnya",
-    "previous": "Sebelumnya"
+    "next": "<i class=\"ti ti-chevron-right fs-2\"></i>",
+    "previous": "<i class=\"ti ti-chevron-left fs-2\"></i>"
   },
   "aria": {
     "sortAscending": ": aktifkan untuk mengurutkan kolom ke atas",
