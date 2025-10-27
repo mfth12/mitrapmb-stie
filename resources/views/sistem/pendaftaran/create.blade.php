@@ -26,13 +26,19 @@
             <div class="alert alert-danger">
               <div class="d-flex">
                 <div>
-                  <i class="ti ti-alert-circle fs-2 me-2 text-danger"></i>
+                  <i class="ti ti-alert-triangle fs-2 me-2 text-danger"></i>
                 </div>
                 <div>
-                  <h4 class="alert-title">Koneksi Gagal</h4>
+                  <h4 class="alert-title text-danger-emphasis">Koneksi Gagal</h4>
                   <div class="text-muted">{{ $error }}</div>
                 </div>
               </div>
+            </div>
+            <div class="text-center mt-4">
+              <a href="{{ route('pendaftaran.index') }}" class="btn btn-primary">
+                <i class="ti ti-brand-whatsapp fs-2 me-1"></i>
+                Hubungi Tim PMB
+              </a>
             </div>
           @elseif(!$jadwal)
             <div class="alert alert-warning">
@@ -213,7 +219,7 @@
                         <label class="form-label">Total Biaya Pendaftaran</label>
                         <div class="form-control-plaintext">
                           <span class="text-success fw-bold mt-0">Rp
-                            {{ number_format($jadwal['BIAYA']-100000, 0, ',', '.') }}
+                            {{ number_format($jadwal['BIAYA'] - 100000, 0, ',', '.') }}
                           </span>
                           <span class="text-default mt-0">(Terpotong diskon formulir Rp 100.000)
                           </span>
