@@ -160,6 +160,7 @@
                   <th>Akademik</th>
                   <th>Biaya</th>
                   <th>Status</th>
+                  <th>Agen Sekolah</th>
                   <th class="text-center">Aksi</th>
                 </tr>
               </thead>
@@ -328,7 +329,7 @@
             name: 'pendaftaran_id',
             orderable: true,
             searchable: false,
-            className: 'text-muted'
+            className: 'text-muted text-center'
           },
           {
             data: 'calon_mahasiswa',
@@ -349,6 +350,10 @@
           {
             data: 'status_badge',
             name: 'status'
+          },
+          {
+            data: 'agen_id',
+            name: 'agen_id'
           },
           {
             data: 'aksi',

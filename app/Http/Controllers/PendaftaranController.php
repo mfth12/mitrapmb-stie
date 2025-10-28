@@ -90,6 +90,10 @@ class PendaftaranController extends Controller
             ->addColumn('status_badge', function ($row) {
                 return $row->status_badge;
             })
+            ->addColumn('agen_id', function ($row) {
+                return '<div class="font-weight-medium">' . $row->agen->name . '</div>
+                    <div class="text-muted small">(' . $row->agen->asal_sekolah . ')</div>';
+            })
             ->addColumn('aksi', function ($row) {
                 $html = '<div class="btn-list justify-content-center">
                         <a href="' . route('pendaftaran.show', $row) . '" class="btn btn-sm btn-default" title="Detail"
@@ -129,7 +133,7 @@ class PendaftaranController extends Controller
                 $html .= '</div>';
                 return $html;
             })
-            ->rawColumns(['calon_mahasiswa', 'prodi', 'akademik', 'biaya', 'status_badge', 'aksi']) // Kolom yang berisi HTML
+            ->rawColumns(['calon_mahasiswa', 'prodi', 'akademik', 'biaya', 'status_badge', 'agen_id', 'aksi']) // Kolom yang berisi HTML
             ->make(true);
     }
 
