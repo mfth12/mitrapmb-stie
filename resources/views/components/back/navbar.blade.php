@@ -170,6 +170,7 @@
         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
           <a href="{{ route('profil.show') }}" class="dropdown-item">Profil Saya</a>
           <div class="dropdown-divider"></div>
+          <a href="./panduan.pdf" target="_blank" class="dropdown-item">Panduan</a>
           <a href="./settings.html" class="dropdown-item">Pengaturan</a>
           <form action="{{ route('logout') }}" method="POST" class="inline">
             @csrf <button type="submit" class="dropdown-item">Keluar</button>
