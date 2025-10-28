@@ -13,12 +13,14 @@
           <div class="btn-list">
             @can('pendaftaran_create')
               <a href="{{ route('pendaftaran.index') }}" class="btn btn-primary">
+                <i class="ti ti-book-2 fs-2 me-2"></i>
                 Manajemen Pendaftaran
               </a>
             @endcan
 
             @can('user_view')
               <a href="{{ route('pengguna.index') }}" class="btn btn-default">
+                <i class="ti ti-users fs-2 me-2"></i>
                 Kelola Pengguna
               </a>
             @endcan

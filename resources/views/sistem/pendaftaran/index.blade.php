@@ -8,11 +8,17 @@
           <h2 class="page-title">Manajemen Pendaftaran</h2>
           <div class="page-pretitle">Gerbang pendaftaran calon mahasiswa baru melalui agen PMB</div>
         </div>
-        <div class="col-auto ms-auto d-print-none">
+        <div class="col-4 col-md-auto ms-auto d-print-none">
           @can('pendaftaran_create')
-            <a href="{{ route('pendaftaran.create') }}" class="btn btn-primary">
-              <i class="ti ti-plus fs-2 me-1"></i>
+            <a href="{{ route('pendaftaran.create') }}" class="btn btn-primary me-1">
+              <i class="ti ti-plus fs-2 me-2"></i>
               Buat Pendaftaran
+            </a>
+          @endcan
+          @can('pendaftaran_create')
+            <a href="#" class="btn btn-default">
+              <i class="ti ti-cloud-down fs-2 me-2"></i>
+              Sinkronisasi
             </a>
           @endcan
         </div>
