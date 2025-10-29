@@ -80,6 +80,42 @@ class SiakadService
   }
 
   /**
+   * Get all calon mahasiswa by tahun and referensi (agen) dari PMB SIAKAD2
+   */
+  public function getCalonMahasiswaByAgen(string $tahun, string $referensi): array
+  {
+    try {
+      $response = Http::timeout($this->timeout)
+        ->post($this->baseUrl . '/api/v2/calon-mahasiswa/agen', [
+          'tahun' => $tahun,
+          'sumber' => 'A', // Sesuai spek
+          'referensi' => $referensi, // ID Agen
+        ]);
+
+      $responseData = $response->json();
+
+      if ($response->successful() && ($responseData['success'] ?? false)) {
+        return [
+          'success' => true,
+          'data' => $responseData['data'] ?? [],
+          'message' => $responseData['message'] ?? 'Data berhasil diambil'
+        ];
+      }
+
+      return [
+        'success' => false,
+        'message' => $responseData['message'] ?? 'Gagal mengambil data dari PMB SIAKAD2'
+      ];
+    } catch (Exception $e) {
+      Log::error('SiakadService getCalonMahasiswaByAgen error: ' . $e->getMessage());
+      return [
+        'success' => false,
+        'message' => 'Tidak dapat terhubung ke PMB SIAKAD2'
+      ];
+    }
+  }
+
+  /**
    * Check API status
    */
   public function checkApiStatus(): bool

@@ -73,6 +73,9 @@ Route::middleware(['auth'])->group(function () {
             ->middleware('permission:pendaftaran_edit');
         Route::delete('/{pendaftaran}', [PendaftaranController::class, 'destroy'])->name('pendaftaran.destroy')
             ->middleware('permission:pendaftaran_delete');
+        Route::post('/sync', [PendaftaranController::class, 'sync'])->name('pendaftaran.sync');
+        // Route::post('/sync/{pendaftaran}', [PendaftaranController::class, 'syncOne'])->name('pendaftaran.syncOne');
+        Route::post('/sync/{id_calon_mahasiswa}', [PendaftaranController::class, 'syncOne'])->name('pendaftaran.syncOne');
     });
 });
 

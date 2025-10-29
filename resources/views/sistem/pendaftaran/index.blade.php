@@ -16,7 +16,8 @@
             </a>
           @endcan
           @can('pendaftaran_create')
-            <a href="#" class="btn btn-default">
+            <a href="#" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#sync-modal"
+              title="Sinkronisasi Data" data-bs-toggle="tooltip" data-bs-placement="top">
               <i class="ti ti-cloud-down fs-2 me-2"></i>
               Sinkronisasi
             </a>
@@ -228,6 +229,41 @@
           <button type="button" class="btn btn-success" data-bs-dismiss="modal">
             Oke
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{-- Modal Sinkronisasi --}}
+  <div class="modal modal-blur fade" id="sync-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="ti ti-refresh fs-2 me-2 text-blue"></i>
+            Proses Sinkronisasi Data
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="tahun-sync" class="form-label">Tahun Akademik</label>
+            <select name="tahun" id="tahun-sync" class="form-select">
+              <option value="">Pilih Tahun</option>
+              @for ($i = date('Y') + 1; $i >= 2020; $i--)
+                <option value="{{ $i }}">{{ $i }}</option>
+              @endfor
+            </select>
+          </div>
+          <button type="button" class="btn btn-primary w-100 mb-3" id="start-sync-btn">Mulai Sinkronisasi</button>
+          <div id="sync-results-container" class="d-none">
+            <h6>Hasil Pembandingan:</h6>
+            <div id="sync-results"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success d-none" id="sync-all-btn">Sinkronisasi Semua</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
         </div>
       </div>
     </div>
@@ -480,5 +516,198 @@
         showToast('Password berhasil disalin!', 'success');
       });
     }
+
+    // Fungsi untuk membuka modal sinkronisasi
+    $('#sync-modal').on('shown.bs.modal', function() {
+      // Reset form dan hasil sebelumnya
+      $('#tahun-sync').val('');
+      $('#sync-results-container').addClass('d-none');
+      $('#sync-results').empty();
+      $('#sync-all-btn').addClass('d-none');
+    });
+
+    // Trigger modal sinkronisasi
+    $(document).on('click', 'a[href="#"]:contains("Sinkronisasi")', function(e) {
+      e.preventDefault();
+      const modal = bootstrap.Modal.getInstance(document.getElementById('sync-modal')) || new bootstrap.Modal(document
+        .getElementById('sync-modal'));
+      modal.show();
+    });
+
+    // Mulai proses sinkronisasi
+    $('#start-sync-btn').on('click', function() {
+      const tahun = $('#tahun-sync').val();
+      if (!tahun) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Tahun belum dipilih',
+          text: 'Silakan pilih tahun akademik terlebih dahulu.'
+        });
+        return;
+      }
+
+      $(this).prop('disabled', true).text('Memproses...');
+
+      $.ajax({
+        url: "{{ route('pendaftaran.sync') }}",
+        type: 'POST',
+        data: {
+          '_token': $('meta[name="csrf-token"]').attr('content'),
+          'tahun': tahun
+        },
+        success: function(response) {
+          if (response.success) {
+            displaySyncResults(response.data);
+            $('#sync-results-container').removeClass('d-none');
+            $('#sync-all-btn').removeClass(
+              'd-none'); // Tombol sinkronisasi semua bisa ditampilkan jika diperlukan
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Gagal',
+              text: response.message || 'Terjadi kesalahan saat sinkronisasi.'
+            });
+          }
+        },
+        error: function(xhr) {
+          let msg = 'Gagal menghubungi server.';
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            msg = xhr.responseJSON.message;
+          }
+          Swal.fire({
+            icon: 'error',
+            title: 'Kesalahan',
+            text: msg
+          });
+        },
+        complete: function() {
+          $('#start-sync-btn').prop('disabled', false).text('Mulai Sinkronisasi');
+        }
+      });
+    });
+
+    // Fungsi untuk menampilkan hasil sinkronisasi
+    function displaySyncResults(data) {
+      const resultsDiv = $('#sync-results');
+      resultsDiv.empty();
+
+      if (data.length === 0) {
+        resultsDiv.html('<p class="text-muted">Tidak ada data ditemukan untuk tahun dan agen ini.</p>');
+        return;
+      }
+
+      data.forEach(function(item) {
+        let statusClass = '';
+        let statusText = '';
+        let actionBtn = '';
+
+        switch (item.status) {
+          case 'sudah_sama':
+            statusClass = 'bg-success text-success-fg';
+            statusText = 'DATA SINKRON';
+            break;
+          case 'butuh_synchronisasi':
+            statusClass = 'bg-warning text-warning-fg';
+            statusText = 'BUTUH SINKRON';
+            actionBtn =
+              `<button class="btn btn-sm btn-primary sync-individual-btn" data-id="${item.id_calon_mahasiswa}">Sinkron</button>`;
+            break;
+          case 'baru_dari_api':
+            statusClass = 'bg-info text-info-fg';
+            statusText = 'DATA BARU DARI API';
+            // Tidak ada tombol sinkron untuk data baru, mungkin perlu logika tambahan
+            break;
+          case 'hanya_di_lokal':
+            statusClass = 'bg-secondary text-secondary-fg';
+            statusText = 'HANYA DI LOKAL';
+            // Tidak ada tombol sinkron untuk data lokal saja
+            break;
+          default:
+            statusClass = 'bg-light';
+            statusText = 'STATUS TIDAK DIKENAL';
+        }
+
+        let fieldsDiff = '';
+        if (item.field_berbeda.length > 0) {
+          fieldsDiff = '<div class="small text-muted mt-1"><strong>Field Berbeda:</strong> ';
+          item.field_berbeda.forEach(function(diff) {
+            fieldsDiff +=
+              `<br><span class="badge bg-light text-dark">- ${diff.field}: "${diff.local}" vs "${diff.api}"</span>`;
+          });
+          fieldsDiff += '</div>';
+        }
+
+        const cardHtml = `
+                  <div class="card mb-2">
+                      <div class="card-body d-flex justify-content-between align-items-center">
+                          <div>
+                              <div class="font-weight-medium">${item.nama} (${item.id_calon_mahasiswa})</div>
+                              <div class="text-muted small">${item.email}</div>
+                              <div class="text-muted small">${item.keterangan}</div>
+                              ${fieldsDiff}
+                          </div>
+                          <div class="d-flex align-items-center">
+                              <span class="badge ${statusClass} me-2">${statusText}</span>
+                              ${actionBtn}
+                          </div>
+                      </div>
+                  </div>
+              `;
+        resultsDiv.append(cardHtml);
+      });
+    }
+
+    // Event delegation untuk tombol sinkronisasi individual
+    $(document).on('click', '.sync-individual-btn', function() {
+      const id = $(this).data('id');
+      const btn = $(this);
+
+      btn.prop('disabled', true).text('Menyinkronkan...');
+
+      // Kirim permintaan ke route syncOne
+      $.ajax({
+        url: `/pendaftaran/sync/${id}`, // Sesuaikan dengan route Anda
+        type: 'POST',
+        data: {
+          '_token': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+          if (response.success) {
+            // Refresh hasil atau update status card
+            // Untuk sederhananya, kita reload modal atau hasilnya
+            Swal.fire({
+              icon: 'success',
+              title: 'Berhasil',
+              text: response.message
+            }).then(() => {
+              // Refresh DataTable jika perlu
+              table.ajax.reload();
+              // Dan refresh hasil sinkronisasi jika modal tetap terbuka
+              $('#start-sync-btn').click(); // Trigger ulang sync
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Gagal',
+              text: response.message || 'Gagal menyinkronkan data.'
+            });
+          }
+        },
+        error: function(xhr) {
+          let msg = 'Gagal menyinkronkan data.';
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            msg = xhr.responseJSON.message;
+          }
+          Swal.fire({
+            icon: 'error',
+            title: 'Kesalahan',
+            text: msg
+          });
+        },
+        complete: function() {
+          btn.prop('disabled', false).text('Sinkron');
+        }
+      });
+    });
   </script>
 @endsection

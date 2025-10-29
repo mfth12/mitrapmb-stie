@@ -368,6 +368,207 @@ class PendaftaranController extends Controller
     }
 
     /**
+     * Proses sinkronisasi data pendaftaran dari API SIAKAD2
+     */
+    public function sync(Request $request): JsonResponse
+    {
+        try {
+            $user = auth()->user();
+            $tahun = $request->input('tahun'); // Ambil tahun dari request
+            $agenId = $user->username; // Gunakan username sebagai referensi agen
+
+            if (!$tahun) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tahun wajib diisi.'
+                ], 400);
+            }
+
+            // 1. Ambil data terbaru dari API SIAKAD2 untuk agen ini
+            $apiResponse = $this->siakadService->getCalonMahasiswaByAgen($tahun, $agenId);
+
+            if (!$apiResponse['success']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $apiResponse['message'] ?? 'Gagal mengambil data dari SIAKAD2.'
+                ], 500);
+            }
+
+            $apiData = collect($apiResponse['data'] ?? []);
+
+            // 2. Ambil data lokal dari tabel pendaftaran untuk agen ini dan tahun yang sama
+            $localData = PendaftaranModel::where('agen_id', $user->user_id)
+                ->where('tahun', $tahun)
+                ->get()
+                ->keyBy('id_calon_mahasiswa'); // Index by ID calon mahasiswa untuk pencarian cepat
+
+            $results = [];
+
+            // 3. Loop data dari API dan bandingkan dengan lokal
+            foreach ($apiData as $apiRecord) {
+                $idCalonMhs = $apiRecord['id_calon_mahasiswa'];
+                $localRecord = $localData->get($idCalonMhs);
+
+                $status = 'unknown';
+                $keterangan = '';
+                $field_berbeda = [];
+                $data_baru = null;
+
+                if (!$localRecord) {
+                    // Data baru dari API, tidak ada di lokal
+                    $status = 'baru_dari_api';
+                    $keterangan = 'Data baru dari API SIAKAD2.';
+                } else {
+                    // Data ditemukan di lokal, bandingkan
+                    $isMatch = true;
+                    $fieldsToCompare = [
+                        'nama_lengkap' => 'nama',
+                        'email' => 'email',
+                        'nomor_hp' => 'nomor_hp',
+                        'nomor_hp2' => 'nomor_hp2',
+                        'prodi_nama' => 'prodi_nama',
+                        'tahun' => 'tahun',
+                        'gelombang' => 'gelombang',
+                        'kelas' => 'kelas',
+                        'biaya' => 'total_pembayaran_pendaftaran', // Bandingkan dengan biaya pembayaran
+                        'status' => 'status_calon_mahasiswa', // Bandingkan status utama
+                        // Tambahkan field lain yang ingin dibandingkan
+                    ];
+
+                    foreach ($fieldsToCompare as $localField => $apiField) {
+                        $localValue = $localRecord->$localField;
+                        $apiValue = $apiRecord[$apiField] ?? null;
+
+                        // Konversi tipe data jika perlu sebelum dibandingkan
+                        if ($localField === 'biaya') {
+                            $apiValue = (float) ($apiValue ?? 0);
+                            $localValue = (float) $localValue;
+                        }
+                        if ($localField === 'tahun' || $localField === 'gelombang') {
+                            $apiValue = (int) ($apiValue ?? 0);
+                            $localValue = (int) $localValue;
+                        }
+
+                        if ($localValue != $apiValue) {
+                            $isMatch = false;
+                            $field_berbeda[] = [
+                                'field' => $localField,
+                                'local' => $localValue,
+                                'api' => $apiValue
+                            ];
+                        }
+                    }
+
+                    if ($isMatch) {
+                        $status = 'sudah_sama';
+                        $keterangan = 'Data lokal sudah sinkron dengan API.';
+                    } else {
+                        $status = 'butuh_synchronisasi';
+                        $keterangan = 'Data lokal berbeda dengan API, perlu disinkronisasi.';
+                        $data_baru = $apiRecord; // Kirim data baru untuk digunakan saat sinkronisasi
+                    }
+                }
+
+                $results[] = [
+                    'id_calon_mahasiswa' => $idCalonMhs,
+                    'nama' => $apiRecord['nama'],
+                    'email' => $apiRecord['email'],
+                    'status' => $status,
+                    'keterangan' => $keterangan,
+                    'field_berbeda' => $field_berbeda,
+                    'data_baru' => $data_baru,
+                    'data_lokal' => $localRecord ? $localRecord->toArray() : null,
+                ];
+            }
+
+            // 4. Tambahkan data lokal yang tidak ada di API (opsional, tergantung kebijakan)
+            foreach ($localData as $localRecord) {
+                if (!$apiData->contains('id_calon_mahasiswa', $localRecord->id_calon_mahasiswa)) {
+                    $results[] = [
+                        'id_calon_mahasiswa' => $localRecord->id_calon_mahasiswa,
+                        'nama' => $localRecord->nama_lengkap,
+                        'email' => $localRecord->email,
+                        'status' => 'hanya_di_lokal',
+                        'keterangan' => 'Data hanya ada di sistem lokal, tidak ditemukan di API SIAKAD2.',
+                        'field_berbeda' => [],
+                        'data_baru' => null,
+                        'data_lokal' => $localRecord->toArray(),
+                    ];
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Proses sinkronisasi selesai.',
+                'data' => $results
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Sync Error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat sinkronisasi: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Sinkronisasi satu data pendaftaran dari API SIAKAD2
+     */
+    public function syncOne(Request $request, PendaftaranModel $pendaftaran): JsonResponse
+    {
+        try {
+            // Authorization check
+            if (auth()->user()->hasRole('agen') && $pendaftaran->agen_id != auth()->id()) {
+                abort(403);
+            }
+
+            $user = auth()->user();
+            $idCalonMhs = $pendaftaran->id_calon_mahasiswa;
+
+            // Ambil data terbaru dari API SIAKAD2 untuk ID calon mhs ini
+            $apiResponse = $this->siakadService->getDetailCalonMahasiswa($idCalonMhs);
+
+            if (!$apiResponse['success']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $apiResponse['message'] ?? 'Gagal mengambil data dari SIAKAD2.'
+                ], 500);
+            }
+
+            $apiData = $apiResponse['data'];
+
+            // Lakukan update ke record lokal
+            $pendaftaran->update([
+                'nama_lengkap' => $apiData['nama'],
+                'email' => $apiData['email'],
+                'nomor_hp' => $apiData['nomor_hp'],
+                'nomor_hp2' => $apiData['nomor_hp2'] ?? null,
+                'prodi_nama' => $apiData['prodi_nama'],
+                'tahun' => $apiData['tahun'],
+                'gelombang' => $apiData['gelombang'],
+                'kelas' => $apiData['kelas'],
+                'status' => $apiData['status_calon_mahasiswa'] == 1 ? 'success' : 'pending', // Contoh mapping status
+                'keterangan' => $apiData['keterangan'] ?? 'Sinkronisasi dari SIAKAD2',
+                'response_data' => $apiData, // Simpan seluruh data dari API
+                'synced_at' => now(),
+                // Tambahkan field lain yang ingin disinkronkan
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data pendaftaran berhasil disinkronisasi.',
+                'data' => $pendaftaran
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Sync One Error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat sinkronisasi: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
      * Hapus pendaftaran
      */
     public function destroy(PendaftaranModel $pendaftaran): RedirectResponse
