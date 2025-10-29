@@ -256,7 +256,7 @@
               @endfor
             </select>
           </div>
-          <button type="button" class="btn btn-primary w-100 mb-3" id="start-sync-btn">Mulai Sinkronisasi</button>
+          <button type="button" class="btn btn-primary w-100 mb-3" id="start-sync-btn">Cek Sinkronisasi</button>
           <div id="sync-results-container" class="d-none">
             <h3>Hasil Pembandingan:</h3>
             <div id="sync-results"></div>
@@ -382,7 +382,8 @@
           },
           {
             data: 'biaya',
-            name: 'biaya'
+            name: 'biaya',
+            className: 'text-nowrap'
           },
           {
             data: 'status_badge',
@@ -582,7 +583,7 @@
           });
         },
         complete: function() {
-          $('#start-sync-btn').prop('disabled', false).text('Mulai Sinkronisasi');
+          $('#start-sync-btn').prop('disabled', false).text('Cek Sinkronisasi');
         }
       });
     });
@@ -604,27 +605,27 @@
 
         switch (item.status) {
           case 'sudah_sama':
-            statusClass = 'bg-success text-success-fg';
+            statusClass = 'bg-success text-success-fg px-2';
             statusText = 'TERSINKRON';
             break;
           case 'butuh_synchronisasi':
-            statusClass = 'bg-warning text-warning-fg';
+            statusClass = 'bg-warning text-warning-fg px-2';
             statusText = 'BUTUH SINKRON';
             actionBtn =
               `<button class="btn btn-sm btn-primary sync-individual-btn" data-id="${item.id_calon_mahasiswa}">Sinkron</button>`;
             break;
           case 'baru_dari_api':
-            statusClass = 'bg-info text-info-fg';
+            statusClass = 'bg-info text-info-fg px-2';
             statusText = 'DATA BARU';
             // Tidak ada tombol sinkron untuk data baru, mungkin perlu logika tambahan
             break;
           case 'hanya_di_lokal':
-            statusClass = 'bg-secondary text-secondary-fg';
+            statusClass = 'bg-secondary text-secondary-fg px-2';
             statusText = 'HANYA DI AGEN';
             // Tidak ada tombol sinkron untuk data lokal saja
             break;
           default:
-            statusClass = 'bg-danger text-danger-fg';
+            statusClass = 'bg-danger text-danger-fg px-2';
             statusText = 'STATUS TIDAK DIKENAL';
         }
 
@@ -707,6 +708,7 @@
         },
         complete: function() {
           btn.prop('disabled', false).text('Sinkron');
+          $('#start-sync-btn').click(); // Trigger ulang sync
         }
       });
     });

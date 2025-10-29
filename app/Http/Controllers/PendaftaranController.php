@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\User;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\SiakadService;
 use App\Models\PendaftaranModel;
@@ -81,8 +82,9 @@ class PendaftaranController extends Controller
                     <div class="text-muted small">Kelas: ' . $row->nama_kelas . '</div>';
             })
             ->addColumn('akademik', function ($row) {
-                return '<div class="font-weight-medium">' . $row->tahun . '/' . $row->gelombang . '</div>
-                    <div class="text-muted small">' . $row->created_at->format('d/m/Y H:i') . '</div>';
+                return '<div class="font-weight-medium">' . $row->tahun . '/' . $row->tahun + 1  . '</div>
+                    <div class="text-muted small">Gelombang ' . $row->gelombang  . '</div>
+                    <div class="text-muted small">' . $row->created_at->translatedFormat('d M Y') . '</div>';
             })
             ->addColumn('biaya', function ($row) {
                 return '<div class="font-weight-medium">' . $row->biaya_formatted . '</div>';
@@ -91,8 +93,10 @@ class PendaftaranController extends Controller
                 return $row->status_badge;
             })
             ->addColumn('agen_id', function ($row) {
-                return '<div class="font-weight-medium">' . $row->agen->name . '</div>
-                    <div class="text-muted small">(' . $row->agen->asal_sekolah . ')</div>';
+                $asal = Str::limit($row->agen->asal_sekolah, 15, '...');
+                $agen = Str::limit($row->agen->name, 15, '...');
+                return '<div class="font-weight-medium">' . e($agen) . '</div>
+            <div class="text-muted small">' . e($asal) . '</div>';
             })
             ->addColumn('aksi', function ($row) {
                 $html = '<div class="btn-list justify-content-center">
@@ -368,7 +372,7 @@ class PendaftaranController extends Controller
     }
 
     /**
-     * Proses sinkronisasi data pendaftaran dari API SIAKAD2
+     * Proses sinkronisasi data pendaftaran dari PMB SIAKAD2
      */
     public function sync(Request $request): JsonResponse
     {
@@ -384,7 +388,7 @@ class PendaftaranController extends Controller
                 ], 400);
             }
 
-            // 1. Ambil data terbaru dari API SIAKAD2 untuk agen ini
+            // 1. Ambil data terbaru dari PMB SIAKAD2 untuk agen ini
             $apiResponse = $this->siakadService->getCalonMahasiswaByAgen($tahun, $agenId);
 
             if (!$apiResponse['success']) {
@@ -417,7 +421,7 @@ class PendaftaranController extends Controller
                 if (!$localRecord) {
                     // Data baru dari API, tidak ada di lokal
                     $status = 'baru_dari_api';
-                    $keterangan = 'Data baru dari API SIAKAD2.';
+                    $keterangan = 'Data baru dari PMB SIAKAD2.';
                 } else {
                     // Data ditemukan di lokal, bandingkan
                     $isMatch = true;
@@ -467,10 +471,10 @@ class PendaftaranController extends Controller
 
                     if ($isMatch) {
                         $status = 'sudah_sama';
-                        $keterangan = 'Data lokal sudah sinkron dengan API.';
+                        $keterangan = 'Data ' . konfigs('NAMA_SISTEM_ALIAS') . ' sudah sinkron dengan PMB SIAKAD2.';
                     } else {
                         $status = 'butuh_synchronisasi';
-                        $keterangan = 'Data lokal berbeda dengan API, perlu disinkronisasi.';
+                        $keterangan = 'Data ' . konfigs('NAMA_SISTEM_ALIAS') . ' berbeda dengan PMB SIAKAD2, perlu disinkronkan.';
                         $data_baru = $apiRecord; // Kirim data baru untuk digunakan saat sinkronisasi
                     }
                 }
@@ -495,7 +499,7 @@ class PendaftaranController extends Controller
                         'nama' => $localRecord->nama_lengkap,
                         'email' => $localRecord->email,
                         'status' => 'hanya_di_lokal',
-                        'keterangan' => 'Data hanya ada di sistem lokal, tidak ditemukan di API SIAKAD2.',
+                        'keterangan' => 'Data hanya ada di ' . konfigs('NAMA_SISTEM_ALIAS') . ', tidak ditemukan di PMB SIAKAD2.',
                         'field_berbeda' => [],
                         'data_baru' => null,
                         'data_lokal' => $localRecord->toArray(),
@@ -518,7 +522,7 @@ class PendaftaranController extends Controller
     }
 
     /**
-     * Sinkronisasi satu data pendaftaran dari API SIAKAD2 berdasarkan id_calon_mahasiswa
+     * Sinkronisasi satu data pendaftaran dari PMB SIAKAD2 berdasarkan id_calon_mahasiswa
      */
     public function syncOne(Request $request, string $id_calon_mahasiswa): JsonResponse
     {
@@ -543,7 +547,7 @@ class PendaftaranController extends Controller
                 ], 404);
             }
 
-            // Ambil data terbaru dari API SIAKAD2 untuk ID calon mhs ini
+            // Ambil data terbaru dari PMB SIAKAD2 untuk ID calon mhs ini
             $apiResponse = $this->siakadService->getDetailCalonMahasiswa($id_calon_mahasiswa);
 
             if (!$apiResponse['success']) {

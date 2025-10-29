@@ -198,16 +198,17 @@
               </div>
               <div class="mb-3">
                 <strong>Tanggal Daftar:</strong><br>
-                {{ $pendaftaran->created_at->format('d/m/Y H:i') }}
+                {{ $pendaftaran->created_at->translatedFormat('d M Y H:i') }} <span>({{ $pendaftaran->created_at->diffForHumans() }})</span>
               </div>
               <div class="mb-3">
                 <strong>Terakhir Update:</strong><br>
-                {{ $pendaftaran->updated_at->format('d/m/Y H:i') }}
+                {{ $pendaftaran->updated_at->translatedFormat('d M Y H:i') }} <span>({{ $pendaftaran->updated_at->diffForHumans() }})</span>
               </div>
               @if ($pendaftaran->synced_at)
                 <div class="mb-3">
+                  
                   <strong>Terakhir Sync:</strong><br>
-                  {{ $pendaftaran->synced_at->format('d/m/Y H:i') }}
+                  {{ $pendaftaran->synced_at->translatedFormat('d M Y H:i') }} <span>({{ $pendaftaran->synced_at->diffForHumans() }})</span>
                 </div>
               @endif
             </div>
