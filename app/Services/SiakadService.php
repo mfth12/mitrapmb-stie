@@ -116,6 +116,38 @@ class SiakadService
   }
 
   /**
+   * Get detail calon mahasiswa by ID dari PMB SIAKAD2
+   */
+  public function getDetailCalonMahasiswa(string $id): array
+  {
+    try {
+      $response = Http::timeout($this->timeout)
+        ->get($this->baseUrl . '/api/v2/calon-mahasiswa/' . $id); // Gunakan GET dan sertakan ID di URL
+
+      $responseData = $response->json();
+
+      if ($response->successful() && ($responseData['success'] ?? false)) {
+        return [
+          'success' => true,
+          'data' => $responseData['data'] ?? [], // Data detail calon mahasiswa
+          'message' => $responseData['message'] ?? 'Data berhasil diambil'
+        ];
+      }
+
+      return [
+        'success' => false,
+        'message' => $responseData['message'] ?? 'Gagal mengambil data dari PMB SIAKAD2'
+      ];
+    } catch (Exception $e) {
+      Log::error('SiakadService getDetailCalonMahasiswa error: ' . $e->getMessage());
+      return [
+        'success' => false,
+        'message' => 'Tidak dapat terhubung ke PMB SIAKAD2'
+      ];
+    }
+  }
+
+  /**
    * Check API status
    */
   public function checkApiStatus(): bool

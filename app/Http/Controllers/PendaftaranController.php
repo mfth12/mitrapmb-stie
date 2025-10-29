@@ -512,21 +512,33 @@ class PendaftaranController extends Controller
     }
 
     /**
-     * Sinkronisasi satu data pendaftaran dari API SIAKAD2
+     * Sinkronisasi satu data pendaftaran dari API SIAKAD2 berdasarkan id_calon_mahasiswa
      */
-    public function syncOne(Request $request, PendaftaranModel $pendaftaran): JsonResponse
+    public function syncOne(Request $request, string $id_calon_mahasiswa): JsonResponse
     {
         try {
-            // Authorization check
-            if (auth()->user()->hasRole('agen') && $pendaftaran->agen_id != auth()->id()) {
-                abort(403);
+            // Authorization check: Pastikan user adalah agen
+            $user = auth()->user();
+            if ($user->hasRole('agen')) {
+                // Jika role adalah agen, pastikan pendaftaran milik mereka
+                $pendaftaran = PendaftaranModel::where('id_calon_mahasiswa', $id_calon_mahasiswa)
+                    ->where('agen_id', $user->user_id) // Pastikan milik agen ini
+                    ->first();
+            } else {
+                // Jika bukan agen (misalnya admin), cari saja tanpa batasan agen
+                $pendaftaran = PendaftaranModel::where('id_calon_mahasiswa', $id_calon_mahasiswa)->first();
             }
 
-            $user = auth()->user();
-            $idCalonMhs = $pendaftaran->id_calon_mahasiswa;
+            // Periksa apakah record ditemukan
+            if (!$pendaftaran) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data pendaftaran tidak ditemukan.'
+                ], 404);
+            }
 
             // Ambil data terbaru dari API SIAKAD2 untuk ID calon mhs ini
-            $apiResponse = $this->siakadService->getDetailCalonMahasiswa($idCalonMhs);
+            $apiResponse = $this->siakadService->getDetailCalonMahasiswa($id_calon_mahasiswa);
 
             if (!$apiResponse['success']) {
                 return response()->json([
@@ -538,6 +550,7 @@ class PendaftaranController extends Controller
             $apiData = $apiResponse['data'];
 
             // Lakukan update ke record lokal
+            // Perhatikan: mapping field dari API ke kolom database mungkin perlu disesuaikan
             $pendaftaran->update([
                 'nama_lengkap' => $apiData['nama'],
                 'email' => $apiData['email'],
@@ -547,11 +560,12 @@ class PendaftaranController extends Controller
                 'tahun' => $apiData['tahun'],
                 'gelombang' => $apiData['gelombang'],
                 'kelas' => $apiData['kelas'],
-                'status' => $apiData['status_calon_mahasiswa'] == 1 ? 'success' : 'pending', // Contoh mapping status
-                'keterangan' => $apiData['keterangan'] ?? 'Sinkronisasi dari SIAKAD2',
+                // 'biaya' => $apiData['total_pembayaran_pendaftaran'], // Contoh, sesuaikan
+                'status' => $this->mapStatusApiToLokal($apiData['status_calon_mahasiswa']), // Gunakan fungsi mapping
+                'keterangan' => $apiData['sumber_lain'] ?? 'Sinkronisasi dari SIAKAD2',
                 'response_data' => $apiData, // Simpan seluruh data dari API
                 'synced_at' => now(),
-                // Tambahkan field lain yang ingin disinkronkan
+                // Tambahkan field lain yang ingin disinkronkan berdasarkan struktur $apiData
             ]);
 
             return response()->json([
@@ -565,6 +579,23 @@ class PendaftaranController extends Controller
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat sinkronisasi: ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+    // Fungsi bantu untuk mapping status dari API ke status lokal
+    private function mapStatusApiToLokal($apiStatus)
+    {
+        // Contoh mapping, sesuaikan dengan logika bisnis Anda
+        // API: 0=Belum, 1=Lulus Ujian, 2=Lulus Seleksi, dll (lihat contoh API sebelumnya)
+        // Lokal: 'pending', 'success', 'failed'
+        switch ($apiStatus) {
+            case 0:
+                return 'pending'; // Misalnya, 0 berarti belum lulus ujian/seleksi
+            case 1:
+            case 2: // Misalnya 1 dan 2 berarti lulus ujian/seleksi
+                return 'success'; // Dianggap berhasil
+            default:
+                return 'pending'; // Default jika status API tidak dikenal atau null
         }
     }
 
