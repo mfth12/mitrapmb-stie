@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Services\SiakadService;
 use App\Models\PendaftaranModel;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\PendaftaranStoreRequest;
@@ -512,8 +513,8 @@ class PendaftaranController extends Controller
                 'message' => 'Proses sinkronisasi selesai.',
                 'data' => $results
             ]);
-        } catch (\Exception $e) {
-            \Log::error('Sync Error: ' . $e->getMessage());
+        } catch (Exception $e) {
+            Log::error('Sync Error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat sinkronisasi: ' . $e->getMessage()
