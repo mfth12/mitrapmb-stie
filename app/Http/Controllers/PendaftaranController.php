@@ -426,12 +426,14 @@ class PendaftaranController extends Controller
                         'email' => 'email',
                         'nomor_hp' => 'nomor_hp',
                         'nomor_hp2' => 'nomor_hp2',
+                        'prodi_id' => 'prodi_id',
                         'prodi_nama' => 'prodi_nama',
                         'tahun' => 'tahun',
                         'gelombang' => 'gelombang',
                         'kelas' => 'kelas',
+                        'no_transaksi' => 'transaksi_pendaftaran', // Nomor transaksi
                         'biaya' => 'total_pembayaran_pendaftaran', // Bandingkan dengan biaya pembayaran
-                        'status' => 'status_calon_mahasiswa', // Bandingkan status utama
+                        // 'status' => 'registrasi_ulang_lunas', // Bandingkan status utama
                         // Tambahkan field lain yang ingin dibandingkan
                     ];
 
@@ -441,7 +443,11 @@ class PendaftaranController extends Controller
 
                         // Konversi tipe data jika perlu sebelum dibandingkan
                         if ($localField === 'biaya') {
-                            $apiValue = (float) ($apiValue ?? 0);
+                            $apiValue = (float) $apiRecord['transaksi_pendaftaran']['total_biaya'] ?? 0;
+                            $localValue = (float) $localValue;
+                        }
+                        if ($apiField === 'transaksi_pendaftaran') {
+                            $apiValue = (float) $apiRecord['transaksi_pendaftaran']['no_transaksi'] ?? 0;
                             $localValue = (float) $localValue;
                         }
                         if ($localField === 'tahun' || $localField === 'gelombang') {
@@ -554,15 +560,17 @@ class PendaftaranController extends Controller
             $pendaftaran->update([
                 'nama_lengkap' => $apiData['nama'],
                 'email' => $apiData['email'],
-                'nomor_hp' => $apiData['nomor_hp'],
-                'nomor_hp2' => $apiData['nomor_hp2'] ?? null,
+                'nomor_hp' => $apiData['user']['nomor_hp'],
+                'nomor_hp2' => $apiData['user']['nomor_hp2'] ?? null,
+                'prodi_id' => $apiData['prodi_id'],
                 'prodi_nama' => $apiData['prodi_nama'],
                 'tahun' => $apiData['tahun'],
                 'gelombang' => $apiData['gelombang'],
                 'kelas' => $apiData['kelas'],
-                // 'biaya' => $apiData['total_pembayaran_pendaftaran'], // Contoh, sesuaikan
-                'status' => $this->mapStatusApiToLokal($apiData['status_calon_mahasiswa']), // Gunakan fungsi mapping
-                'keterangan' => $apiData['sumber_lain'] ?? 'Sinkronisasi dari SIAKAD2',
+                'no_transaksi' => $apiData['transaksi_pendaftaran']['no_transaksi'], // Contoh, sesuaikan
+                'biaya' => $apiData['transaksi_pendaftaran']['total_biaya'], // Contoh, sesuaikan
+                // 'status' => $this->mapStatusApiToLokal($apiData['status_calon_mahasiswa']), // Gunakan fungsi mapping
+                'keterangan' => $apiData['sumber_lain'] ?? 'Hasil sinkronisasi dari SIAKAD2',
                 'response_data' => $apiData, // Simpan seluruh data dari API
                 'synced_at' => now(),
                 // Tambahkan field lain yang ingin disinkronkan berdasarkan struktur $apiData
