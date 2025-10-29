@@ -247,7 +247,8 @@
         </div>
         <div class="modal-body">
           <div class="mb-3">
-            <label for="tahun-sync" class="form-label">Tahun Akademik</label>
+            {{-- <label for="tahun-sync" class="form-label">Tahun Akademik</label> --}}
+            <h3>Tahun Akademik:</h3>
             <select name="tahun" id="tahun-sync" class="form-select">
               <option value="">Pilih Tahun</option>
               @for ($i = date('Y') + 1; $i >= 2020; $i--)
@@ -257,7 +258,7 @@
           </div>
           <button type="button" class="btn btn-primary w-100 mb-3" id="start-sync-btn">Mulai Sinkronisasi</button>
           <div id="sync-results-container" class="d-none">
-            <h6>Hasil Pembandingan:</h6>
+            <h3>Hasil Pembandingan:</h3>
             <div id="sync-results"></div>
           </div>
         </div>
@@ -604,7 +605,7 @@
         switch (item.status) {
           case 'sudah_sama':
             statusClass = 'bg-success text-success-fg';
-            statusText = 'DATA SINKRON';
+            statusText = 'TERSINKRON';
             break;
           case 'butuh_synchronisasi':
             statusClass = 'bg-warning text-warning-fg';
@@ -614,25 +615,25 @@
             break;
           case 'baru_dari_api':
             statusClass = 'bg-info text-info-fg';
-            statusText = 'DATA BARU DARI API';
+            statusText = 'DATA BARU';
             // Tidak ada tombol sinkron untuk data baru, mungkin perlu logika tambahan
             break;
           case 'hanya_di_lokal':
             statusClass = 'bg-secondary text-secondary-fg';
-            statusText = 'HANYA DI LOKAL';
+            statusText = 'HANYA DI AGEN';
             // Tidak ada tombol sinkron untuk data lokal saja
             break;
           default:
-            statusClass = 'bg-light';
+            statusClass = 'bg-danger text-danger-fg';
             statusText = 'STATUS TIDAK DIKENAL';
         }
 
         let fieldsDiff = '';
         if (item.field_berbeda.length > 0) {
-          fieldsDiff = '<div class="small text-muted mt-1"><strong>Field Berbeda:</strong> ';
+          fieldsDiff = '<div class="text-muted mt-2"><strong>Field Berbeda:</strong> ';
           item.field_berbeda.forEach(function(diff) {
             fieldsDiff +=
-              `<br><span class="badge bg-light text-dark">- ${diff.field}: "${diff.local}" vs "${diff.api}"</span>`;
+              `<br><span class="text-wrap">- ${diff.field}: "${diff.local}" vs "${diff.api}"</span>`;
           });
           fieldsDiff += '</div>';
         }
@@ -641,13 +642,13 @@
                   <div class="card mb-2">
                       <div class="card-body d-flex justify-content-between align-items-center">
                           <div>
-                              <div class="font-weight-medium">${item.nama} (${item.id_calon_mahasiswa})</div>
-                              <div class="text-muted small">${item.email}</div>
-                              <div class="text-muted small">${item.keterangan}</div>
+                              <div class="font-weight-bolder"><strong>${item.nama}</strong> (${item.id_calon_mahasiswa})</div>
+                              <div class="text-muted">${item.email}</div>
+                              <div class="text-muted">${item.keterangan}</div>
                               ${fieldsDiff}
                           </div>
                           <div class="d-flex align-items-center">
-                              <span class="badge ${statusClass} me-2">${statusText}</span>
+                              <span class="badge badge-pill ${statusClass} me-2">${statusText}</span>
                               ${actionBtn}
                           </div>
                       </div>
