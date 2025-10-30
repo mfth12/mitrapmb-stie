@@ -78,30 +78,3 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/sync/{id_calon_mahasiswa}', [PendaftaranController::class, 'syncOne'])->name('pendaftaran.syncOne');
     });
 });
-
-
-// // Approval Routes - untuk baak dan prodi
-// Route::prefix('approval')->middleware(['permission:approval_view'])->group(function () {
-//     Route::get('/', [ApprovalController::class, 'index'])->name('approval.index');
-//     Route::get('/{pendaftaran}', [ApprovalController::class, 'show'])->name('approval.show');
-//     Route::post('/{pendaftaran}/approve', [ApprovalController::class, 'approve'])->name('approval.approve')
-//         ->middleware('permission:approval_approve');
-//     Route::post('/{pendaftaran}/reject', [ApprovalController::class, 'reject'])->name('approval.reject')
-//         ->middleware('permission:approval_reject');
-//     Route::post('/{pendaftaran}/verify', [ApprovalController::class, 'verify'])->name('approval.verify')
-//         ->middleware('permission:approval_verify');
-// });
-
-// // Keuangan Routes - khusus untuk role keuangan
-// Route::prefix('keuangan')->middleware(['permission:keuangan_view'])->group(function () {
-//     Route::get('/', [KeuanganController::class, 'index'])->name('keuangan.index');
-//     Route::post('/{pendaftaran}/process', [KeuanganController::class, 'process'])->name('keuangan.process')
-//         ->middleware('permission:keuangan_manage');
-// });
-
-// // Akademik Routes - untuk prodi dan dosen
-// Route::prefix('akademik')->middleware(['permission:akademik_view'])->group(function () {
-//     Route::get('/', [AkademikController::class, 'index'])->name('akademik.index');
-//     Route::post('/manage', [AkademikController::class, 'manage'])->name('akademik.manage')
-//         ->middleware('permission:akademik_manage');
-// });
