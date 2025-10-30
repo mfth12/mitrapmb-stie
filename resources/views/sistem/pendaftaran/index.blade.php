@@ -644,7 +644,6 @@
                       <div class="card-body d-flex justify-content-between align-items-center">
                           <div>
                               <div class="font-weight-bolder"><strong>${item.nama}</strong> (${item.id_calon_mahasiswa})</div>
-                              <div class="text-muted">${item.email}</div>
                               <div class="text-muted">${item.keterangan}</div>
                               ${fieldsDiff}
                           </div>

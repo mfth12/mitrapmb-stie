@@ -575,8 +575,8 @@ class PendaftaranController extends Controller
                 'no_transaksi' => $apiData['transaksi_pendaftaran']['no_transaksi'], // Contoh, sesuaikan
                 'biaya' => $apiData['transaksi_pendaftaran']['total_biaya'], // Contoh, sesuaikan
                 // 'status' => $this->mapStatusApiToLokal($apiData['status_calon_mahasiswa']), // Gunakan fungsi mapping
-                'keterangan' => $apiData['sumber_lain'] ?? 'Hasil sinkronisasi dari SIAKAD2',
-                'response_data' => $apiData, // Simpan seluruh data dari API
+                // 'keterangan' => 'Hasil sinkronisasi dari SIAKAD2',
+                // 'response_data' => $apiData, // Simpan seluruh data dari API
                 'synced_at' => now(),
                 // Tambahkan field lain yang ingin disinkronkan berdasarkan struktur $apiData
             ]);
