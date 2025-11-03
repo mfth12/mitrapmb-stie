@@ -574,6 +574,7 @@ class PendaftaranController extends Controller
                 'kelas' => $apiData['kelas'],
                 'no_transaksi' => $apiData['transaksi_pendaftaran']['no_transaksi'], // Contoh, sesuaikan
                 'biaya' => $apiData['transaksi_pendaftaran']['total_biaya'], // Contoh, sesuaikan
+                'status' => 'synced', // Gunakan fungsi mapping
                 // 'status' => $this->mapStatusApiToLokal($apiData['status_calon_mahasiswa']), // Gunakan fungsi mapping
                 // 'keterangan' => 'Hasil sinkronisasi dari SIAKAD2',
                 // 'response_data' => $apiData, // Simpan seluruh data dari API
@@ -591,6 +592,82 @@ class PendaftaranController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat sinkronisasi: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Menambahkan satu data pendaftaran baru dari PMB SIAKAD2 berdasarkan id_calon_mahasiswa
+     */
+    public function syncNew(Request $request, string $id_calon_mahasiswa): JsonResponse
+    {
+        try {
+            // Authorization check: Pastikan user adalah agen
+            $user = auth()->user();
+            if ($user->hasRole('agen')) {
+                // Untuk menambahkan data baru, kita hanya perlu memastikan user login sebagai agen
+                // Kita tidak mencari data lokal dulu karena memang belum ada
+            } else {
+                // Jika bukan agen, mungkin bisa ditolak atau diberi akses sesuai kebijakan
+                // Untuk saat ini, kita tetap lanjutkan untuk admin jika bukan agen
+            }
+
+            // Cek apakah data dengan ID ini sudah ada di tabel lokal (mencegah duplikat jika proses sinkronisasi diulang)
+            $existingPendaftaran = PendaftaranModel::where('id_calon_mahasiswa', $id_calon_mahasiswa)->first();
+            if ($existingPendaftaran) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data pendaftaran sudah ada di sistem.'
+                ], 409); // Conflict: Sudah ada
+            }
+
+            // Ambil data terbaru dari PMB SIAKAD2 untuk ID calon mhs ini
+            $apiResponse = $this->siakadService->getDetailCalonMahasiswa($id_calon_mahasiswa);
+
+            if (!$apiResponse['success']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $apiResponse['message'] ?? 'Gagal mengambil data dari SIAKAD2.'
+                ], 500);
+            }
+
+            $apiData = $apiResponse['data'];
+
+            // Buat record baru di tabel pendaftaran berdasarkan data dari API
+            // Catatan: Ini hanya contoh mapping. Anda mungkin perlu menyesuaikan field-fieldnya.
+            $pendaftaran = PendaftaranModel::create([
+                'user_id' => null, // Karena ini hanya dari API, mungkin tidak ada user lokal
+                'agen_id' => $user->user_id, // Asumsikan data baru ini ditambahkan oleh agen yang sedang login
+                'id_calon_mahasiswa' => $apiData['id_calon_mahasiswa'],
+                'username_siakad' => $apiData['user']['username'] ?? null, // Ambil dari data user di API
+                'password_text' => null, // Tidak menyimpan password plain dari API
+                'no_transaksi' => $apiData['transaksi_pendaftaran']['no_transaksi'] ?? null, // Ambil dari data transaksi di API
+                'prodi_id' => $apiData['prodi_id'],
+                'prodi_nama' => $apiData['prodi_nama'],
+                'tahun' => $apiData['tahun'],
+                'gelombang' => $apiData['gelombang'],
+                'biaya' => $apiData['transaksi_pendaftaran']['total_biaya'] ?? 0, // Ambil dari data transaksi di API
+                'kelas' => $apiData['kelas'],
+                'nama_lengkap' => $apiData['nama'],
+                'email' => $apiData['email'],
+                'nomor_hp' => $apiData['user']['nomor_hp'] ?? null, // Ambil dari data user di API
+                'nomor_hp2' => $apiData['user']['nomor_hp2'] ?? null, // Ambil dari data user di API
+                'status' => 'imported', // Gunakan fungsi mapping
+                'keterangan' => $apiData['sumber_lain'] ?? 'Data baru dari SIAKAD2 via sinkronisasi',
+                'response_data' => $apiData, // Simpan seluruh data dari API
+                'synced_at' => now(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data pendaftaran baru berhasil ditambahkan.',
+                'data' => $pendaftaran
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Sync New Error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menambahkan data baru: ' . $e->getMessage()
             ], 500);
         }
     }

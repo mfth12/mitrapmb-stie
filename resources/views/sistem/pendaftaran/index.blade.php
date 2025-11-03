@@ -617,7 +617,8 @@
           case 'baru_dari_api':
             statusClass = 'bg-info text-info-fg px-2';
             statusText = 'DATA BARU';
-            // Tidak ada tombol sinkron untuk data baru, mungkin perlu logika tambahan
+            actionBtn =
+              `<button class="btn btn-sm btn-success sync-new-btn" data-id="${item.id_calon_mahasiswa}">Tambahkan</button>`; // Tambahkan tombol Tambahkan
             break;
           case 'hanya_di_lokal':
             statusClass = 'bg-secondary text-secondary-fg px-2';
@@ -708,6 +709,167 @@
         complete: function() {
           btn.prop('disabled', false).text('Sinkron');
           $('#start-sync-btn').click(); // Trigger ulang sync
+        }
+      });
+    });
+
+    // Event delegation untuk tombol tambah data baru
+    $(document).on('click', '.sync-new-btn', function() {
+      const id = $(this).data('id');
+      const btn = $(this);
+
+      btn.prop('disabled', true).text('Menambahkan...');
+
+      // Kirim permintaan ke route syncNew
+      $.ajax({
+        url: `/pendaftaran/sync-new/${id}`, // Sesuaikan dengan route Anda
+        type: 'POST',
+        data: {
+          '_token': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+          if (response.success) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Berhasil',
+              text: response.message
+            }).then(() => {
+              // Refresh DataTable jika perlu
+              table.ajax.reload();
+              // Dan refresh hasil sinkronisasi jika modal tetap terbuka
+              $('#start-sync-btn').click(); // Trigger ulang sync
+            });
+          } else {
+            // Periksa apakah error 409 (Conflict - sudah ada)
+            if (response.status === 409) {
+              Swal.fire({
+                icon: 'info',
+                title: 'Data Sudah Ada',
+                text: response.message
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: response.message || 'Gagal menambahkan data baru.'
+              });
+            }
+          }
+        },
+        error: function(xhr) {
+          let msg = 'Gagal menambahkan data baru.';
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            msg = xhr.responseJSON.message;
+          }
+          Swal.fire({
+            icon: 'error',
+            title: 'Kesalahan',
+            text: msg
+          });
+        },
+        complete: function() {
+          btn.prop('disabled', false).text('Tambahkan');
+          $('#start-sync-btn').click(); // Trigger ulang sync
+        }
+      });
+    });
+
+    // Event handler untuk tombol sinkronisasi semua
+    $('#sync-all-btn').on('click', function() {
+      const btn = $(this);
+      // Ambil semua ID yang statusnya 'butuh_synchronisasi'
+      const idsToSync = [];
+      $('#sync-results .sync-individual-btn').each(function() {
+        // Ambil ID dari tombol yang saat ini berlabel 'Sinkron' (artinya perlu disinkronkan)
+        // Kita bisa mengandalkan struktur DOM atau menyimpan data secara terstruktur
+        // Lebih aman jika kita ambil dari data yang ditampilkan di card
+        const card = $(this).closest('.card');
+        const statusBadge = card.find('.badge'); // Ambil elemen badge status
+        if (statusBadge.hasClass(
+            'bg-warning')) { // Jika kelasnya bg-warning, berarti statusnya 'butuh_synchronisasi'
+          const id = $(this).data('id');
+          idsToSync.push(id);
+        }
+      });
+
+      if (idsToSync.length === 0) {
+        Swal.fire({
+          icon: 'info',
+          title: 'Tidak Ada Data',
+          text: 'Tidak ada data yang perlu disinkronkan.'
+        });
+        return;
+      }
+
+      // Konfirmasi sebelum proses massal
+      Swal.fire({
+        title: 'Konfirmasi',
+        text: `Anda akan menyinkronkan ${idsToSync.length} data sekaligus. Lanjutkan?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Sinkronisasi!',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          btn.prop('disabled', true).text('Memproses...');
+
+          let successCount = 0;
+          let errorCount = 0;
+          let processedCount = 0;
+
+          // Fungsi rekursif untuk memproses satu per satu secara serial
+          const processNext = () => {
+            if (idsToSync.length === 0) {
+              // Selesai memproses semua
+              Swal.fire({
+                icon: 'success',
+                title: 'Sinkronisasi Selesai',
+                text: `Berhasil: ${successCount}, Gagal: ${errorCount}`
+              }).then(() => {
+                // Refresh tampilan
+                table.ajax.reload();
+                $('#start-sync-btn').click(); // Trigger ulang sync
+              });
+              btn.prop('disabled', false).text('Sinkronisasi Semua');
+              return;
+            }
+
+            const id = idsToSync.shift(); // Ambil ID pertama dari array
+
+            $.ajax({
+              url: `/pendaftaran/sync/${id}`, // Gunakan route syncOne
+              type: 'POST',
+              data: {
+                '_token': $('meta[name="csrf-token"]').attr('content')
+              },
+              success: function(response) {
+                if (response.success) {
+                  successCount++;
+                } else {
+                  errorCount++;
+                  console.error('Gagal sync ID ' + id + ':', response.message);
+                }
+              },
+              error: function(xhr) {
+                errorCount++;
+                console.error('Error AJAX sync ID ' + id + ':', xhr.responseJSON?.message ||
+                  'Unknown error');
+              },
+              complete: function() {
+                processedCount++;
+                // Update progress jika diperlukan (opsional)
+                // console.log(`Progress: ${processedCount}/${totalToProcess}`);
+
+                // Proses item berikutnya
+                processNext();
+              }
+            });
+          };
+
+          // Mulai proses
+          processNext();
         }
       });
     });

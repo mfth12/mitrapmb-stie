@@ -35,7 +35,7 @@ return new class extends Migration
             $table->string('nomor_hp2')->nullable();
 
             // Status
-            $table->enum('status', ['pending', 'success', 'failed'])->default('pending');
+            $table->enum('status', ['pending', 'success', 'failed', 'synced', 'imported', 'removed'])->default('pending');
             $table->text('keterangan')->nullable();
 
             // Response dari PMB SIAKAD2

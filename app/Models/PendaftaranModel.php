@@ -84,6 +84,34 @@ class PendaftaranModel extends Model
         return $query->where('status', 'failed');
     }
 
+    // --- SCOPE BARU ---
+    /**
+     * Scope untuk pendaftaran yang telah disinkronkan
+     */
+    public function scopeSynced($query)
+    {
+        return $query->where('status', 'synced');
+    }
+
+    /**
+     * Scope untuk pendaftaran yang diimpor
+     */
+    public function scopeImported($query)
+    {
+        return $query->where('status', 'imported');
+    }
+
+    /**
+     * Scope untuk pendaftaran yang dihapus (jika statusnya 'removed')
+     * Atau jika 'removed' berarti soft deleted, gunakan scopeTrashed
+     */
+    public function scopeRemoved($query)
+    {
+        return $query->where('status', 'removed');
+        // Jika 'removed' berarti soft deleted, dan kolomnya adalah 'deleted_at':
+        // return $query->whereNotNull('deleted_at');
+    }
+
     /**
      * Accessor untuk status badge
      */
@@ -92,6 +120,8 @@ class PendaftaranModel extends Model
         return match ($this->status) {
             'success' => '<span class="badge badge-pill px-2 bg-success text-success-fg">Berhasil</span>',
             'failed' => '<span class="badge badge-pill px-2 bg-danger text-danger-fg">Gagal</span>',
+            'synced' => '<span class="badge badge-pill px-2 bg-info text-info-fg">Tersinkron</span>',
+            'imported' => '<span class="badge badge-pill px-2 bg-info text-info-fg">Diimpor</span>',
             default => '<span class="badge badge-pill px-2 bg-warning text-warning-fg">Pending</span>',
         };
     }

@@ -76,5 +76,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/sync', [PendaftaranController::class, 'sync'])->name('pendaftaran.sync');
         // Route::post('/sync/{pendaftaran}', [PendaftaranController::class, 'syncOne'])->name('pendaftaran.syncOne');
         Route::post('/sync/{id_calon_mahasiswa}', [PendaftaranController::class, 'syncOne'])->name('pendaftaran.syncOne');
+        Route::post('/sync-new/{id_calon_mahasiswa}', [PendaftaranController::class, 'syncNew'])->name('pendaftaran.syncNew');
     });
 });
