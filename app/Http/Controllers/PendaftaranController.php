@@ -510,7 +510,7 @@ class PendaftaranController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Proses sinkronisasi selesai.',
+                'message' => 'Memproses data sinkronisasi.',
                 'data' => $results
             ]);
         } catch (Exception $e) {

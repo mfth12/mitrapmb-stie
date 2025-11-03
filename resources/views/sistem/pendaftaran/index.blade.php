@@ -48,7 +48,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-4 col-lg-2">
+        <div class="col-sm-4 col-lg-3">
           <div class="card card-sm">
             <div class="card-body">
               <div class="row align-items-center">
@@ -75,14 +75,31 @@
                   </span>
                 </div>
                 <div class="col">
-                  <div class="h2 mb-0">{{ $pendaftaran->whereIn('status', ['synced', 'imported'])->count() }}</div>
-                  <div class="text-secondary">Tersinkron/import</div>
+                  <div class="h2 mb-0">{{ $pendaftaran->whereIn('status', ['synced'])->count() }}</div>
+                  <div class="text-secondary">Tersinkron</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-sm-4 col-lg-2">
+        <div class="col-sm-4 col-lg-3">
+          <div class="card card-sm">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <span class="bg-light text-dark avatar">
+                    <i class="ti ti-cloud-down fs-1"></i>
+                  </span>
+                </div>
+                <div class="col">
+                  <div class="h2 mb-0">{{ $pendaftaran->whereIn('status', ['imported'])->count() }}</div>
+                  <div class="text-secondary">Terimport</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-lg-3">
           <div class="card card-sm">
             <div class="card-body">
               <div class="row align-items-center">
@@ -99,7 +116,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-4 col-lg-2">
+        <div class="col-sm-4 col-lg-3">
           <div class="card card-sm">
             <div class="card-body">
               <div class="row align-items-center">
