@@ -390,7 +390,11 @@ class PendaftaranController extends Controller
             }
 
             // 1. Ambil data terbaru dari PMB SIAKAD2 untuk agen ini
-            $apiResponse = $this->siakadService->getCalonMahasiswaByAgen($tahun, $agenId);
+            if ($user->hasRole('agen')) {
+                $apiResponse = $this->siakadService->getCalonMahasiswaByAgen($tahun, $agenId);
+            } elseif ($user->hasRole('superadmin')) {
+                $apiResponse = $this->siakadService->getCalonMahasiswaAll($tahun);
+            }
 
             if (!$apiResponse['success']) {
                 return response()->json([
@@ -405,13 +409,13 @@ class PendaftaranController extends Controller
                 // 2. Ambil data lokal dari tabel pendaftaran untuk agen ini dan tahun yang sama
                 $localData = PendaftaranModel::where('agen_id', $user->user_id)
                     ->where('tahun', $tahun)
-                    ->orderBy('created_at', 'desc')
+                    // ->orderBy('created_at', 'desc')
                     ->get()
                     ->keyBy('id_calon_mahasiswa'); // Index by ID calon mahasiswa untuk pencarian cepat
             } else {
                 // 2. Ambil data lokal dari tabel pendaftaran. Jika bukan agen (misalnya admin), cari saja tanpa batasan agen
                 $localData = PendaftaranModel::where('tahun', $tahun)
-                    ->orderBy('created_at', 'desc')
+                    // ->orderBy('created_at', 'desc')
                     ->get()
                     ->keyBy('id_calon_mahasiswa'); // Index by ID calon mahasiswa untuk pencarian cepat
             }
