@@ -93,7 +93,7 @@
                 </div>
                 <div class="col">
                   <div class="h2 mb-0">{{ $pendaftaran->whereIn('status', ['imported'])->count() }}</div>
-                  <div class="text-secondary">Terimport</div>
+                  <div class="text-secondary">Terimpor</div>
                 </div>
               </div>
             </div>
@@ -177,7 +177,7 @@
                         <option value="success" {{ request('status') == 'success' ? 'selected' : '' }}>Berhasil</option>
                         <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
                         <option value="synced" {{ request('status') == 'synced' ? 'selected' : '' }}>Tersinkron</option>
-                        <option value="imported" {{ request('status') == 'imported' ? 'selected' : '' }}>Data Impor
+                        <option value="imported" {{ request('status') == 'imported' ? 'selected' : '' }}>Terimpor
                         </option>
                         <option value="failed" {{ request('status') == 'failed' ? 'selected' : '' }}>Gagal</option>
                       </select>
@@ -402,7 +402,6 @@
             data: 'DT_RowIndex',
             name: 'pendaftaran_id',
             orderable: true,
-            searchable: false,
             className: 'text-muted text-center'
           },
           {
@@ -434,13 +433,12 @@
             data: 'aksi',
             name: 'aksi',
             orderable: false,
-            searchable: false,
             className: 'text-center'
           }
         ],
         columnDefs: [{
             targets: [6],
-            orderable: false
+            orderable: true
           } // Kolom No dan Aksi tidak bisa diurutkan
         ],
         pageLength: 25,
@@ -870,6 +868,7 @@
                 $('#start-sync-btn').click(); // Trigger ulang sync
               });
               btn.prop('disabled', false).text('Sinkronisasi Semua');
+              $('#start-sync-btn').click(); // Trigger ulang sync
               return;
             }
 
