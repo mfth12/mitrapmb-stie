@@ -401,11 +401,21 @@ class PendaftaranController extends Controller
 
             $apiData = collect($apiResponse['data'] ?? []);
 
-            // 2. Ambil data lokal dari tabel pendaftaran untuk agen ini dan tahun yang sama
-            $localData = PendaftaranModel::where('agen_id', $user->user_id)
-                ->where('tahun', $tahun)
-                ->get()
-                ->keyBy('id_calon_mahasiswa'); // Index by ID calon mahasiswa untuk pencarian cepat
+            if ($user->hasRole('agen')) {
+                // 2. Ambil data lokal dari tabel pendaftaran untuk agen ini dan tahun yang sama
+                $localData = PendaftaranModel::where('agen_id', $user->user_id)
+                    ->where('tahun', $tahun)
+                    ->orderBy('created_at', 'desc')
+                    ->get()
+                    ->keyBy('id_calon_mahasiswa'); // Index by ID calon mahasiswa untuk pencarian cepat
+            } else {
+                // 2. Ambil data lokal dari tabel pendaftaran. Jika bukan agen (misalnya admin), cari saja tanpa batasan agen
+                $localData = PendaftaranModel::where('tahun', $tahun)
+                    ->orderBy('created_at', 'desc')
+                    ->get()
+                    ->keyBy('id_calon_mahasiswa'); // Index by ID calon mahasiswa untuk pencarian cepat
+            }
+
 
             $results = [];
 
