@@ -1,9 +1,35 @@
 import Swal from 'sweetalert2';
 
-// SweetAlert2 global configuration
-window.Swal = Swal;
+// Buat mixin konfigurasi bawaan
+const defaultSwalConfig = Swal.mixin({
+    // Opsi global untuk semua SweetAlert2
+    allowOutsideClick: false, // Cegah klik di luar modal untuk menutup
+    allowEscapeKey: false,    // Cegah tombol ESC untuk menutup
+    allowEnterKey: true,      // Izinkan tombol Enter untuk konfirmasi (jika ada tombol konfirmasi)
+    // Tambahkan konfigurasi CSS untuk mengizinkan seleksi teks secara global
+    willOpen: (modal) => {
+        // Cari elemen konten utama SweetAlert
+        const htmlContainer = modal.querySelector('.swal2-html-container');
+        if (htmlContainer) {
+            htmlContainer.style.userSelect = 'text'; // Izinkan seleksi teks
+        }
+        // Jika ada elemen lain yang perlu diizinkan seleksinya, tambahkan di sini
+        const title = modal.querySelector('.swal2-title');
+        if (title) {
+            title.style.userSelect = 'text';
+        }
+        const content = modal.querySelector('.swal2-content');
+        if (content) {
+            content.style.userSelect = 'text';
+        }
+        // dst.
+    }
+});
 
-// Toast configuration
+// Set objek global
+window.Swal = defaultSwalConfig; // Gunakan mixin sebagai objek global
+
+// Toast configuration (tetap sama)
 const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -19,12 +45,13 @@ const Toast = Swal.mixin({
 window.Toast = Toast;
 
 // SweetAlert2 helper functions
+// Gunakan mixin default di sini juga
 window.showAlert = function (config) {
-    return Swal.fire(config);
+    return defaultSwalConfig.fire(config); // Gunakan mixin
 };
 
 window.showSuccess = function (message, title = 'Sukses') {
-    return Swal.fire({
+    return defaultSwalConfig.fire({ // Gunakan mixin
         icon: 'success',
         title: title,
         text: message,
@@ -34,7 +61,7 @@ window.showSuccess = function (message, title = 'Sukses') {
 };
 
 window.showError = function (message, title = 'Error') {
-    return Swal.fire({
+    return defaultSwalConfig.fire({ // Gunakan mixin
         icon: 'error',
         title: title,
         text: message,
@@ -43,7 +70,7 @@ window.showError = function (message, title = 'Error') {
 };
 
 window.showWarning = function (message, title = 'Peringatan') {
-    return Swal.fire({
+    return defaultSwalConfig.fire({ // Gunakan mixin
         icon: 'warning',
         title: title,
         text: message,
@@ -52,7 +79,7 @@ window.showWarning = function (message, title = 'Peringatan') {
 };
 
 window.showInfo = function (message, title = 'Informasi') {
-    return Swal.fire({
+    return defaultSwalConfig.fire({ // Gunakan mixin
         icon: 'info',
         title: title,
         text: message,
@@ -68,15 +95,18 @@ window.showConfirm = function (config) {
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Ya',
-        cancelButtonText: 'Batal'
+        cancelButtonText: 'Batal',
+        // Sertakan opsi global di sini juga jika ingin di-override
+        allowOutsideClick: true,
+        allowEscapeKey: true,
     };
 
-    return Swal.fire({ ...defaultConfig, ...config });
+    return defaultSwalConfig.fire({ ...defaultConfig, ...config }); // Gunakan mixin
 };
 
-// Delete confirmation
+// Delete confirmation (Gunakan mixin)
 window.showDeleteConfirmation = function (callback, itemName = 'data') {
-    return Swal.fire({
+    return defaultSwalConfig.fire({ // Gunakan mixin
         title: 'Apakah Anda yakin?',
         text: `Anda akan menghapus ${itemName}. Tindakan ini tidak dapat dibatalkan!`,
         icon: 'warning',
@@ -84,7 +114,10 @@ window.showDeleteConfirmation = function (callback, itemName = 'data') {
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'Ya, Hapus!',
-        cancelButtonText: 'Batal'
+        cancelButtonText: 'Batal',
+        // Sertakan opsi global di sini juga jika ingin di-override
+        allowOutsideClick: true,
+        allowEscapeKey: true,
     }).then((result) => {
         if (result.isConfirmed && typeof callback === 'function') {
             callback();
