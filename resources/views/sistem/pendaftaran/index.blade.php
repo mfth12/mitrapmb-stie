@@ -16,7 +16,7 @@
             </a>
           @endcan
           @can('pendaftaran_create')
-            <a href="#" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#sync-modal"
+            <a href="#" class="btn btn-default mt-2 mt-md-0" data-bs-toggle="modal" data-bs-target="#sync-modal"
               title="Sinkronisasi Data" data-bs-toggle="tooltip" data-bs-placement="top">
               <i class="ti ti-cloud-down fs-2 me-2"></i>
               Sinkronisasi
@@ -31,7 +31,7 @@
     <div class="container-xl">
       {{-- Stats Cards Baru --}}
       <div class="row row-cards mb-4 mt-0">
-        <div class="col-sm-6 col-lg-3">
+        <div class="col-sm-4 col-lg-3">
           <div class="card card-sm">
             <div class="card-body">
               <div class="row align-items-center">
@@ -42,13 +42,13 @@
                 </div>
                 <div class="col">
                   <div class="h2 mb-0">{{ $pendaftaran->total() }}</div>
-                  <div class="text-secondary">Total Pendaftaran</div>
+                  <div class="text-secondary">Pendaftar</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-sm-6 col-lg-3">
+        <div class="col-sm-4 col-lg-2">
           <div class="card card-sm">
             <div class="card-body">
               <div class="row align-items-center">
@@ -65,7 +65,24 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-6 col-lg-3">
+        <div class="col-sm-4 col-lg-3">
+          <div class="card card-sm">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <span class="bg-info text-white avatar">
+                    <i class="ti ti-cloud-network fs-1"></i>
+                  </span>
+                </div>
+                <div class="col">
+                  <div class="h2 mb-0">{{ $pendaftaran->whereIn('status', ['synced', 'imported'])->count() }}</div>
+                  <div class="text-secondary">Tersinkron/import</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 col-lg-2">
           <div class="card card-sm">
             <div class="card-body">
               <div class="row align-items-center">
@@ -82,7 +99,7 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-6 col-lg-3">
+        <div class="col-sm-4 col-lg-2">
           <div class="card card-sm">
             <div class="card-body">
               <div class="row align-items-center">
@@ -142,6 +159,9 @@
                         <option value="">Semua Status</option>
                         <option value="success" {{ request('status') == 'success' ? 'selected' : '' }}>Berhasil</option>
                         <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="synced" {{ request('status') == 'synced' ? 'selected' : '' }}>Tersinkron</option>
+                        <option value="imported" {{ request('status') == 'imported' ? 'selected' : '' }}>Data Impor
+                        </option>
                         <option value="failed" {{ request('status') == 'failed' ? 'selected' : '' }}>Gagal</option>
                       </select>
                     </div>
