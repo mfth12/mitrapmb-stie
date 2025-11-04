@@ -99,7 +99,7 @@ class MasukController extends Controller
       $userData     = $data['user'];
 
       // Validasi, status user harus aktif
-      if ($userData['status'] !== 'active' && $userData['status'] !== 1) {
+      if (!in_array($userData['status'], ['active', 1, '1'], true)) {
         return back()->withErrors(['masuk' => 'Akun Siakad Anda tidak aktif.']);
       }
 
