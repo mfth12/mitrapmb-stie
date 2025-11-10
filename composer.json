@@ -1,5 +1,5 @@
 {
-    "name": "stiepemb/agenpmb-stie",
+    "name": "stiepemb/mitrapmb-stie",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
     "keywords": [
@@ -7,6 +7,7 @@
         "framework",
         "sistem",
         "informasi",
+        "mitra",
         "agen",
         "pmb",
         "stie",

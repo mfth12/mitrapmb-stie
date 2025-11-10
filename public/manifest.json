@@ -32,7 +32,7 @@
     "display": "standalone",
     "orientation": "portrait",
     "start_url": ".",
-    "android_package_name": "id.ac.stie-pemb.agen-pmb.pwa",
+    "android_package_name": "id.ac.stie-pemb.mitra-pmb.pwa",
     "shortcuts": [],
     "scope": "."
 }
