@@ -1,7 +1,7 @@
 {
-    "name": "Portal Agen PMB STIE",
-    "short_name": "Agen PMB STIE",
-    "description": "Portal Agen PMB STIE Pembangunan Tanjungpinang",
+    "name": "Portal Mitra PMB STIE",
+    "short_name": "Mitra PMB STIE",
+    "description": "Portal Mitra PMB STIE Pembangunan Tanjungpinang",
     "icons": [
         {
             "src": "favicon.ico",

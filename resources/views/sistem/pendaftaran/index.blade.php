@@ -198,7 +198,7 @@
                   <th>Akademik</th>
                   <th>Biaya</th>
                   <th>Status</th>
-                  <th>Agen Sekolah</th>
+                  <th>Mitra Asal</th>
                   <th class="text-center">Aksi</th>
                 </tr>
               </thead>

@@ -15,9 +15,24 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Pastikan role 'agen' tersedia
+        $roleSuperadmin = Role::firstOrCreate(['name' => 'superadmin']);
         $roleAgen = Role::firstOrCreate(['name' => 'agen']);
         $roleBaak = Role::firstOrCreate(['name' => 'baak']);
         $roleKeuangan = Role::firstOrCreate(['name' => 'keuangan']);
+
+        // Buat user spesifik untuk superadmin
+        $superadminUsers = [
+            [
+                'username'      => 'miftah',
+                'name'          => 'Miftahul Haq',
+                'asal_sekolah'  => 'STIE Pembangunan Tanjungpinang',
+                'email'         => 'mfth12@gmail.com',
+                'nomor_hp'      => '6281331847725',
+                'nomor_hp2'     => '6281331847725',
+                'passsword'     => 'miftah123',
+            ],
+        ];
+
 
         // Buat user spesifik untuk agen
         $specificUsers = [
@@ -71,6 +86,19 @@ class UserSeeder extends Seeder
             //     'passsword'     => '',
             // ],
         ];
+
+        foreach ($superadminUsers as $userData) {
+            $user = User::factory()->create([
+                'username'      => $userData['username'],
+                'name'          => $userData['name'],
+                'asal_sekolah'  => $userData['asal_sekolah'],
+                'email'         => $userData['email'],
+                'nomor_hp'      => $userData['nomor_hp'],
+                'nomor_hp2'     => $userData['nomor_hp2'] ?? $userData['nomor_hp'],
+                'password'      => bcrypt($userData['passsword']),
+            ]);
+            $user->syncRoles([$roleSuperadmin]);
+        }
 
         foreach ($specificUsers as $userData) {
             $user = User::factory()->create([

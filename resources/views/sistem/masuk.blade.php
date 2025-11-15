@@ -16,7 +16,7 @@
                 <h1 class="mb-0">{{ konfigs('NAMA_SISTEM') }}</h1>
               </a>
             </div>
-            <h3 class="text-center mb-4">Portal Agen Penerimaan Mahasiswa Baru STIE</h3>
+            <h3 class="text-center mb-4">Portal Mitra Penerimaan Mahasiswa Baru STIE</h3>
             <div class="card card-md">
               <div class="card-body">
                 {{-- ALERTS --}}
@@ -73,7 +73,7 @@
                 @else
                   <div class="alert alert-hilang alert-info text-info d-flex align-items-center" role="alert">
                     <i class="ti ti-fingerprint fs-2 text-info"></i>
-                    Gunakan Akun Agen atau Siakad Anda.
+                    Gunakan Akun Mitra atau Siakad Anda.
                   </div>
                 @endif
                 {{-- END OF ALERTS --}}

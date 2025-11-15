@@ -156,13 +156,13 @@
 
         {{-- KOLOM KANAN --}}
         <div class="col-md-4 mb-4">
-          {{-- CARD: Data Agen --}}
+          {{-- CARD: Data Mitra --}}
           @if ($pendaftaran->agen)
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">
                   <i class="ti ti-user-check fs-2 me-2 text-orange"></i>
-                  Data Agen
+                  Data Mitra
                 </h3>
               </div>
               <div class="card-body">
@@ -198,17 +198,20 @@
               </div>
               <div class="mb-3">
                 <strong>Tanggal Daftar:</strong><br>
-                {{ $pendaftaran->created_at->translatedFormat('d M Y H:i') }} <span class="text-muted text-small">({{ $pendaftaran->created_at->diffForHumans() }})</span>
+                {{ $pendaftaran->created_at->translatedFormat('d M Y H:i') }} <span
+                  class="text-muted text-small">({{ $pendaftaran->created_at->diffForHumans() }})</span>
               </div>
               <div class="mb-3">
                 <strong>Terakhir Update:</strong><br>
-                {{ $pendaftaran->updated_at->translatedFormat('d M Y H:i') }} <span class="text-muted text-small">({{ $pendaftaran->updated_at->diffForHumans() }})</span>
+                {{ $pendaftaran->updated_at->translatedFormat('d M Y H:i') }} <span
+                  class="text-muted text-small">({{ $pendaftaran->updated_at->diffForHumans() }})</span>
               </div>
               @if ($pendaftaran->synced_at)
                 <div class="mb-3">
-                  
+
                   <strong>Terakhir Sync:</strong><br>
-                  {{ $pendaftaran->synced_at->translatedFormat('d M Y H:i') }} <span class="text-muted text-small">({{ $pendaftaran->synced_at->diffForHumans() }})</span>
+                  {{ $pendaftaran->synced_at->translatedFormat('d M Y H:i') }} <span
+                    class="text-muted text-small">({{ $pendaftaran->synced_at->diffForHumans() }})</span>
                 </div>
               @endif
             </div>
@@ -324,7 +327,5 @@
         showToast(`${type} berhasil disalin!`, 'success');
       });
     }
-
- 
   </script>
 @endsection

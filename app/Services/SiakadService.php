@@ -124,7 +124,7 @@ class SiakadService
         ->post($this->baseUrl . '/api/v2/calon-mahasiswa/agen', [
           'tahun' => $tahun,
           'sumber' => 'A', // Sesuai spek
-          'referensi' => $referensi, // ID Agen
+          'referensi' => $referensi, // ID Mitra
         ]);
 
       $responseData = $response->json();

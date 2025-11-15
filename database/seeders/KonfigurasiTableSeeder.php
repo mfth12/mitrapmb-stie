@@ -39,7 +39,7 @@ class KonfigurasiTableSeeder extends Seeder
     DB::table($tableName)->insert([
       'config_group'  => 'identitas',
       'config_key'    => 'NAMA_SISTEM',
-      'config_value'  => 'Portal Agen PMB',
+      'config_value'  => 'Portal Mitra PMB',
       'created_at'    => Carbon::now(),
       'updated_at'    => Carbon::now()
     ]);
@@ -47,7 +47,7 @@ class KonfigurasiTableSeeder extends Seeder
     DB::table($tableName)->insert([
       'config_group'  => 'identitas',
       'config_key'    => 'NAMA_SISTEM_ALIAS',
-      'config_value'  => 'Agen PMB',
+      'config_value'  => 'Mitra PMB',
       'created_at'    => Carbon::now(),
       'updated_at'    => Carbon::now()
     ]);
