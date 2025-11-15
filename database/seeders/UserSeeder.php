@@ -23,19 +23,58 @@ class UserSeeder extends Seeder
         // Buat user spesifik untuk superadmin
         $superadminUsers = [
             [
-                'username'      => 'miftah',
-                'name'          => 'Miftahul Haq',
+                'username'      => 'mfth12',
+                'name'          => 'Superadmin Miftah',
                 'asal_sekolah'  => 'STIE Pembangunan Tanjungpinang',
-                'email'         => 'mfth12@gmail.com',
+                'email'         => 'mfth12@google.com',
                 'nomor_hp'      => '6281331847725',
                 'nomor_hp2'     => '6281331847725',
-                'passsword'     => 'miftah123',
+                'passsword'     => '123123',
             ],
         ];
 
+        // Buat user spesifik untuk baak (quick kontak person PMB)
+        $baakUsers = [
+            [
+                'username'      => 'dheska',
+                'name'          => 'Dheska Mutia, SE',
+                'asal_sekolah'  => 'STIE Pembangunan Tanjungpinang',
+                'email'         => 'dheska@stie-pembangunan.ac.id',
+                'nomor_hp'      => '6285272488108',
+                'nomor_hp2'     => '6285272488108',
+                'passsword'     => 'dheska',
+            ],
+            [
+                'username'      => 'erni05',
+                'name'          => 'Erni Yulianti, SE',
+                'asal_sekolah'  => 'STIE Pembangunan Tanjungpinang',
+                'email'         => 'erni@stie-pembangunan.ac.id',
+                'nomor_hp'      => '6281378704882',
+                'nomor_hp2'     => '6281378704882',
+                'passsword'     => 'erni05',
+            ],
+            [
+                'username'      => 'ekiwulan',
+                'name'          => 'Surya Eki Wulandari, SE',
+                'asal_sekolah'  => 'STIE Pembangunan Tanjungpinang',
+                'email'         => 'eki@stie-pembangunan.ac.id',
+                'nomor_hp'      => '6281266106955',
+                'nomor_hp2'     => '6281266106955',
+                'passsword'     => 'ekiwulan',
+            ],
+            [
+                'username'      => 'restyayu',
+                'name'          => 'Resty Ayu Fallufy, SE',
+                'asal_sekolah'  => 'STIE Pembangunan Tanjungpinang',
+                'email'         => 'resty@stie-pembangunan.ac.id',
+                'nomor_hp'      => '6282387783200',
+                'nomor_hp2'     => '6282387783200',
+                'passsword'     => 'restyayu',
+            ],
+        ];
 
         // Buat user spesifik untuk agen
-        $specificUsers = [
+        $agenUsers = [
             [
                 'username'      => 'hartono91',
                 'name'          => 'Hartono',
@@ -76,15 +115,6 @@ class UserSeeder extends Seeder
                 // 'passsword'     => '$2y$12$ayNw216k0IAnOP.SBjEUheDAWl7ZxnSSjVq3j6cx/gfddTz3Bhlee',
                 'passsword'     => 'ratna123456',
             ],
-            // [
-            //     'username'      => '',
-            //     'name'          => '',
-            //     'asal_sekolah'  => '',
-            //     'email'         => '',
-            //     'nomor_hp'      => '',
-            //     'nomor_hp2'     => '',
-            //     'passsword'     => '',
-            // ],
         ];
 
         foreach ($superadminUsers as $userData) {
@@ -100,7 +130,20 @@ class UserSeeder extends Seeder
             $user->syncRoles([$roleSuperadmin]);
         }
 
-        foreach ($specificUsers as $userData) {
+        foreach ($baakUsers as $userData) {
+            $user = User::factory()->create([
+                'username'      => $userData['username'],
+                'name'          => $userData['name'],
+                'asal_sekolah'  => $userData['asal_sekolah'],
+                'email'         => $userData['email'],
+                'nomor_hp'      => $userData['nomor_hp'],
+                'nomor_hp2'     => $userData['nomor_hp2'] ?? $userData['nomor_hp'],
+                'password'      => bcrypt($userData['passsword']),
+            ]);
+            $user->syncRoles([$roleAgen]);
+        }
+
+        foreach ($agenUsers as $userData) {
             $user = User::factory()->create([
                 'username'      => $userData['username'],
                 'name'          => $userData['name'],
