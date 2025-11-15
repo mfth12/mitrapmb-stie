@@ -3,9 +3,10 @@ import Swal from 'sweetalert2';
 // Buat mixin konfigurasi bawaan
 const defaultSwalConfig = Swal.mixin({
     // Opsi global untuk semua SweetAlert2
-    allowOutsideClick: false, // Cegah klik di luar modal untuk menutup
-    allowEscapeKey: false,    // Cegah tombol ESC untuk menutup
+    allowOutsideClick: true, // Cegah klik di luar modal untuk menutup
+    allowEscapeKey: true,    // Cegah tombol ESC untuk menutup
     allowEnterKey: true,      // Izinkan tombol Enter untuk konfirmasi (jika ada tombol konfirmasi)
+    timerProgressBar: true,
     // Tambahkan konfigurasi CSS untuk mengizinkan seleksi teks secara global
     willOpen: (modal) => {
         // Cari elemen konten utama SweetAlert
@@ -55,7 +56,7 @@ window.showSuccess = function (message, title = 'Sukses') {
         icon: 'success',
         title: title,
         text: message,
-        // timer: 3000,
+        timer: 3000,
         showConfirmButton: false
     });
 };
@@ -74,7 +75,7 @@ window.showWarning = function (message, title = 'Peringatan') {
         icon: 'warning',
         title: title,
         text: message,
-        // timer: 6000
+        timer: 6000
     });
 };
 
@@ -113,7 +114,7 @@ window.showDeleteConfirmation = function (callback, itemName = 'data') {
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Ya, Hapus!',
+        confirmButtonText: 'Hapus',
         cancelButtonText: 'Batal',
         // Sertakan opsi global di sini juga jika ingin di-override
         allowOutsideClick: true,
