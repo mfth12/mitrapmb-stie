@@ -185,6 +185,7 @@ class MasukController extends Controller
 
       // Update last logged in
       $user = Auth::user();
+      $user->update(['last_logged_in' => Carbon::now()]);
 
       // Kirim notifikasi WhatsApp setelah login berhasil
       $this->sendLoginNotification($user, $request, $from = 'local');
