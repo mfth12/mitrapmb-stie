@@ -198,7 +198,7 @@
 
           showConfirm({
             title: 'Hapus Foto Profil?',
-            text: 'Foto profil akan dihapus permanen. Tindakan ini tidak dapat dibatalkan!',
+            text: 'Foto akan dihapus secara permanen dan tidak dapat kembali!',
             icon: 'warning',
             confirmButtonText: 'Ya, Hapus!',
             cancelButtonText: 'Batal'

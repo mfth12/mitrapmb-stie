@@ -140,7 +140,7 @@ class UserSeeder extends Seeder
                 'nomor_hp2'     => $userData['nomor_hp2'] ?? $userData['nomor_hp'],
                 'password'      => bcrypt($userData['passsword']),
             ]);
-            $user->syncRoles([$roleAgen]);
+            $user->syncRoles([$roleBaak]);
         }
 
         foreach ($agenUsers as $userData) {
